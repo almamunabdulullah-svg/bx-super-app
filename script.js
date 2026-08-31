@@ -1,36 +1,46 @@
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <title>BX Super App - Metro UI</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="metro-container">
-        <header class="app-header">
-            <h1>BX Super App</h1>
-            <input type="text" id="searchInput" placeholder="সেবা বা কয়েন সার্চ করুন..." onkeyup="searchTiles()">
-        </header>
-        
-        <div class="tiles-grid" id="tilesGrid">
-            <div class="tile crypto" onclick="openModule('crypto')">
-                <h3>ক্রিপ্টো ও মেমে মার্কেট</h3>
-                <p>লাইভ DEX ট্রেডিং</p>
-            </div>
-            <div class="tile game" onclick="openModule('game')">
-                <h3>থ্রিডি গেম জোন</h3>
-                <p>১০০% উইনিং সিস্টেম</p>
-            </div>
-            <div class="tile bank" onclick="openModule('bank')">
-                <h3>BX ব্যাংক</h3>
-                <p>গ্লোবাল এআই অ্যাকাউন্ট</p>
-            </div>
-            <div class="tile admin" onclick="openModule('admin')">
-                <h3>মাস্টার অ্যাডমিন</h3>
-                <p>গড মোড কন্ট্রোল</p>
-            </div>
-        </div>
-    </div>
-    <script src="script.js"></script>
-</body>
-</html>
+// Global Master Configuration
+const MASTER_CONTRACT = "0x30Ad271CcBA208215E80b607eFBd389486c9CF6A";
+const SECRET_PASSWORD = "420MM420";
+
+function updateCurrency() {
+    const currency = document.getElementById('currencySelector').value;
+    const balanceDisplay = document.getElementById('balanceDisplay');
+    if(currency === 'USD') balanceDisplay.innerText = '$0.000005';
+    if(currency === 'BDT') balanceDisplay.innerText = '৳0.00005';
+    if(currency === 'EUR') balanceDisplay.innerText = '€0.000004';
+    if(currency === 'AED') balanceDisplay.innerText = 'د.إ0.00002';
+}
+
+function openGodModeModal() {
+    document.getElementById('godModal').style.display = 'flex';
+}
+
+function closeGodModeModal() {
+    document.getElementById('godModal').style.display = 'none';
+}
+
+function verifyGodMode() {
+    const inputPass = document.getElementById('masterPass').value;
+    if(inputPass === SECRET_PASSWORD) {
+        alert("🎉 God Mode Activated Successfully!\nMaster Contract Linked: " + MASTER_CONTRACT);
+        closeGodModeModal();
+        // Here you can unlock hidden backend features
+    } else {
+        alert("❌ Invalid Master Password!");
+    }
+}
+
+// Gaming Logic (70% Company / 30% User Win Rate)
+function playGame() {
+    const randomChance = Math.random() * 100;
+    const resultDisplay = document.getElementById('gameResult');
+    
+    // 70% chance to house win, 30% chance to user win
+    if(randomChance <= 30) {
+        resultDisplay.style.color = '#22c55e';
+        resultDisplay.innerText = "🎉 You Won! 30% Payout Credited.";
+    } else {
+        resultDisplay.style.color = '#ef4444';
+        resultDisplay.innerText = "😢 House Won (70% Profit Sent to Master Vault).";
+    }
+}
