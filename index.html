@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BX Super-App - Blockchain Elite</title>
+  <!-- Ethers.js Library CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
@@ -163,7 +165,8 @@
           <h4 id="nodeStatus">Node: Unverified</h4>
           <span id="blockchainCode">Block Hash: Pending...</span>
         </div>
-        <button class="btn-custom" style="padding: 6px 10px; font-size: 8px;" onclick="verifyBlockchainID()">Verify ID Code</button>
+        <!-- Updated to connect real BNB Smart Chain Web3 Wallet -->
+        <button class="btn-custom" style="padding: 6px 10px; font-size: 8px;" onclick="connectBNBWallet()">Connect BNB Wallet</button>
       </div>
 
       <!-- Balance Card (Starts at $0.00) -->
@@ -172,7 +175,7 @@
         <div class="b-amount" id="userBalance">$0.00 USD</div>
         <div class="b-footer">
           <span>Smart Contract Node</span>
-          <span style="color: var(--gold-accent);">● Zero Balance Protocol</span>
+          <span style="color: var(--gold-accent);">● BNB Chain Protocol</span>
         </div>
       </div>
 
@@ -268,19 +271,66 @@
     let companyTaxVault = 0.00; 
     let aiRobotStatus = "Active (Blockchain RNG & House Edge 7%)";
 
+    // --- BNB Smart Chain Web3 Wallet Integration ---
+    let provider;
+    let signer;
+    let userWalletAddress = null;
+
+    async function connectBNBWallet() {
+      if (typeof window.ethereum !== 'undefined') {
+        try {
+          provider = new ethers.providers.Web3Provider(window.ethereum);
+          await provider.send("eth_requestAccounts", []);
+          signer = provider.getSigner();
+          userWalletAddress = await signer.getAddress();
+
+          // BNB Smart Chain Mainnet (Chain ID: 56 / 0x38) এ সুইচ করা
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x38' }],
+            });
+          } catch (switchError) {
+            if (switchError.code === 4902) {
+              await window.ethereum.request({
+                method: 'wallet_addEthereumChain',
+                params: [{
+                  chainId: '0x38',
+                  chainName: 'BNB Smart Chain Mainnet',
+                  nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+                  rpcUrls: ['https://bsc-dataseed.binance.org/'],
+                  blockExplorerUrls: ['https://bscscan.com/']
+                }],
+              });
+            }
+          }
+
+          document.getElementById('nodeStatus').innerText = "Node: Web3 Connected";
+          document.getElementById('blockchainCode').innerText = "Wallet: " + userWalletAddress.substring(0, 6) + "..." + userWalletAddress.substring(38);
+          
+          // ব্লকচেইন থেকে আসল BNB ব্যালেন্স ফেচ করা
+          let balanceBNB = await provider.getBalance(userWalletAddress);
+          let formattedBalance = ethers.utils.formatEther(balanceBNB);
+          userBalance = parseFloat(formattedBalance * 300); // আনুমানিক ইউএসডি কনভার্শন
+          updateBalance();
+          
+          alert("সফলভাবে BNB Smart Chain ওয়ালেট কানেক্ট হয়েছে!");
+        } catch (error) {
+          console.error(error);
+          alert("ওয়ালেট কানেকশন বাতিল করা হয়েছে।");
+        }
+      } else {
+        alert("দয়া করে MetaMask বা Trust Wallet ব্রাউজার ব্যবহার করুন!");
+      }
+    }
+    // ----------------------------------------------
+
     function updateBalance() {
       document.getElementById('userBalance').innerText = `$${userBalance.toFixed(2)} USD`;
     }
 
     function verifyBlockchainID() {
-      let codeInput = prompt("ব্লকচেইন ভেরিফিকেশন কোড লিখুন (যেমন: BX-9982-ZK):");
-      if (codeInput && codeInput.length > 3) {
-        document.getElementById('nodeStatus').innerText = "Node: Verified ZK-ID";
-        document.getElementById('blockchainCode').innerText = "Hash: " + codeInput.toUpperCase();
-        alert("ব্লকচেইন নেটওয়ার্কে আপনার আইডি সফলভাবে ভেরিফাই হয়েছে!");
-      } else {
-        alert("সঠিক কোড প্রদান করুন।");
-      }
+      connectBNBWallet();
     }
 
     function openDepositModal() {
@@ -326,13 +376,13 @@
 
       const featuresData = {
         1: ["1. HOME DASHBOARD", "ব্লকচেইন নোড সক্রিয়। ড্যাশবোর্ড ব্যালেন্স শূন্য ($0.00)। ডিপোজিট করার আগে ব্যালেন্স আপডেট হবে না।"],
-        2: ["2. P2P ESCROW MARKET", "বিকাশ, নগদ বা ব্যাংক ট্রান্সফারের মাধ্যমে নিরাপদে লোকাল কারেন্সিতে ক্রিপ্টো কেনাবেচা করার পিটুপি মার্কেট। প্রতিটি ট্রেড থেকে ১.৫% কোম্পানি ফি সংগৃহীত হয়।<br><button class='btn-custom' style='margin-top:8px;' onclick='p2pTrade()'>Create P2P Ad ($50)</button>"],
-        3: ["3. TEEN PATTI & CARD ROOM", "ক্লাসিক তিন পাত্তি ও পোকার গেম রুম। এআই রোবট এখানে হাউস এজ মেইনটেইন করে।<br><button class='btn-custom' style='margin-top:8px;' onclick='playTeenPatti()'>Play Teen Patti ($10)</button>"],
-        4: ["4. WEB3 CASINO & GAMING", "৭% হাউস এজ যুক্ত রিয়েল-টাইম ক্যাসিনো ও লাকি ডাইস গেম রুম। ইউজার হারলে হাউস প্রফিট পায়।<br><button class='btn-custom' style='margin-top:8px;' onclick='playGame()'>Play Casino ($10)</button>"],
-        5: ["5. TOURNAMENTS (FREE FIRE & PUBG)", "ফ্রি ফায়ার, পাবজি মোবাইল এবং অন্যান্য গেমের টুর্নামেন্ট রুম।<br><button class='btn-custom' style='margin-top:8px;' onclick='joinTournament()'>Join PUBG Room ($5)</button>"],
-        6: ["6. LUDO KING MULTIPLAYER", "লুডু কিং স্টাইলের অনলাইন মাল্টিপ্লেয়ার ম্যাচ এবং বেটিং রুম।<br><button class='btn-custom' style='margin-top:8px;' onclick='playLudo()'>Start Ludo Match ($5)</button>"],
-        7: ["7. MEME COINS AUTO-FEED", "বিটকয়েন ও অন্যান্য নতুন ট্রেন্ডিং মিমে কয়েন লাইভ মার্কেট এপিআই এর মাধ্যমে অটোমেটিক যুক্ত হয়েছে।<br><span style='color:var(--gold-accent);'>● PEPE, DOGE, SHIB Live Feeds Active</span>"],
-        8: ["8. SHORTS VIDEO STREAMING", "টিকটক ও ইউটিউব শর্টস স্টাইল বিনোদনমূলক ভিডিও ফিড স্ক্রিন।<br><button class='btn-custom' style='margin-top:8px;' onclick='alert(\"Shorts Video Liked! Reward +$0.01 added.\"); userBalance+=0.01; updateBalance();'>Watch Next Short</button>"],
+        2: ["2. P2P ESCROW MARKET", "বিকাশ, নগদ বা ব্যাংক ট্রান্সফারের মাধ্যমে নিরাপদে লোকাল কারেন্সিতে ক্রিপ্টো কেনাবেচা করার পিটুপি মার্কেট। প্রতিটি ট্রেড থেকে ১.৫% কোম্পানি ফি সংগৃহীত হয়。<br><button class='btn-custom' style='margin-top:8px;' onclick='p2pTrade()'>Create P2P Ad ($50)</button>"],
+        3: ["3. TEEN PATTI & CARD ROOM", "ক্লাসিক তিন পাত্তি ও পোকার গেম রুম। এআই রোবট এখানে হাউস এজ মেইনটেইন করে。<br><button class='btn-custom' style='margin-top:8px;' onclick='playTeenPatti()'>Play Teen Patti ($10)</button>"],
+        4: ["4. WEB3 CASINO & GAMING", "৭% হাউস এজ যুক্ত রিয়েল-টাইম ক্যাসিনো ও লাকি ডাইস গেম রুম। ইউজার হারলে হাউস প্রফিট পায়。<br><button class='btn-custom' style='margin-top:8px;' onclick='playGame()'>Play Casino ($10)</button>"],
+        5: ["5. TOURNAMENTS (FREE FIRE & PUBG)", "ফ্রি ফায়ার, পাবজি মোবাইল এবং অন্যান্য গেমের টুর্নামেন্ট রুম。<br><button class='btn-custom' style='margin-top:8px;' onclick='joinTournament()'>Join PUBG Room ($5)</button>"],
+        6: ["6. LUDO KING MULTIPLAYER", "লুডু কিং স্টাইলের অনলাইন মাল্টিপ্লেয়ার ম্যাচ এবং বেটিং রুম。<br><button class='btn-custom' style='margin-top:8px;' onclick='playLudo()'>Start Ludo Match ($5)</button>"],
+        7: ["7. MEME COINS AUTO-FEED", "বিটকয়েন ও অন্যান্য নতুন ট্রেন্ডিং মিমে কয়েন লাইভ মার্কেট এপিআই এর মাধ্যমে অটোমেটিক যুক্ত হয়েছে。<br><span style='color:var(--gold-accent);'>● PEPE, DOGE, SHIB Live Feeds Active</span>"],
+        8: ["8. SHORTS VIDEO STREAMING", "টিকটক ও ইউটিউব শর্টস স্টাইল বিনোদনমূলক ভিডিও ফিড স্ক্রিন。<br><button class='btn-custom' style='margin-top:8px;' onclick='alert(\"Shorts Video Liked! Reward +$0.01 added.\"); userBalance+=0.01; updateBalance();'>Watch Next Short</button>"],
         9: ["9. DECENTRALIZED WALLET", "মাল্টি-চেইন নন-কাস্টোডিয়াল ওয়ালেট। বর্তমান রিয়েল ব্যালেন্স: <b>$" + userBalance.toFixed(2) + " USD</b>"],
         10: ["10. BLOCKCHAIN NODE ID", "আপনার নোড এবং জিরো-নলেজ ভেরিফিকেশন প্যানেল। আইডি ভেরিফাই করতে উপরের বাটনে ক্লিক করুন।"],
         11: ["11. NFT & MINI-APP LAUNCHPAD", "এক্সক্লুসিভ প্রি-সেল টোকেন ও থার্ড-পার্টি মিনি-অ্যাপ লঞ্চপ্যাড।"],
