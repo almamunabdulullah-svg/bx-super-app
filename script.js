@@ -57,16 +57,14 @@ async function getEthBalance(address) {
 }
 
 // --- WebSocket (Live Feed) Part ---
-// আরও স্থিতিশীল এবং রিলায়েবল পাবলিক ইকো সার্ভার লিঙ্ক
-const socketUrl = 'wss://echo.websocket.events'; 
+const socketUrl = 'wss://ws.ifelse.io'; 
 
 function startLiveWebSocketFeed() {
     const ws = new WebSocket(socketUrl);
 
     ws.onopen = () => {
         console.log('WebSocket connection opened.');
-        ws.send('BX Super App Connected Successfully!');
-        
+        ws.send('BX Super App Live Connection Established');
         liveFeedContainer.innerHTML = ''; 
     };
 
@@ -78,14 +76,11 @@ function startLiveWebSocketFeed() {
     ws.onerror = (error) => {
         console.error('WebSocket Error:', error);
         liveFeedContainer.innerHTML = '<p style="color:#EF4444;">Connecting to live stream...</p>';
-        // স্বয়ংক্রিয়ভাবে রিকানেক্ট করার চেষ্টা
-        setTimeout(startLiveWebSocketFeed, 3000);
     };
 
     ws.onclose = (event) => {
         console.log('WebSocket connection closed:', event);
         liveFeedContainer.innerHTML = '<p style="color:#94A3B8;">Reconnecting live feed...</p>';
-        // সংযোগ বিচ্ছিন্ন হলে ৩ সেকেন্ড পর পর পুনরায় সংযোগের চেষ্টা করবে
         setTimeout(startLiveWebSocketFeed, 3000);
     };
 }
@@ -111,5 +106,4 @@ function addLiveFeedCard(data) {
     }
 }
 
-// পেজ লোড হওয়ার সাথে সাথে ওয়েবসোকেট কানেকশন শুরু করা
 startLiveWebSocketFeed();
