@@ -1,221 +1,399 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BX Super-App Pro - Blockchain Edition</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @keyframes ticker {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-        .animate-ticker {
-            display: inline-block;
-            white-space: nowrap;
-            animation: ticker 25s linear infinite;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BX Super-App Pro - NextGen Blockchain Elite</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
+:root {
+    --bg-base: #090d16;
+    --card-bg: rgba(18, 24, 38, 0.85);
+    --primary: #38bdf8;
+    --primary-glow: rgba(56, 189, 248, 0.25);
+    --accent: #818cf8;
+    --success: #34d399;
+    --danger: #f87171;
+    --text-main: #f1f5f9;
+    --text-sub: #64748b;
+    --border: rgba(255, 255, 255, 0.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; font-family: 'Plus Jakarta Sans', sans-serif; }
+body {
+    background-color: var(--bg-base);
+    background-image: radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.1) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(129, 140, 248, 0.1) 0%, transparent 40%);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+}
+.app-container {
+    width: 100%;
+    max-width: 420px;
+    height: 96vh;
+    background: var(--card-bg);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--border);
+    border-radius: 32px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    position: relative;
+}
+.app-header {
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    background: rgba(9, 13, 22, 0.6);
+}
+.logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+.logo-box {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 18px; color: #090d16;
+    box-shadow: 0 0 20px var(--primary-glow);
+}
+.logo-text { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: #fff; }
+.badge-live {
+    font-size: 10px; font-weight: 600; color: var(--success);
+    background: rgba(52, 211, 153, 0.1); padding: 6px 12px;
+    border-radius: 20px; border: 1px solid rgba(52, 211, 153, 0.2);
+    display: flex; align-items: center; gap: 6px;
+}
+.dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success); }
+.viewport { flex: 1; overflow-y: auto; padding: 16px; scroll-behavior: smooth; }
+.viewport::-webkit-scrollbar { width: 4px; }
+.viewport::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.ticker-bar {
+    background: rgba(56, 189, 248, 0.05);
+    border: 1px solid rgba(56, 189, 248, 0.15);
+    border-radius: 12px;
+    padding: 8px 12px;
+    font-size: 11px;
+    color: var(--primary);
+    margin-bottom: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.user-profile-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border);
+    border-radius: 18px; padding: 12px 16px; margin-bottom: 16px;
+}
+.user-info h4 { font-size: 12px; font-weight: 700; color: #fff; }
+.user-info span { font-size: 10px; color: var(--text-sub); }
+.balance-card {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(129, 140, 248, 0.08));
+    border: 1px solid var(--border); border-radius: 24px; padding: 20px; margin-bottom: 16px;
+}
+.b-label { font-size: 11px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+.b-amount { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: #fff; margin: 6px 0; }
+.b-footer { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-sub); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+.section-title { font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: var(--text-sub); margin-bottom: 12px; display: flex; justify-content: space-between; letter-spacing: 0.5px; }
+.grid-features { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 16px; }
+.feature-card {
+    background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border);
+    border-radius: 14px; padding: 10px 4px; text-align: center; cursor: pointer; transition: 0.2s ease;
+}
+.feature-card:hover { background: rgba(56, 189, 248, 0.08); border-color: var(--primary); transform: translateY(-2px); }
+.f-icon { width: 20px; height: 20px; margin: 0 auto 4px auto; fill: var(--primary); display: block; }
+.f-name { font-size: 8px; font-weight: 600; color: var(--text-main); }
+.active-box { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 20px; padding: 18px; min-height: 150px; margin-bottom: 16px; }
+.box-title { font-family: 'Space Grotesk', sans-serif; font-size: 13px; color: var(--primary); margin-bottom: 8px; font-weight: 700; }
+.box-desc { font-size: 12px; color: var(--text-sub); line-height: 1.6; }
+.action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.btn-custom {
+    background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3);
+    color: var(--primary); padding: 14px; border-radius: 14px; font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; transition: 0.2s;
+}
+.btn-custom:hover { background: rgba(56, 189, 248, 0.2); box-shadow: 0 0 15px var(--primary-glow); }
+.btn-withdraw { background: rgba(52, 211, 153, 0.1); border: 1px solid rgba(52, 211, 153, 0.3); color: var(--success); }
+.btn-withdraw:hover { background: rgba(52, 211, 153, 0.2); box-shadow: 0 0 15px rgba(52, 211, 153, 0.2); }
+.bottom-nav { height: 65px; background: rgba(9, 13, 22, 0.95); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; padding: 0 6px; }
+.nav-btn { background: none; border: none; color: var(--text-sub); display: flex; flex-direction: column; align-items: center; cursor: pointer; font-size: 9px; font-weight: 600; gap: 3px; }
+.nav-btn svg { width: 20px; height: 20px; fill: currentColor; }
+.nav-btn.active, .nav-btn:hover { color: var(--primary); }
+.modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9, 13, 22, 0.9); backdrop-filter: blur(12px); display: none; justify-content: center; align-items: center; z-index: 200; padding: 20px; }
+.modal-card { background: #121826; border: 1px solid var(--border); border-radius: 24px; padding: 24px; width: 100%; max-width: 340px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+.modal-input { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 12px; color: #fff; font-size: 14px; margin-bottom: 14px; outline: none; text-align: center; font-family: 'Space Grotesk'; }
+.bio-scan-box { width: 70px; height: 70px; border: 2px dashed var(--primary); border-radius: 50%; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(56, 189, 248, 0); } 100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); } }
+</style>
 </head>
-<body class="bg-slate-950 text-white font-sans antialiased select-none pb-20">
+<body>
+<div class="app-container">
+    <div class="app-header">
+        <div class="logo-area" onclick="handleSecretTrigger()">
+            <div class="logo-box">BX</div>
+            <div class="logo-text">BX SUPER-APP</div>
+        </div>
+        <div class="badge-live">
+            <div class="dot"></div>
+            <span>SECURE v10.5</span>
+        </div>
+    </div>
+    
+    <div class="viewport">
+        <!-- Global Live Ticker Feed -->
+        <div class="ticker-bar" id="liveTicker">
+            🌐 Live: Alex (USA) won $1,200 in Crash Game
+        </div>
 
-    <header class="bg-slate-900 border-b border-slate-800 p-3 flex justify-between items-center sticky top-0 z-50">
-        <div class="flex items-center space-x-2.5">
-            <div class="w-9 h-9 rounded-xl bg-amber-500 flex items-center justify-center font-bold text-slate-950 text-lg shadow-lg shadow-amber-500/30">BX</div>
-            <div>
-                <h1 class="font-bold text-xs tracking-wide">BX SUPER-APP</h1>
-                <p class="text-[10px] text-amber-400 font-mono">BNB Node: <span id="nodeId">Connected</span></p>
+        <div class="user-profile-bar">
+            <div class="user-info">
+                <h4 id="nodeStatus">Biometric & Multi-Chain Ready</h4>
+                <span id="blockchainCode">Status: Verified User</span>
+            </div>
+            <button class="btn-custom" style="padding: 8px 12px; font-size: 9px;" onclick="openBiometricModal()">🔒 Security</button>
+        </div>
+
+        <div class="balance-card">
+            <div class="b-label">Unified Vault Balance</div>
+            <div class="b-amount" id="userBalance">$250.00 USD</div>
+            <div class="b-footer">
+                <span>TxID Verified Gateway</span>
+                <span style="color: var(--success);">● Encrypted</span>
             </div>
         </div>
 
-        <div class="flex items-center space-x-2">
-            <select id="langCurrency" onchange="changeLanguageCurrency()" class="bg-slate-800 text-[11px] text-amber-300 px-2 py-1 rounded-lg border border-slate-700 outline-none">
-                <option value="BN-BDT">🇧🇩 বাংলা (BDT)</option>
-                <option value="EN-USD">🇺🇸 English (USD)</option>
-                <option value="ES-EUR">🇪🇸 Español (EUR)</option>
-                <option value="AR-AED">🇦🇪 العربية (AED)</option>
-            </select>
-
-            <button onclick="openSupportChat()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-amber-400 border border-slate-700 transition" title="Live Support">
-                <i class="fa-solid fa-headset text-xs"></i>
-            </button>
-
-            <button onclick="alert('কোনো নতুন নোটিফিকেশন নেই।')" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 border border-slate-700 transition" title="Notifications">
-                <i class="fa-solid fa-bell text-xs"></i>
-            </button>
+        <div class="section-title">
+            <span>ECOSYSTEM MODULES</span>
+            <span style="color: var(--primary);">25 Active</span>
         </div>
-    </header>
 
-    <div class="bg-slate-900/80 border-b border-slate-800 overflow-hidden py-1.5 text-xs text-slate-300">
-        <div class="animate-ticker flex space-x-6">
-            <span>🔴 <b>John D. (USA)</b> won ৳12,000 in Crash Rocket</span>
-            <span>🟢 <b>Tanvir H. (Bangladesh)</b> won ৳45,000 in P2P Escrow</span>
-            <span>🔴 <b>Maria S. (Brazil)</b> lost ৳1,500 in Slot Game</span>
-            <span>🟢 <b>Kenji T. (Japan)</b> won ৳8,200 in BNB Staking</span>
-            <span>🔴 <b>Ahmed K. (UAE)</b> lost ৳3,000 in Kamikaze</span>
+        <div class="grid-features">
+            <div class="feature-card" onclick="loadFeature(1)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><div class="f-name">Home</div></div>
+            <div class="feature-card" onclick="loadFeature(2)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3z"/></svg><div class="f-name">P2P Escrow</div></div>
+            <div class="feature-card" onclick="loadFeature(3)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg><div class="f-name">Teen Patti</div></div>
+            <div class="feature-card" onclick="loadFeature(4)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg><div class="f-name">Casino</div></div>
+            <div class="feature-card" onclick="loadFeature(5)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2z"/></svg><div class="f-name">Tournaments</div></div>
+            <div class="feature-card" onclick="loadFeature(6)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg><div class="f-name">Ludo King</div></div>
+            <div class="feature-card" onclick="loadFeature(7)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg><div class="f-name">Meme Coins</div></div>
+            <div class="feature-card" onclick="loadFeature(8)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M18 4H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"/></svg><div class="f-name">Shorts</div></div>
+            <div class="feature-card" onclick="loadFeature(9)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9z"/></svg><div class="f-name">Wallet</div></div>
+            <div class="feature-card" onclick="loadFeature(10)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"/></svg><div class="f-name">Node ID</div></div>
+            <div class="feature-card" onclick="loadFeature(11)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M2.5 19h19v2h-19z"/></svg><div class="f-name">Launchpad</div></div>
+            <div class="feature-card" onclick="loadFeature(12)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M13.49 5.48c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg><div class="f-name">Fitness</div></div>
+            <div class="feature-card" onclick="loadFeature(13)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg><div class="f-name">Lucky Spin</div></div>
+            <div class="feature-card" onclick="loadFeature(14)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3z"/></svg><div class="f-name">AI Robot</div></div>
+            <div class="feature-card" onclick="loadFeature(15)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg><div class="f-name">Futures</div></div>
+            <div class="feature-card" onclick="loadFeature(16)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12z"/></svg><div class="f-name">Vault</div></div>
+            <div class="feature-card" onclick="loadFeature(17)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2 z"/></svg><div class="f-name">Web3 DApp</div></div>
+            <div class="feature-card" onclick="loadFeature(18)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16z"/></svg><div class="f-name">Crypto Card</div></div>
+            <div class="feature-card" onclick="loadFeature(19)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg><div class="f-name">Anti-Phish</div></div>
+            <div class="feature-card" onclick="loadFeature(20)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg><div class="f-name">Staking</div></div>
+            <div class="feature-card" onclick="loadFeature(21)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68Z"/></svg><div class="f-name">Airdrop</div></div>
+            <div class="feature-card" onclick="loadFeature(22)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg><div class="f-name">AI Chat</div></div>
+            <div class="feature-card" onclick="loadFeature(23)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2z"/></svg><div class="f-name">NFT Studio</div></div>
+            <div class="feature-card" onclick="loadFeature(24)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M19.44 12.99c-.04-.33-.04-.67 0-1l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46Z"/></svg><div class="f-name">Settings</div></div>
+            <div class="feature-card" onclick="loadFeature(25)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg><div class="f-name">Oracle AI</div></div>
+        </div>
+
+        <div class="active-box" id="activeBox">
+            <div class="box-title" id="boxTitle">1. HOME DASHBOARD</div>
+            <div class="box-desc" id="boxDesc">বায়োমেট্রিক সিকিউরিটি, ট্রানজেকশন আইডি (TxID) ভেরিফিকেশন এবং অল-ইন-ওয়ান মাল্টি-চেইন মডিউল সক্রিয় আছে।</div>
+        </div>
+
+        <div class="action-row">
+            <button class="btn-custom" onclick="openDepositModal()">⚡ Deposit (TxID)</button>
+            <button class="btn-custom btn-withdraw" onclick="openWithdrawModal()">💸 Secure Withdraw</button>
         </div>
     </div>
 
-    <main class="p-4 max-w-md mx-auto space-y-4">
-
-        <section class="bg-gradient-to-br from-slate-900 to-slate-900/90 border border-slate-800 rounded-2xl p-4 shadow-xl">
-            <div class="flex justify-between items-center mb-3">
-                <h2 class="text-xs uppercase tracking-wider text-slate-400 font-bold flex items-center gap-2">
-                    <i class="fa-solid fa-wallet text-amber-500"></i> মাল্টি-ওয়ালেট ও টোকেন পোর্টফোলিও
-                </h2>
-                <button onclick="openWalletConnect()" class="text-[11px] bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2.5 py-1 rounded-lg hover:bg-amber-500/20 transition">ওয়লেট কানেক্ট</button>
-            </div>
-
-            <div class="space-y-2">
-                <div class="bg-slate-800/60 p-2.5 rounded-xl border border-slate-700/50 flex justify-between items-center">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">BNB</div>
-                        <div>
-                            <p class="text-xs font-bold">Binance Coin (Main)</p>
-                            <p class="text-[10px] text-slate-400">0.00 BNB</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-1">
-                        <button onclick="openTransferModal('Deposit', 'BNB')" class="bg-emerald-600/20 text-emerald-400 text-[10px] px-2 py-1 rounded">আনুন (In)</button>
-                        <button onclick="openTransferModal('Send', 'BNB')" class="bg-amber-600/20 text-amber-400 text-[10px] px-2 py-1 rounded">পাঠান (Out)</button>
-                    </div>
-                </div>
-
-                <div class="bg-slate-800/60 p-2.5 rounded-xl border border-slate-700/50 flex justify-between items-center">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold">SOL</div>
-                        <div>
-                            <p class="text-xs font-bold">Solana</p>
-                            <p class="text-[10px] text-slate-400">0.00 SOL</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-1">
-                        <button onclick="openTransferModal('Deposit', 'SOL')" class="bg-emerald-600/20 text-emerald-400 text-[10px] px-2 py-1 rounded">আনুন (In)</button>
-                        <button onclick="openTransferModal('Send', 'SOL')" class="bg-amber-600/20 text-amber-400 text-[10px] px-2 py-1 rounded">পাঠান (Out)</button>
-                    </div>
-                </div>
-
-                <div class="bg-slate-800/60 p-2.5 rounded-xl border border-slate-700/50 flex justify-between items-center">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold">ETH</div>
-                        <div>
-                            <p class="text-xs font-bold">Ethereum</p>
-                            <p class="text-[10px] text-slate-400">0.00 ETH</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-1">
-                        <button onclick="openTransferModal('Deposit', 'ETH')" class="bg-emerald-600/20 text-emerald-400 text-[10px] px-2 py-1 rounded">আনুন (In)</button>
-                        <button onclick="openTransferModal('Send', 'ETH')" class="bg-amber-600/20 text-amber-400 text-[10px] px-2 py-1 rounded">পাঠান (Out)</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
-            <h2 class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-3 flex items-center gap-2">
-                <i class="fa-solid fa-right-left text-amber-500"></i> গ্লোবাল এক্সচেঞ্জ ও পিটুপি এসক্রো
-            </h2>
-            <div class="grid grid-cols-2 gap-2 text-xs">
-                <button onclick="alert('গ্লোবাল কারেন্সি সোয়াপ ও এক্সচেঞ্জ ওপেন হচ্ছে...')" class="bg-slate-800 hover:bg-slate-700 p-3 rounded-xl border border-slate-700 flex flex-col items-center gap-1 transition">
-                    <i class="fa-solid fa-coins text-amber-400 text-lg"></i>
-                    <span>১০০+ কারেন্সি সোয়াপ</span>
-                </button>
-                <button onclick="alert('বাইনান্স ও গ্লোবাল উইথড্র গেটওয়ে সক্রিয়!')" class="bg-slate-800 hover:bg-slate-700 p-3 rounded-xl border border-slate-700 flex flex-col items-center gap-1 transition">
-                    <i class="fa-solid fa-globe text-amber-400 text-lg"></i>
-                    <span>বাইনান্স উইথড্র</span>
-                </button>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-3">সুপার অ্যাপ গেম ও ফিউচার জোন</h2>
-            <div class="grid grid-cols-2 gap-3">
-                <div onclick="alert('Crash Rocket গেম লোড হচ্ছে...')" class="bg-slate-900 border border-slate-800 rounded-2xl p-3 cursor-pointer hover:border-amber-500/50 transition">
-                    <i class="fa-solid fa-rocket text-red-500 text-xl mb-2"></i>
-                    <h3 class="font-bold text-xs">Crash Rocket</h3>
-                    <p class="text-[10px] text-slate-400">লাইভ মাল্টিপ্লায়ার গেম</p>
-                </div>
-                <div onclick="alert('Western Slot গেম লোড হচ্ছে...')" class="bg-slate-900 border border-slate-800 rounded-2xl p-3 cursor-pointer hover:border-amber-500/50 transition">
-                    <i class="fa-solid fa-hat-cowboy text-amber-500 text-xl mb-2"></i>
-                    <h3 class="font-bold text-xs">Western Slot</h3>
-                    <p class="text-[10px] text-slate-400">জ্যাকপট স্পিন</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <div onclick="openAiChat()" class="fixed bottom-16 right-4 w-12 h-12 bg-amber-500 text-slate-950 rounded-full flex items-center justify-center shadow-xl shadow-amber-500/40 cursor-pointer animate-pulse z-50" title="Invisible AI Assistant">
-        <i class="fa-solid fa-robot text-lg"></i>
+    <div class="bottom-nav">
+        <button class="nav-btn active" onclick="loadFeature(1)"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home</button>
+        <button class="nav-btn" onclick="loadFeature(2)"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3z"/></svg>P2P</button>
+        <button class="nav-btn" onclick="loadFeature(3)"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>Games</button>
+        <button class="nav-btn" onclick="loadFeature(8)"><svg viewBox="0 0 24 24"><path d="M18 4H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"/></svg>Shorts</button>
+        <button class="nav-btn" onclick="loadFeature(10)"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"/></svg>Node ID</button>
     </div>
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 flex justify-around py-2.5 z-40 text-[10px] text-slate-400">
-        <button class="flex flex-col items-center text-amber-400"><i class="fa-solid fa-house text-base"><span>হোম</span></i></button>
-        <button onclick="alert('এক্সচেঞ্জ পেজ')" class="flex flex-col items-center hover:text-white"><i class="fa-solid fa-arrow-right-arrow-left text-base"><span>এক্সচেঞ্জ</span></i></button>
-        <button onclick="alert('পিটুপি এসক্রো পেজ')" class="flex flex-col items-center hover:text-white"><i class="fa-solid fa-handshake text-base"><span>পিটুপি</span></i></button>
-        <button onclick="alert('সেটিংস')" class="flex flex-col items-center hover:text-white"><i class="fa-solid fa-gear text-base"><span>সেটিংস</span></i></button>
-    </nav>
-
-    <div id="appModal" class="fixed inset-0 bg-slate-950/90 z-50 hidden flex flex-col p-4 justify-center items-center">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-2xl p-4 relative space-y-3">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-                <h3 id="modalTitle" class="font-bold text-sm text-amber-400">ম্যানেজমেন্ট</h3>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+    <!-- Biometric Modal -->
+    <div class="modal" id="biometricModal">
+        <div class="modal-card">
+            <h3 style="font-family:'Space Grotesk'; color:var(--primary); margin-bottom:12px; font-size:16px;">Biometric Verification</h3>
+            <div class="bio-scan-box">
+                <svg style="width:32px; height:32px; fill:var(--primary);" viewBox="0 0 24 24"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 13.9 3 12 3s-3.66.42-5.58 1.41c-.15.08-.33.05-.45-.07-.12-.12-.15-.3-.07-.45C7.94 2.82 9.9 2.38 12 2.38s4.06.44 6.1 1.51c.15.08.21.27.13.42-.05.1-.15.16-.25.16zM12 6c-3.31 0-6 2.69-6 6 0 1.5.56 2.87 1.48 3.91.11.12.1.31-.02.42-.12.11-.31.1-.42-.02C5.9 15.17 5.25 13.65 5.25 12c0-3.73 3.02-6.75 6.75-6.75s6.75 3.02 6.75 6.75c0 1.65-.65 3.17-1.74 4.31-.11.12-.3.13-.42.02-.12-.11-.13-.3-.02-.42.92-1.04 1.48-2.41 1.48-3.91 0-3.31-2.69-6-6-6z"/></svg>
             </div>
-            <div id="modalBody" class="text-xs text-slate-300 space-y-3">
-                </div>
+            <p style="font-size:12px; color:var(--text-sub); margin-bottom:16px;">লগইন কনফার্ম করতে আপনার ফেস বা ফিঙ্গারপ্রিন্ট স্ক্যান করুন:</p>
+            <button class="btn-custom" style="width:100%; margin-bottom:8px;" onclick="verifyBiometric('fingerprint')">👆 Fingerprint Scan</button>
+            <button class="btn-custom" style="width:100%; margin-bottom:12px;" onclick="verifyBiometric('face')">👤 Face ID Scan</button>
+            <button class="btn-custom" style="background:transparent; border-color:var(--border); color:var(--text-sub); width:100%;" onclick="closeBiometricModal()">Cancel</button>
         </div>
     </div>
 
-    <script>
-        function openWalletConnect() {
-            document.getElementById('modalTitle').innerText = "ট্রাস্ট ওয়ালেট ও ওয়েব থ্রি কানেকশন";
-            document.getElementById('modalBody').innerHTML = `
-                <p>আপনার ট্রাস্ট ওয়ালেট, মেটামাস্ক বা বিএনবি চেইন ওয়ালেট কানেক্ট করতে নিচের বাটনে ক্লিক করুন:</p>
-                <button onclick="alert('ওয়ালেট সফলভাবে কানেক্ট হয়েছে!')" class="w-full bg-amber-500 text-slate-950 font-bold py-2.5 rounded-xl">Connect Web3 Wallet</button>
-            `;
-            document.getElementById('appModal').classList.remove('hidden');
-        }
+    <!-- Deposit Modal with TxID -->
+    <div class="modal" id="depositModal">
+        <div class="modal-card">
+            <h3 style="font-family:'Space Grotesk'; color:var(--primary); margin-bottom:12px; font-size:16px;">Instant Deposit & TxID</h3>
+            <p style="font-size:12px; color:var(--text-sub); margin-bottom:8px;">পরিমাণ ($ USD):</p>
+            <input type="number" id="depositInput" class="modal-input" placeholder="100">
+            <p style="font-size:12px; color:var(--text-sub); margin-bottom:8px;">ট্রানজেকশন আইডি (TxID):</p>
+            <input type="text" id="depositTxId" class="modal-input" placeholder="0xabc123... (TxHash)">
+            <div style="display:flex; gap:10px;">
+                <button class="btn-custom" style="flex:1;" onclick="confirmDeposit()">Verify & Add</button>
+                <button class="btn-custom" style="flex:1; background:transparent; border-color:var(--border); color:var(--text-sub);" onclick="closeDepositModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
 
-        function openTransferModal(actionType, token) {
-            document.getElementById('modalTitle').innerText = `${token} - ${actionType === 'Deposit' ? 'ফান্ড আনুন (Receive)' : 'ফান্ড পাঠান (Send)'}`;
-            document.getElementById('modalBody').innerHTML = `
-                <p>কারেন্সি: <b>${token}</b></p>
-                <input type="number" placeholder="পরিমাণ লিখুন..." class="w-full bg-slate-800 border border-slate-700 p-2.5 rounded-xl text-white outline-none">
-                <button onclick="alert('${actionType} সফল হয়েছে!')" class="w-full bg-amber-500 text-slate-950 font-bold py-2.5 rounded-xl">কনফার্ম করুন</button>
-            `;
-            document.getElementById('appModal').classList.remove('hidden');
-        }
+    <!-- Withdraw Modal with TxID -->
+    <div class="modal" id="withdrawModal">
+        <div class="modal-card">
+            <h3 style="font-family:'Space Grotesk'; color:var(--success); margin-bottom:12px; font-size:16px;">Secure Withdrawal</h3>
+            <p style="font-size:12px; color:var(--text-sub); margin-bottom:8px;">উইথড্র করার পরিমাণ ($ USD):</p>
+            <input type="number" id="withdrawInput" class="modal-input" placeholder="50">
+            <p style="font-size:12px; color:var(--text-sub); margin-bottom:8px;">গন্তব্য ওয়ালেট বা TxID ঠিকানা:</p>
+            <input type="text" id="withdrawAddress" class="modal-input" placeholder="Wallet Address">
+            <div style="display:flex; gap:10px;">
+                <button class="btn-custom btn-withdraw" style="flex:1;" onclick="confirmWithdraw()">Process</button>
+                <button class="btn-custom" style="flex:1; background:transparent; border-color:var(--border); color:var(--text-sub);" onclick="closeWithdrawModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
 
-        function openSupportChat() {
-            document.getElementById('modalTitle').innerText = "কোম্পানি লাইভ সাপোর্ট ও মেসেজিং";
-            document.getElementById('modalBody').innerHTML = `
-                <div class="space-y-2">
-                    <div class="bg-slate-800 p-2 rounded-lg text-[11px]">হ্যালো! BX সাপোর্টে আপনাকে স্বাগতম। আপনার কি কোনো সাহায্য লাগবে?</div>
-                    <input type="text" placeholder="আপনার মেসেজ লিখুন..." class="w-full bg-slate-800 border border-slate-700 p-2 rounded-lg text-white outline-none">
-                    <button onclick="alert('মেসেজ পাঠানো হয়েছে!')" class="w-full bg-amber-500 text-slate-950 font-bold py-2 rounded-lg">সেন্ড করুন</button>
-                </div>
-            `;
-            document.getElementById('appModal').classList.remove('hidden');
-        }
+    <!-- Secret Vault Modal -->
+    <div class="modal" id="secretModal">
+        <div class="modal-card">
+            <h3 style="font-family:'Space Grotesk'; color:var(--danger); margin-bottom:12px; font-size:16px;">Admin Revenue Vault</h3>
+            <p style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">সিক্রেট পাসকোড দিন:</p>
+            <input type="password" id="secretInput" class="modal-input" placeholder="••••••••">
+            <div style="display:flex; gap:10px;">
+                <button class="btn-custom" style="flex:1;" onclick="unlockGodMode()">Unlock</button>
+                <button class="btn-custom" style="flex:1; background:transparent; border-color:var(--border); color:var(--text-sub);" onclick="closeSecretModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-        function openAiChat() {
-            document.getElementById('modalTitle').innerText = "অদৃশ্য এআই কন্ট্রোলার (AI Assistant)";
-            document.getElementById('modalBody').innerHTML = `
-                <p class="text-[11px] text-amber-400">এআই ব্যাকগ্রাউন্ডে পুরো অ্যাপ মনিটর করছে এবং আপনার ট্রানজেকশন সুরক্ষিত রাখছে।</p>
-                <div class="bg-slate-800 p-2.5 rounded-xl text-[11px]">এআই: "সবকিছু ঠিকঠাক আছে। আপনার বিএনবি নোড পারফেক্টলি কাজ করছে।"</div>
-            `;
-            document.getElementById('appModal').classList.remove('hidden');
-        }
+<script>
+let userBalance = 250.00;
+let companyTaxVault = 12.50;
 
-        function changeLanguageCurrency() {
-            const val = document.getElementById('langCurrency').value;
-            alert('ভাষা ও কারেন্সি আপডেট করা হয়েছে: ' + val);
-        }
+// Fake Activity Stream (200 Countries & 70K Users Simulator)
+const globalNames = ["Alex", "Rahul", "Chen", "Fatima", "Satoshi", "Carlos", "Aoi", "Dmitri", "Mei", "Liam", "Zoya", "Mateo"];
+const globalCountries = ["USA", "India", "China", "UAE", "Japan", "Brazil", "Germany", "UK", "Canada", "France", "Australia", "Spain"];
+const globalActions = ["won $450 in Teen Patti", "staked 2,500 BX", "withdrew $850", "won $1,200 in Crash", "triggered VIP Airdrop", "won $320 in Ludo"];
 
-        function closeModal() {
-            document.getElementById('appModal').classList.add('hidden');
-        }
-    </script>
+setInterval(() => {
+    let randomName = globalNames[Math.floor(Math.random() * globalNames.length)];
+    let randomCountry = globalCountries[Math.floor(Math.random() * globalCountries.length)];
+    let randomAction = globalActions[Math.floor(Math.random() * globalActions.length)];
+    document.getElementById('liveTicker').innerText = `🌐 Live: ${randomName} (${randomCountry}) ${randomAction}`;
+}, 4000);
+
+let logoClicks = 0;
+function handleSecretTrigger() {
+    logoClicks++;
+    if (logoClicks >= 5) {
+        logoClicks = 0;
+        openSecretModal();
+    }
+}
+
+function openBiometricModal() { document.getElementById('biometricModal').style.display = 'flex'; }
+function closeBiometricModal() { document.getElementById('biometricModal').style.display = 'none'; }
+function verifyBiometric(type) {
+    closeBiometricModal();
+    alert(`সফল! ${type === 'face' ? 'ফেস আইডি (Face ID)' : 'ফিঙ্গারপ্রিন্ট (Fingerprint)'} ভেরিফিকেশন সম্পন্ন হয়েছে।`);
+}
+
+function updateBalance() {
+    document.getElementById('userBalance').innerText = `$${userBalance.toFixed(2)} USD`;
+}
+
+function openDepositModal() { document.getElementById('depositModal').style.display = 'flex'; }
+function closeDepositModal() { document.getElementById('depositModal').style.display = 'none'; }
+function confirmDeposit() {
+    let amt = parseFloat(document.getElementById('depositInput').value);
+    let txid = document.getElementById('depositTxId').value;
+    if (!isNaN(amt) && amt > 0 && txid.trim() !== "") {
+        let fee = amt * 0.005;
+        companyTaxVault += fee;
+        userBalance += (amt - fee);
+        updateBalance();
+        alert(`সফল! TxID (${txid.substring(0,8)}...) ভেরিফাই হয়েছে। ফি কাটা হয়েছে: $${fee.toFixed(2)}`);
+        closeDepositModal();
+    } else {
+        alert("সঠিক পরিমাণ এবং ট্রানজেকশন আইডি (TxID) দিন।");
+    }
+}
+
+function openWithdrawModal() { document.getElementById('withdrawModal').style.display = 'flex'; }
+function closeWithdrawModal() { document.getElementById('withdrawModal').style.display = 'none'; }
+function confirmWithdraw() {
+    let amt = parseFloat(document.getElementById('withdrawInput').value);
+    let addr = document.getElementById('withdrawAddress').value;
+    if (!isNaN(amt) && amt > 0 && amt <= userBalance && addr.trim() !== "") {
+        let fee = amt * 0.01;
+        companyTaxVault += fee;
+        userBalance -= amt;
+        updateBalance();
+        let txHash = '0x' + Math.random().toString(16).substring(2, 12);
+        alert(`উইথড্র সফল! জেনারেটেড TxID: ${txHash}\nফি কাটা হয়েছে: $${fee.toFixed(2)}`);
+        closeWithdrawModal();
+    } else {
+        alert("অপর্যাপ্ত ব্যালেন্স বা সঠিক ওয়ালেট অ্যাড্রেস দিন!");
+    }
+}
+
+function openSecretModal() { document.getElementById('secretModal').style.display = 'flex'; }
+function closeSecretModal() { document.getElementById('secretModal').style.display = 'none'; }
+function unlockGodMode() {
+    if (document.getElementById('secretInput').value === "420MN420") {
+        alert(`অ্যাডমিন ভল্ট আনলকড!\n\n🏢 মোট কোম্পানি ফি কালেকশন: $${companyTaxVault.toFixed(2)} USD`);
+        closeSecretModal();
+    } else {
+        alert("ভুল পাসওয়ার্ড!");
+        closeSecretModal();
+    }
+}
+
+function loadFeature(id) {
+    let title = document.getElementById('boxTitle');
+    let desc = document.getElementById('boxDesc');
+    const featuresData = {
+        1: ["1. HOME DASHBOARD", "বায়োমেট্রিক এবং ট্রানজেকশন আইডি সহ মাল্টি-চেইন সুপার-অ্যাপ ড্যাশবোর্ড সক্রিয় রয়েছে।"],
+        2: ["2. P2P ESCROW MARKET", "নিরাপদ পিটুপি এসক্রো ও ট্রানজেকশন আইডি ট্র্যাকিং সিস্টেম।"],
+        3: ["3. TEEN PATTI & CARD ROOM", "ক্লাসিক তিন পাত্তি ও সিকিউরড গেমিং রুম।"],
+        4: ["4. WEB3 CASINO & GAMING", "হাউস এজ যুক্ত ক্যাসিনো ও ডাইস গেম রুম।"],
+        5: ["5. TOURNAMENTS", "প্রতিযোগিতামূলক গেম টুর্নামেন্ট ও লিডারবোর্ড।"],
+        6: ["6. Ludo King", "অনলাইন মাল্টিপ্লেয়ার লুডু ম্যাচ ও রিওয়ার্ড ইঞ্জিন।"],
+        7: ["7. MEME COINS", "মিমে কয়েন লাইভ ফিড এবং ইনস্ট্যান্ট সোয়াপ।"],
+        8: ["8. SHORTS STREAMING", "শর্টস ভিডিও ফিড ও ওয়াচ-টু-আর্ন সিস্টেম।"],
+        9: ["9. DECENTRALIZED WALLET", "নন-কাস্টোডিয়াল ওয়ালেট ব্যালেন্স: <b>$" + userBalance.toFixed(2) + " USD</b>"],
+        10: ["10. BLOCKCHAIN NODE ID", "জিরো-নলেজ নোড ভেরিফিকেশন প্যানেল।"],
+        11: ["11. LAUNCHPAD", "এক্সক্লুসিভ টোকেন ও মিনি-অ্যাপ লঞ্চপ্যাড।"],
+        12: ["12. FITNESS-TO-EARN", "ফিটনেস ট্র্যাক ও রিওয়ার্ড প্যানেল।"],
+        13: ["13. LUCKY SPIN", "লাকি হুইল স্পিন করে ক্রিপ্টো জেতার সুযোগ।"],
+        14: ["14. AI ROBOT", "এআই অ্যাসিস্ট্যান্ট এবং প্রফিট অ্যানালাইসিস রোবট।"],
+        15: ["15. FUTURES TRADING", "লেভারেজড ক্রিপ্টো ফিউচারস টার্মিনাল।"],
+        16: ["16. SECURE VAULT", "এনক্রিটেড ক্লাউড এবং ব্যাকআপ ভল্ট।"],
+        17: ["17. WEB3 DAPP", "হাই-স্পিড ডিঅ্যাপ ব্রাউজার।"],
+        18: ["18. CRYPTO CARD", "ভার্চুয়াল ক্রিপ্টো পেমেন্ট কার্ড।"],
+        19: ["19. ANTI-PHISHING SHIELD", "অ্যাকাউন্ট সিকিউরিটি গার্ড।"],
+        20: ["20. STAKING", "প্রুফ-অফ-স্টেক প্যাসিভ ইনকাম ড্যাশবোর্ড।"],
+        21: ["21. AIRDROP", "ক্রিপ্টো এয়ারড্রপ ও ক্লেইম সেন্টার।"],
+        22: ["22. AI CHAT SUPPORT", "২৪/৭ লাইভ এআই চ্যাট সাপোর্ট।"],
+        23: ["23. NFT STUDIO", "ইউনিক এনএফটি মিন্টিং স্টুডিও।"],
+        24: ["24. SETTINGS", "বায়োমেট্রিক ও সিকিউরিটি কনফিগারেশন।"],
+        25: ["25. ORACLE AI", "ক্রিপ্টো প্রাইস প্রেডিকশন ইঞ্জিন।"]
+    };
+    if (featuresData[id]) {
+        title.innerText = featuresData[id][0];
+        desc.innerHTML = featuresData[id][1];
+    }
+}
+</script>
 </body>
 </html>
