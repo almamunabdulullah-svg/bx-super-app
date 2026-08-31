@@ -2,35 +2,150 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <title>BX Super App - Metro UI</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BX Super App - Hybrid Ecosystem</title>
+    <style>
+        body {
+            background-color: #0b0e11;
+            color: #eaecef;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #23272e;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            font-size: 20px;
+            color: #f0b90b;
+            margin: 0;
+        }
+        .search-bar {
+            width: 100%;
+            padding: 12px;
+            background: #181a20;
+            border: 1px solid #23272e;
+            color: #eaecef;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .card {
+            background: #181a20;
+            border: 1px solid #23272e;
+            padding: 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .card:hover {
+            border-color: #f0b90b;
+        }
+        .card h3 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+        }
+        .card p {
+            margin: 0;
+            font-size: 12px;
+            color: #848e9c;
+        }
+        .view-section {
+            display: none;
+        }
+        .back-btn {
+            background: #23272e;
+            color: #eaecef;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <div class="metro-container">
-        <header class="app-header">
+
+    <div id="homeView">
+        <div class="header">
             <h1>BX Super App</h1>
-            <input type="text" id="searchInput" placeholder="সেবা বা কয়েন সার্চ করুন..." onkeyup="searchTiles()">
-        </header>
+            <span style="font-size: 12px; color: #0ecb81;">● Master Node Active</span>
+        </div>
         
-        <div class="tiles-grid" id="tilesGrid">
-            <div class="tile crypto" onclick="openModule('crypto')">
-                <h3>ক্রিপ্টো ও মেমে মার্কেট</h3>
-                <p>লাইভ DEX ট্রেডিং</p>
+        <input type="text" class="search-bar" id="searchInput" placeholder="কয়েন, গেম বা সেবা সার্চ করুন..." onkeyup="filterCards()">
+        
+        <div class="grid-container" id="cardGrid">
+            <div class="card" onclick="openFeature('crypto')">
+                <h3>ক্রিপ্টো ও মেমে</h3>
+                <p>০.১% ট্যাক্স ও DEX ফিড</p>
             </div>
-            <div class="tile game" onclick="openModule('game')">
-                <h3>থ্রিডি গেম জোন</h3>
-                <p>১০০% উইনিং সিস্টেম</p>
+            <div class="card" onclick="openFeature('game')">
+                <h3>গেম ও ক্যাসিনো</h3>
+                <p>হাউজ এজ ৭০%-৮০%</p>
             </div>
-            <div class="tile bank" onclick="openModule('bank')">
+            <div class="card" onclick="openFeature('bank')">
                 <h3>BX ব্যাংক</h3>
-                <p>গ্লোবাল এআই অ্যাকাউন্ট</p>
+                <p>ভার্চুয়াল অ্যাকাউন্ট</p>
             </div>
-            <div class="tile admin" onclick="openModule('admin')">
+            <div class="card" onclick="openFeature('admin')">
                 <h3>মাস্টার অ্যাডমিন</h3>
                 <p>গড মোড কন্ট্রোল</p>
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
+
+    <div id="innerView" class="view-section">
+        <button class="back-btn" onclick="goHome()">← পেছনে যান</button>
+        <div id="innerContent"></div>
+    </div>
+
+    <script>
+        function filterCards() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.getElementsByClassName('card');
+            for (let i = 0; i < cards.length; i++) {
+                let text = cards[i].innerText.toLowerCase();
+                cards[i].style.display = text.includes(input) ? "" : "none";
+            }
+        }
+
+        function openFeature(type) {
+            if (type === 'admin') {
+                let pass = prompt("মাস্টার পাসওয়ার্ড দিন:");
+                if (pass === "420MM420") {
+                    showContent("<h2>মাস্টার অ্যাডমিন (গড মোড)</h2><p>বিএনবি ব্লকচেইন মাস্টার রোবট এবং ডার্ক-ওয়েব প্রোটোকল সফলভাবে সংযুক্ত।</p>");
+                } else {
+                    alert("ভুল পাসওয়ার্ড!");
+                }
+            } else if (type === 'crypto') {
+                showContent("<h2>ক্রিপ্টো ও মেমে ট্রেডিং মার্কেট</h2><p>লাইভ DEX স্ক্রিনার ও জিএমজিএন ফিড চালু আছে। প্রতি ট্রানজাকশনে ০.১% ট্যাক্স কাটা হচ্ছে।</p>");
+            } else if (type === 'game') {
+                showContent("<h2>গেম ও ক্যাসিনো জোন</h2><p>মেলবেট স্টাইল হাইব্রিড গেমিং ও পেআউট রোবট সেল সক্রিয়।</p>");
+            } else if (type === 'bank') {
+                showContent("<h2>BX ব্যাংক সিস্টেম</h2><p>২০০টি দেশের লোকাল ব্যাংকিং ও রাউটিং নাম্বার জেনারেটর প্রস্তুত।</p>");
+            }
+        }
+
+        function showContent(html) {
+            document.getElementById('homeView').style.display = 'none';
+            document.getElementById('innerView').style.display = 'block';
+            document.getElementById('innerContent').innerHTML = html;
+        }
+
+        function goHome() {
+            document.getElementById('innerView').style.display = 'none';
+            document.getElementById('homeView').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
