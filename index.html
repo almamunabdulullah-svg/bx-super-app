@@ -3,295 +3,313 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BX Super-App - Elite Web3 Ecosystem</title>
+  <title>BX Ultimate - Web3 Super App</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Rajdhani:wght@500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
     :root {
-      --bg-primary: #030712;
-      --panel-bg: rgba(13, 20, 38, 0.85);
-      --border-glow: rgba(0, 229, 255, 0.25);
-      --accent-cyan: #00e5ff;
-      --accent-green: #22c55e;
-      --accent-red: #ef4444;
-      --accent-purple: #a855f7;
+      --bg-base: #020617;
+      --card-bg: linear-gradient(135deg, rgba(30, 41, 59, 0.7) rgba(15, 23, 42, 0.8));
+      --neon-cyan: #00f0ff;
+      --neon-purple: #b026ff;
+      --neon-green: #00ff66;
+      --accent-glow: 0 0 25px rgba(0, 240, 255, 0.35);
       --text-main: #f8fafc;
-      --text-muted: #94a3b8;
+      --text-sub: #94a3b8;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; font-family: 'Plus Jakarta Sans', sans-serif; }
 
     body {
-      background-color: var(--bg-primary);
-      background-image: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #030712 85%);
+      background-color: var(--bg-base);
+      background-image: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #020617 75%);
       color: var(--text-main);
-      font-family: 'Rajdhani', sans-serif;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 10px;
+      padding: 8px;
     }
 
-    .app-frame {
+    .app-container {
       width: 100%;
-      max-width: 440px;
-      height: 92vh;
-      max-height: 880px;
-      background: var(--panel-bg);
-      backdrop-filter: blur(30px);
-      border: 1px solid var(--border-glow);
-      border-radius: 30px;
+      max-width: 420px;
+      height: 94vh;
+      background: rgba(10, 15, 30, 0.85);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      border-radius: 28px;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.15);
       overflow: hidden;
       position: relative;
     }
 
-    /* Header */
-    .top-header {
-      padding: 16px 20px;
+    /* Top Header */
+    .app-header {
+      padding: 14px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      background: rgba(0, 0, 0, 0.4);
+      background: linear-gradient(to bottom, rgba(255,255,255,0.04), transparent);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
-    .brand-box { display: flex; align-items: center; gap: 10px; }
-    .brand-logo {
-      width: 36px; height: 36px;
-      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-      border-radius: 10px;
+    .logo-area { display: flex; align-items: center; gap: 10px; }
+    .logo-box {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 15px; color: #030712;
-      box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+      font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 16px; color: #020617;
+      box-shadow: var(--accent-glow);
     }
-    .brand-title { font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 0.5px; }
+    .logo-text { font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 0.5px; background: linear-gradient(90deg, #fff, var(--neon-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-    .status-badge {
-      font-size: 11px; color: var(--accent-green);
-      background: rgba(34, 197, 94, 0.1); padding: 4px 10px; border-radius: 20px;
-      border: 1px solid rgba(34, 197, 94, 0.3); display: flex; align-items: center; gap: 6px;
+    .badge-live {
+      font-size: 10px; font-weight: 700; color: var(--neon-green);
+      background: rgba(0, 255, 102, 0.1); padding: 5px 10px; border-radius: 20px;
+      border: 1px solid rgba(0, 255, 102, 0.3); display: flex; align-items: center; gap: 5px;
+      box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
     }
-    .status-dot { width: 6px; height: 6px; background: var(--accent-green); border-radius: 50%; box-shadow: 0 0 8px var(--accent-green); }
+    .dot { width: 6px; height: 6px; background: var(--neon-green); border-radius: 50%; box-shadow: 0 0 8px var(--neon-green); animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
 
-    /* Live Ticker */
-    .ticker-bar {
-      background: rgba(0, 229, 255, 0.04);
-      border-bottom: 1px solid rgba(0, 229, 255, 0.12);
-      padding: 6px 15px; font-size: 11px; white-space: nowrap; overflow: hidden; color: var(--accent-cyan);
+    /* Live Ticker Bar */
+    .ticker-container {
+      background: rgba(0, 240, 255, 0.05);
+      border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+      padding: 6px 12px; font-size: 11px; white-space: nowrap; overflow: hidden; color: var(--neon-cyan);
+      font-weight: 600;
     }
-    .ticker-content { display: inline-block; animation: ticker 28s linear infinite; }
-    @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+    .ticker-track { display: inline-block; animation: scrollText 25s linear infinite; }
+    @keyframes scrollText { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
     /* Viewport */
-    .main-viewport { flex: 1; overflow-y: auto; padding: 16px; scroll-behavior: smooth; }
-    .main-viewport::-webkit-scrollbar { width: 3px; }
-    .main-viewport::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.2); border-radius: 3px; }
+    .viewport { flex: 1; overflow-y: auto; padding: 16px; scroll-behavior: smooth; }
+    .viewport::-webkit-scrollbar { width: 3px; }
+    .viewport::-webkit-scrollbar-thumb { background: var(--neon-cyan); border-radius: 3px; }
 
-    /* Wallet Card */
-    .wallet-card {
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.8));
-      border: 1px solid var(--border-glow);
-      border-radius: 20px; padding: 20px; margin-bottom: 16px; position: relative; overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    /* Premium Balance Card */
+    .balance-card {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 22px; padding: 20px; margin-bottom: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+      position: relative; overflow: hidden;
     }
-    .wallet-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-    .wallet-amount { font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 700; color: var(--accent-cyan); margin: 6px 0; text-shadow: 0 0 12px rgba(0, 229, 255, 0.4); }
-    .wallet-stats { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.06); }
+    .balance-card::after {
+      content: ''; position: absolute; top: -50%; right: -50%; width: 150px; height: 150px;
+      background: radial-gradient(circle, rgba(0,240,255,0.15) 0%, transparent 70%); border-radius: 50%; pointer-events: none;
+    }
+    .b-label { font-size: 11px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; }
+    .b-amount { font-family: 'Orbitron', sans-serif; font-size: 30px; font-weight: 900; color: var(--neon-cyan); margin: 6px 0; text-shadow: 0 0 15px rgba(0, 240, 255, 0.5); }
+    .b-footer { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-sub); margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.06); font-weight: 600; }
 
-    /* Section Title */
-    .section-title { font-family: 'Orbitron', sans-serif; font-size: 12px; color: var(--text-muted); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+    /* Section Header */
+    .sec-header { font-family: 'Orbitron', sans-serif; font-size: 11px; color: var(--text-sub); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; letter-spacing: 0.5px; }
 
-    /* Grid Menu with Premium Vector Icons */
+    /* Pro Grid Menu (Binance Style Icons) */
     .grid-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
-    .menu-item {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 16px; padding: 12px 4px; text-align: center; cursor: pointer; transition: all 0.25s ease;
+    .menu-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px; padding: 14px 4px; text-align: center; cursor: pointer; transition: all 0.25s ease;
     }
-    .menu-item:hover, .menu-item.active {
-      background: rgba(0, 229, 255, 0.08); border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(0, 229, 255, 0.2); transform: translateY(-2px);
+    .menu-card:hover, .menu-card.active {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.12), rgba(176, 38, 255, 0.12));
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+      transform: translateY(-3px);
     }
-    .menu-icon { width: 26px; height: 26px; margin: 0 auto 6px auto; display: block; filter: drop-shadow(0 0 6px rgba(0,229,255,0.6)); }
-    .menu-name { font-size: 10px; font-weight: 600; color: var(--text-main); text-transform: uppercase; }
+    .menu-icon-wrap {
+      width: 32px; height: 32px; margin: 0 auto 8px auto;
+      background: rgba(0, 240, 255, 0.1); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(0, 240, 255, 0.2);
+    }
+    .menu-card svg { width: 18px; height: 18px; fill: var(--neon-cyan); }
+    .menu-title { font-size: 10px; font-weight: 700; color: var(--text-main); text-transform: uppercase; }
 
-    /* Dynamic Screen */
-    .dynamic-screen {
-      background: rgba(0, 0, 0, 0.45); border: 1px solid var(--border-glow); border-radius: 18px; padding: 18px; min-height: 140px; margin-bottom: 16px;
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.6);
+    /* Interactive Output Screen */
+    .dynamic-panel {
+      background: rgba(5, 10, 25, 0.9);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      border-radius: 20px; padding: 18px; min-height: 130px; margin-bottom: 16px;
+      box-shadow: inset 0 0 25px rgba(0,0,0,0.8), 0 0 15px rgba(0, 240, 255, 0.1);
     }
-    .screen-header { font-family: 'Orbitron', sans-serif; font-size: 13px; color: var(--accent-cyan); margin-bottom: 8px; display: flex; justify-content: space-between; }
-    .screen-body { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+    .panel-top { font-family: 'Orbitron', sans-serif; font-size: 12px; color: var(--neon-cyan); margin-bottom: 8px; display: flex; justify-content: space-between; font-weight: 700; }
+    .panel-desc { font-size: 12px; color: var(--text-sub); line-height: 1.6; font-weight: 500; }
 
-    /* Action Row */
-    .action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-    .btn-action {
-      background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(168, 85, 247, 0.15));
-      border: 1px solid var(--border-glow); color: var(--text-main); padding: 12px; border-radius: 14px;
-      font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 600; cursor: pointer; text-align: center; transition: 0.2s;
+    /* Action Buttons */
+    .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .btn-cyber {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(176, 38, 255, 0.2));
+      border: 1px solid rgba(0, 240, 255, 0.4); color: var(--text-main); padding: 13px; border-radius: 14px;
+      font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; text-align: center;
+      transition: 0.3s; box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
     }
-    .btn-action:hover { background: linear-gradient(135deg, rgba(0, 229, 255, 0.3), rgba(168, 85, 247, 0.3)); box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); }
+    .btn-cyber:hover { background: linear-gradient(135deg, rgba(0, 240, 255, 0.35), rgba(176, 38, 255, 0.35)); box-shadow: var(--accent-glow); transform: translateY(-2px); }
 
-    /* God Button */
-    .god-btn {
-      background: rgba(239, 68, 68, 0.08); border: 1px dashed rgba(239, 68, 68, 0.35); color: #fca5a5;
-      padding: 12px; border-radius: 14px; text-align: center; font-size: 11px; font-weight: 700; cursor: pointer; margin-bottom: 10px;
+    /* God Mode Button */
+    .admin-god-btn {
+      background: rgba(239, 68, 68, 0.1); border: 1px dashed rgba(239, 68, 68, 0.4); color: #fca5a5;
+      padding: 13px; border-radius: 14px; text-align: center; font-size: 11px; font-weight: 700; cursor: pointer; margin-bottom: 10px;
+      transition: 0.3s;
     }
-    .god-btn:hover { background: rgba(239, 68, 68, 0.15); border-color: var(--accent-red); }
+    .admin-god-btn:hover { background: rgba(239, 68, 68, 0.2); border-color: #ef4444; box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); }
 
     /* Bottom Navigation Bar */
     .bottom-nav {
-      height: 64px; background: rgba(3, 7, 18, 0.95); border-top: 1px solid rgba(255, 255, 255, 0.08);
-      display: flex; justify-content: space-around; align-items: center; padding: 0 10px;
+      height: 66px; background: rgba(2, 6, 23, 0.95); border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex; justify-content: space-around; align-items: center; padding: 0 6px;
     }
-    .nav-item { background: none; border: none; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; cursor: pointer; font-size: 10px; font-weight: 600; }
-    .nav-item svg { width: 20px; height: 20px; margin-bottom: 3px; fill: currentColor; }
-    .nav-item.active, .nav-item:hover { color: var(--accent-cyan); text-shadow: 0 0 10px rgba(0, 229, 255, 0.5); }
+    .nav-btn { background: none; border: none; color: var(--text-sub); display: flex; flex-direction: column; align-items: center; cursor: pointer; font-size: 10px; font-weight: 700; transition: 0.2s; }
+    .nav-btn svg { width: 22px; height: 22px; margin-bottom: 4px; fill: currentColor; }
+    .nav-btn.active, .nav-btn:hover { color: var(--neon-cyan); text-shadow: 0 0 10px rgba(0, 240, 255, 0.6); }
 
-    /* Modal */
-    .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 100; padding: 20px; }
-    .modal-box { background: #0f172a; border: 1px solid var(--accent-cyan); border-radius: 20px; padding: 22px; width: 100%; max-width: 360px; box-shadow: 0 0 30px rgba(0, 229, 255, 0.4); text-align: center; }
-    .modal-title { font-family: 'Orbitron', sans-serif; font-size: 15px; color: var(--accent-cyan); margin-bottom: 12px; }
-    .modal-input { width: 100%; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 10px; padding: 10px 14px; color: #fff; font-size: 14px; margin-bottom: 14px; outline: none; text-align: center; font-family: 'Orbitron', sans-serif; }
-    .modal-btn-row { display: flex; gap: 10px; }
-    .modal-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; }
-    .btn-confirm { background: var(--accent-cyan); color: #030712; }
-    .btn-cancel { background: rgba(255,255,255,0.08); color: #fff; }
+    /* Modal Overlay */
+    .modal-backdrop { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(12px); display: none; justify-content: center; align-items: center; z-index: 100; padding: 20px; }
+    .modal-content { background: #0f172a; border: 1px solid var(--neon-cyan); border-radius: 22px; padding: 24px; width: 100%; max-width: 340px; box-shadow: 0 0 35px rgba(0, 240, 255, 0.4); text-align: center; }
+    .modal-title { font-family: 'Orbitron', sans-serif; font-size: 15px; color: var(--neon-cyan); margin-bottom: 10px; font-weight: 700; }
+    .modal-input { width: 100%; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 12px; color: #fff; font-size: 15px; margin-bottom: 16px; outline: none; text-align: center; font-family: 'Orbitron', sans-serif; }
+    .modal-actions { display: flex; gap: 10px; }
+    .m-btn { flex: 1; padding: 11px; border-radius: 12px; border: none; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; }
+    .btn-yes { background: var(--neon-cyan); color: #020617; box-shadow: 0 0 15px rgba(0, 240, 255, 0.4); }
+    .btn-no { background: rgba(255,255,255,0.08); color: #fff; }
   </style>
 </head>
 <body>
 
-  <div class="app-frame">
+  <div class="app-container">
     
-    <!-- Top Header -->
-    <div class="top-header">
-      <div class="brand-box">
-        <div class="brand-logo">BX</div>
-        <div class="brand-title">BX Super-App</div>
+    <!-- Header -->
+    <div class="app-header">
+      <div class="logo-area">
+        <div class="logo-box">BX</div>
+        <div class="logo-text">BX SUPER-APP</div>
       </div>
-      <div class="status-badge">
-        <div class="status-dot"></div>
-        <span>AI Secure</span>
+      <div class="badge-live">
+        <div class="dot"></div>
+        <span>AI SECURE</span>
       </div>
     </div>
 
     <!-- Live Ticker -->
-    <div class="ticker-bar">
-      <div class="ticker-content">
-        🔴 Live Ticker: User @crypto_king won $5,400 in Casino • Gasless transaction executed successfully • AI Manager optimized 80%-20% revenue split • ZK-Privacy Shield Active •
+    <div class="ticker-container">
+      <div class="ticker-track">
+        🔥 Live Ticker: User @alpha_trader won $4,500 in Casino • Gasless transaction executed instantly • AI Manager 80%-20% split active • ZK-Privacy Shield Protected •
       </div>
     </div>
 
-    <!-- Main Viewport -->
-    <div class="main-viewport">
+    <!-- Viewport Content -->
+    <div class="viewport">
       
-      <!-- Wallet Card -->
-      <div class="wallet-card">
-        <div class="wallet-label">Global Portfolio Balance</div>
-        <div class="wallet-amount" id="balanceDisplay">$15,005.68 USD</div>
-        <div class="wallet-stats">
-          <span>200+ Countries Ready</span>
-          <span style="color: var(--accent-green); font-weight: 700;">● 0.1% Fee Active</span>
+      <!-- Balance Card -->
+      <div class="balance-card">
+        <div class="b-label">Global Multi-Chain Portfolio</div>
+        <div class="b-amount" id="balanceDisplay">$18,450.92 USD</div>
+        <div class="b-footer">
+          <span>200+ Countries Connected</span>
+          <span style="color: var(--neon-green);">● Gasless Engine ON</span>
         </div>
       </div>
 
-      <!-- Section Title -->
-      <div class="section-title">
-        <span>Ecosystem Modules (21 Systems)</span>
-        <span style="color: var(--accent-cyan); font-size: 10px;">Web3 Core</span>
+      <div class="sec-header">
+        <span>CORE ECOSYSTEM MODULES</span>
+        <span style="color: var(--neon-cyan);">Web3 v9.5</span>
       </div>
 
-      <!-- Grid Menu with Premium Vector Icons -->
+      <!-- Grid Menu with Pro Vector Icons -->
       <div class="grid-menu">
-        <div class="menu-item active" onclick="loadModule('Home', 'হোম ড্যাশবোর্ড: গ্লোবাল সুপার-অ্যাপ আর্কিটেকচার ও রিয়েল-টাইম ওভারভিউ active।')">
-          <svg class="menu-icon" viewBox="0 0 24 24"><path fill="#00e5ff" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-          <span class="menu-name">Home</span>
+        <div class="menu-card active" onclick="loadModule('Home', 'হোম ড্যাশবোর্ড: গ্লোবাল সুপার-অ্যাপ আর্কিটেকচার, রিয়েল-টাইম লাইভ টিক্কার এবং এআই প্রটেকশন সক্রিয়।')">
+          <div class="menu-icon-wrap"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div>
+          <div class="menu-title">Home</div>
         </div>
-        <div class="menu-item" onclick="loadModule('Market', 'মার্কেট ও সোয়াপ: মাল্টি-চেইন ব্রিজ ও ক্রস-চেইন সোয়াপ (ইথেরিয়াম, সোলানা, পলিগন)।')">
-          <svg class="menu-icon" viewBox="0 0 24 24"><path fill="#00e5ff" d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>
-          <span class="menu-name">Market</span>
+        <div class="menu-card" onclick="loadModule('Market', 'মার্কেট ও সোয়াপ: ইথেরিয়াম, সোলানা, পলিগন এবং বাইনান্স চেইনের মধ্যে ক্রস-চেইন সোয়াপ সুবিধা।')">
+          <div class="menu-icon-wrap"><svg viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg></div>
+          <div class="menu-title">Market</div>
         </div>
-        <div class="menu-item" onclick="loadModule('Gaming', 'গেমিং ও ক্যাসিনো: ৭০% হাউস এজ ও জিরো গ্যাস ফি সহ ইনস্ট্যান্ট উইনিং সিস্টেম।')">
-          <svg class="menu-icon" viewBox="0 0 24 24"><path fill="#00e5ff" d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-4c-.83 0-1.5-.67-1.5-1.5S17.67 8 18.5 8s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-          <span class="menu-name">Casino</span>
+        <div class="menu-card" onclick="loadModule('Gaming', 'গেমিং ও ক্যাসিনো: ৭০% হাউস এজ, ইনস্ট্যান্ট উইনিং এবং গড মোড প্রিভিলেজ অপশন।')">
+          <div class="menu-icon-wrap"><svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-4c-.83 0-1.5-.67-1.5-1.5S17.67 8 18.5 8s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></div>
+          <div class="menu-title">Casino</div>
         </div>
-        <div class="menu-item" onclick="loadModule('Wallet', 'ওয়ালেট ও পিটুপি: ডিসেন্ট্রালাইজড এসক্রো প্রটেকশন ও গ্লোবাল লোকাল ব্যাংকিং গেটওয়ে।')">
-          <svg class="menu-icon" viewBox="0 0 24 24"><path fill="#00e5ff" d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-          <span class="menu-name">Wallet</span>
+        <div class="menu-card" onclick="loadModule('Wallet', 'ওয়ালেট ও পিটুপি: ডিসেন্ট্রালাইজড এসক্রো প্রটেকশন এবং লোকাল ব্যাংকিং ডিপোজিট গেটওয়ে।')">
+          <div class="menu-icon-wrap"><svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></div>
+          <div class="menu-title">Wallet</div>
         </div>
-        <div class="menu-item" onclick="loadModule('Profile', 'প্রোফাইল ও কেওয়াইসি: জীরো-নলেজ প্রুফ প্রাইভেসি (ZK-Privacy Shield) ও ইউজার ভেরিফিকেশন।')">
-          <svg class="menu-icon" viewBox="0 0 24 24"><path fill="#00e5ff" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-          <span class="menu-name">Profile</span>
+        <div class="menu-card" onclick="loadModule('Profile', 'প্রোফাইল ও কেওয়াইসি: জীরো-নলেজ প্রুফ প্রাইভেসি (ZK-Privacy Shield) এবং সোশ্যাল ফাই লিডারবোর্ড।')">
+          <div class="menu-icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+          <div class="menu-title">Profile</div>
         </div>
-        <div class="menu-item" onclick="loadModule('Launchpad', 'এনএফটি লাঞ্চপ্যাড: এক্সক্লুসিভ ডিজিটাল অ্যাসেট ও থার্ড-পার্টি মিনি-অ্যাপ ইন্টিগ্রেশন।')">
-          <svg class="menu-icon" viewBox="0 0 24 24"><path fill="#00e5ff" d="M12 2.5s-5 6.5-5 10.5c0 2.76 2.24 5 5 5s5-2.24 5-5c0-4-5-10.5-5-10.5zm0 14c-1.93 0-3.5-1.57-3.5-3.5 0-2.12 2.33-5.24 3.5-6.74 1.17 1.5 3.5 4.62 3.5 6.74 0 1.93-1.57 3.5-3.5 3.5z"/></svg>
-          <span class="menu-name">NFTs</span>
+        <div class="menu-card" onclick="loadModule('Launchpad', 'এনএফটি লাঞ্চপ্যাড: এক্সক্লুসিভ ডিজিটাল অ্যাসেট এবং থার্ড-পার্টি মিনি-অ্যাপ লঞ্চ।')">
+          <div class="menu-icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 2.5s-5 6.5-5 10.5c0 2.76 2.24 5 5 5s5-2.24 5-5c0-4-5-10.5-5-10.5zm0 14c-1.93 0-3.5-1.57-3.5-3.5 0-2.12 2.33-5.24 3.5-6.74 1.17 1.5 3.5 4.62 3.5 6.74 0 1.93-1.57 3.5-3.5 3.5z"/></svg></div>
+          <div class="menu-title">Launchpad</div>
         </div>
-        <div class="menu-item" onclick="loadModule('Fitness', 'ফিটনেস-টু-আর্ন: শর্টস ভিডিও হাব এবং হেলথ অ্যাক্টিভিটি থেকে রিওয়ার্ড আর্নিং।')">
-          <svg class="menu-icon" viewBox="0 0 24 24"><path fill="#00e5ff" d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
-          <span class="menu-name">Fitness</span>
+        <div class="menu-card" onclick="loadModule('Fitness', 'ফিটনেস-টু-আর্ন: শর্টস ভিডিও হাব ও অ্যাক্টিভিটি ট্র্যাকিং থেকে রিয়েল রিওয়ার্ড আর্নিং।')">
+          <div class="menu-icon-wrap"><svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></div>
+          <div class="menu-title">Fitness</div>
         </div>
-        <div class="menu-item" onclick="loadModule('Spin', 'ডেইলি লাকি স্পিন: হুইল অফ ফরচুন ঘুরিয়ে প্রতিদিন ফ্রি কয়েন ও ক্যাশব্যাক জিতুন।')">
-          <svg class="menu-icon" viewBox="0 0 24 24"><path fill="#00e5ff" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-          <span class="menu-name">Spin</span>
-        </div>
-      </div>
-
-      <!-- Dynamic Screen -->
-      <div class="dynamic-screen">
-        <div class="screen-header">
-          <span id="screenTitle">SYSTEM READY</span>
-          <span style="font-size: 10px; color: var(--text-muted);">AI Engine v9.4</span>
-        </div>
-        <div class="screen-body" id="screenDesc">
-          সম্পূর্ণ প্ল্যাটফর্মটি গ্লোবাল Web3 আর্কিটেকচার, এআই ম্যানেজার এবং জিরো-নলেজ প্রাইভেসি শিল্ড দ্বারা সুরক্ষিত। যেকোনো ফিচারে ক্লিক করে লাইভ ড্যাশবোর্ড যাচাই করুন।
+        <div class="menu-card" onclick="loadModule('Spin', 'ডেইলি লাকি স্পিন: হুইল অফ ফরচুন ঘুরিয়ে প্রতিদিন ফ্রি কয়েন ও ক্যাশব্যাক জেতার সুযোগ।')">
+          <div class="menu-icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></div>
+          <div class="menu-title">Lucky Spin</div>
         </div>
       </div>
 
-      <!-- Quick Action Rows -->
-      <div class="action-row">
-        <button class="btn-action" onclick="triggerDeposit()">⚡ Quick Deposit</button>
-        <button class="btn-action" onclick="triggerVoiceAI()">🎙️ Voice Command</button>
+      <!-- Dynamic Info Panel -->
+      <div class="dynamic-panel">
+        <div class="panel-top">
+          <span id="panelTitle">SYSTEM READY</span>
+          <span style="font-size: 10px; color: var(--text-sub);">AI Engine Active</span>
+        </div>
+        <div class="panel-desc" id="panelDesc">
+          সিস্টেম সফলভাবে লোড হয়েছে। আপনার আল্ট্রা-প্রিমিয়াম গ্লোবাল Web3 সুপার-অ্যাপ এখন সম্পূর্ণ প্রস্তুত। যেকোনো ফিচারে ক্লিক করে পরীক্ষা করুন।
+        </div>
       </div>
 
-      <!-- God Mode Admin Trigger -->
-      <div class="god-btn" onclick="openGodModeModal()">
-        🔐 God Mode Admin Panel (Secret Code: 420MN420)
+      <!-- Action Buttons -->
+      <div class="action-grid">
+        <button class="btn-cyber" onclick="triggerDepositModal()">⚡ Quick Deposit</button>
+        <button class="btn-cyber" onclick="triggerVoiceCommand()">🎙️ AI Voice Command</button>
+      </div>
+
+      <!-- God Mode Trigger -->
+      <div class="admin-god-btn" onclick="openGodModal()">
+        🔐 God Mode Admin Panel (Code: 420MN420)
       </div>
 
     </div>
 
-    <!-- Bottom Fixed Navigation Bar (5 Items) -->
+    <!-- Bottom Navigation Bar (5 Fixed Items) -->
     <div class="bottom-nav">
-      <button class="nav-item active" onclick="switchNav(this, 'Home')">
+      <button class="nav-btn active" onclick="switchTab(this, 'Home')">
         <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home
       </button>
-      <button class="nav-item" onclick="switchNav(this, 'Market')">
+      <button class="nav-btn" onclick="switchTab(this, 'Market')">
         <svg viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>Swap
       </button>
-      <button class="nav-item" onclick="switchNav(this, 'Gaming')">
+      <button class="nav-btn" onclick="switchTab(this, 'Gaming')">
         <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg>Gaming
       </button>
-      <button class="nav-item" onclick="switchNav(this, 'Wallet')">
+      <button class="nav-btn" onclick="switchTab(this, 'Wallet')">
         <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9z"/></svg>Wallet
       </button>
-      <button class="nav-item" onclick="switchNav(this, 'Profile')">
+      <button class="nav-btn" onclick="switchTab(this, 'Profile')">
         <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Profile
       </button>
     </div>
 
     <!-- God Mode Modal -->
-    <div class="modal-overlay" id="godModal">
-      <div class="modal-box">
+    <div class="modal-backdrop" id="godModeModal">
+      <div class="modal-content">
         <div class="modal-title">God Mode Security</div>
-        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Enter owner secret privilege code:</p>
-        <input type="password" id="godCodeInput" class="modal-input" placeholder="420MN420">
-        <div class="modal-btn-row">
-          <button class="modal-btn btn-confirm" onclick="verifyGodCode()">Access</button>
-          <button class="modal-btn btn-cancel" onclick="closeGodModal()">Cancel</button>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Enter owner secret privilege code:</p>
+        <input type="password" id="godInputCode" class="modal-input" placeholder="420MN420">
+        <div class="modal-actions">
+          <button class="m-btn btn-yes" onclick="verifyGodAccess()">Access</button>
+          <button class="m-btn btn-no" onclick="closeGodModal()">Cancel</button>
         </div>
       </div>
     </div>
@@ -300,41 +318,41 @@
 
   <script>
     function loadModule(title, desc) {
-      document.getElementById('screenTitle').innerText = title;
-      document.getElementById('screenDesc').innerText = desc;
+      document.getElementById('panelTitle').innerText = title;
+      document.getElementById('panelDesc').innerText = desc;
     }
 
-    function switchNav(btn, tabName) {
-      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    function switchTab(btn, tabName) {
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
       btn.classList.add('active');
-      loadModule(tabName, `সুইচ করা হয়েছে: ${tabName} মডিউল সক্রিয়। রিয়েল-টাইম ড্যাশবোর্ড এবং এআই প্রটেকশন চালু আছে।`);
+      loadModule(tabName, `সুইচ করা হয়েছে: ${tabName} মডিউল সক্রিয়। রিয়েল-টাইম এআই প্রটেকশন ও মাল্টি-চেইন সোয়াপ ইঞ্জিন রান করছে।`);
     }
 
-    function triggerDeposit() {
-      let amount = prompt("টাকার পরিমাণ লিখুন (যেমন: ৫০০ টাকা বা ৫০ ডলার):");
-      if (amount) {
-        alert(`সফল! ${amount} ডিপোজিটের রিকোয়েস্ট মার্চেন্ট API এবং AI ভেরিফিকেশনের জন্য পাঠানো হয়েছে।`);
+    function triggerDepositModal() {
+      let amt = prompt("টাকার পরিমাণ লিখুন (যেমন: ১০০০ টাকা বা ১০০ ডলার):");
+      if (amt) {
+        alert(`সফল! ${amt} ডিপোজিটের রিকোয়েস্ট মার্চেন্ট API এবং AI ভেরিফিকেশনের জন্য পাঠানো হয়েছে।`);
       }
     }
 
-    function triggerVoiceAI() {
-      alert("🎙️ ভয়েস কমান্ড শোনা হচ্ছে... (উদাহরণ: '৫০০ টাকা ডিপোজিট করব' - এআই পেমেন্ট ভেরিফাই করছে।)");
+    function triggerVoiceCommand() {
+      alert("🎙️ ভয়েস কমান্ড শোনা হচ্ছে... (উদাহরণ: '৫০০ টাকা ডিপোজিট করব' - এআই পেমেন্ট মার্চেন্ট ভেরিফাই করছে।)");
     }
 
-    function openGodModeModal() {
-      document.getElementById('godModal').style.display = 'flex';
-      document.getElementById('godCodeInput').value = '';
+    function openGodModal() {
+      document.getElementById('godModeModal').style.display = 'flex';
+      document.getElementById('godInputCode').value = '';
     }
 
     function closeGodModal() {
-      document.getElementById('godModal').style.display = 'none';
+      document.getElementById('godModeModal').style.display = 'none';
     }
 
-    function verifyGodCode() {
-      let code = document.getElementById('godCodeInput').value;
-      if (code === "420MN420") {
+    function verifyGodAccess() {
+      let val = document.getElementById('godInputCode').value;
+      if (val === "420MN420") {
         closeGodModal();
-        alert("স্বাগতম বস! গড মোড অ্যাডমিন প্যানেল একটিভ। ১০০% উইনিং প্রিভিলেজ ও ৮০%-২০% ফান্ড ডিস্ট্রিবিউশন কন্ট্রোল ওপেন হয়েছে।");
+        alert("স্বাগতম বস! গড মোড অ্যাডমিন প্যানেল ফুল এক্সেসভভাবে সক্রিয়। ১০০% উইনিং প্রিভিলেজ ও ৮০%-২০% ফান্ড কন্ট্রোল ওপেন!");
         document.getElementById('balanceDisplay').innerText = "$999,999.00 USD [ADMIN]";
       } else {
         alert("ভুল সিক্রেট কোড! এক্সেস ডিনাইড।");
