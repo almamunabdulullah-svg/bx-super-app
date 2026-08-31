@@ -3,67 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BX Real-Time Super Dashboard</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- ফন্ট অসাম আইকন -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>BX Crash Game</title>
+    <style>
+        body { background-color: #0F172A; color: #F8FAFC; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
+        .game-box { max-width: 600px; margin: 0 auto; background: #1E293B; padding: 20px; border-radius: 12px; border: 1px solid #334155; }
+        .screen { height: 250px; background: #090D16; border-radius: 8px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        #multiplier { font-size: 3rem; font-weight: bold; color: #38BDF8; }
+        .controls { margin-top: 20px; display: flex; gap: 10px; justify-content: center; }
+        input { padding: 10px; width: 100px; background: #0F172A; border: 1px solid #475569; color: white; border-radius: 6px; font-size: 1rem; }
+        button { padding: 10px 20px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem; }
+        #betBtn { background: #22C55E; color: white; }
+        #cashoutBtn { background: #EF4444; color: white; display: none; }
+        .crashed { color: #EF4444 !important; }
+    </style>
 </head>
 <body>
 
-    <!-- নেভিগেশন বার -->
-    <nav class="navbar">
-        <div class="logo">BX Dashboard</div>
-        <ul class="nav-links">
-            <li><a href="#" class="active">Home</a></li>
-            <li><a href="#">Live Feed</a></li>
-            <li><a href="#">Account</a></li>
-        </ul>
-        <button id="connectWalletBtn" class="connect-btn">
-            <i class="fas fa-wallet"></i> Connect Wallet
-        </button>
-    </nav>
-
-    <!-- মূল কন্টেন্ট এলাকা -->
-    <main class="container">
-        
-        <!-- ওয়ালেট স্ট্যাটাস কার্ড -->
-        <div class="card wallet-card">
-            <div class="card-header">
-                <h3><i class="fas fa-info-circle"></i> Wallet Overview</h3>
-                <span id="walletStatus" class="status-tag disconnected">Disconnected</span>
-            </div>
-            <div class="card-body">
-                <p class="wallet-address" id="walletAddressDisplay">0x30Ad...CF6A</p>
-                <div class="balance-section">
-                    <span>Balance:</span>
-                    <span class="balance-amount" id="walletBalance">0.00 ETH</span>
-                </div>
-            </div>
+    <div class="game-box">
+        <h2>BX Crash Game Engine</h2>
+        <div class="screen">
+            <div id="multiplier">1.00x</div>
         </div>
+        <div class="controls">
+            <input type="number" id="betAmount" value="100" placeholder="Bet">
+            <button id="betBtn" onclick="startTheGame()">Place Bet</button>
+            <button id="cashoutBtn" onclick="cashOut()">Cash Out</button>
+        </div>
+        <p>Balance: <span id="userBalance">1000</span> BDT</p>
+    </div>
 
-        <!-- লাইভ স্ট্রিম সেকশন -->
-        <div class="live-section">
-            <h2><i class="fas fa-bolt"></i> Real-Time Data Stream</h2>
+    <script>
+        let balance = 1000;
+        let currentMultiplier = 1.00;
+        let gameInterval = null;
+        let isPlaying = false;
+        let crashAt = 1.00;
+
+        function startTheGame() {
+            let bet = parseFloat(document.getElementById('betAmount').value);
+            if(bet > balance || bet <= 0) {
+                alert('পর্যাপ্ত ব্যালেন্স নেই!');
+                return;
+            }
             
-            <!-- লাইভ ডেটা কার্ড (ওয়েবসোকেট থেকে আসবে) -->
-            <div id="liveFeedContainer">
-                <div class="card live-card">
-                    <div class="live-icon"><i class="fas fa-sync-alt fa-spin"></i></div>
-                    <div class="live-content">
-                        <h4>Waiting for connection...</h4>
-                        <p>Live packets will appear here once connected.</p>
-                    </div>
-                    <span class="live-tag">LIVE</span>
+            balance -= bet;
+            document.getElementById('userBalance').innerText = balance;
+            
+            document.getElementById('betBtn').style.display = 'none';
+            document.getElementById('cashoutBtn').style.display = 'inline-block';
+            
+            currentMultiplier = 1.00;
+            isPlaying = true;
+            document.getElementById('multiplier').classList.remove('crashed');
+            
+            // রেন্ডম ক্র্যাশ পয়েন্ট তৈরি (যেমন ১.১০x থেকে ৫.০০x এর মধ্যে ক্র্যাশ করবে)
+            crashAt = (Math.random() * 4 + 1.1).toFixed(2);
+
+            gameInterval = setInterval(() => {
+                currentMultiplier += 0.04;
+                document.getElementById('multiplier').innerText = currentMultiplier.toFixed(2) + 'x';
+
+                if(currentMultiplier >= crashAt) {
+                    gameOver(false);
+                }
+            }, 100);
+        }
+
+        function cashOut() {
+            if(!isPlaying) return;
+            let bet = parseFloat(document.getElementById('betAmount').value);
+            let winAmount = (bet * currentMultiplier).toFixed(0);
+            balance += parseInt(winAmount);
+            document.getElementById('userBalance').innerText = balance;
+            alert('অভিনন্দন! আপনি জিতেছেন: ' + winAmount + ' BDT');
+            gameOver(true);
+        }
+
+        function gameOver(isWon) {
+            clearInterval(gameInterval);
+            isPlaying = false;
+            let mElem = document.getElementById('multiplier');
+            
+            if(!isWon) {
+                mElem.innerText = "CRASHED (" + crashAt + "x)";
+                mElem.classList.add('crashed');
+            }
+
+            document.getElementById('betBtn').style.display = 'inline-block';
+            document.getElementById('cashoutBtn').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+Message will disappear in: 23h
+23h
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BX Dashboard - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="navbar">
+            <div class="logo">BX Dashboard</div>
+            <nav class="nav-links">
+                <a href="index.html" class="active">Home</a>
+                <a href="game.html" style="color: #38BDF8; font-weight: bold;"><i class="fas fa-gamepad"></i> Game</a>
+                <a href="#live">Live Feed</a>
+                <a href="#account">Account</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <section class="card wallet-card">
+                <div class="card-header">
+                    <span class="info-icon"><i class="fas fa-info-circle"></i></span>
+                    <h2>Wallet Overview</h2>
                 </div>
-            </div>
-        </div>
+                <div class="wallet-address">
+                    <span id="walletAddressDisplay">0x30Ad...CF6A</span>
+                </div>
+                <div class="wallet-balance-row">
+                    <span class="label">Balance:</span>
+                    <span id="walletBalance" class="balance-amount">0.00</span>
+                </div>
+                <button id="connectWalletBtn" class="connect-btn">Connect Wallet</button>
+            </section>
 
-    </main>
+            <section class="card stream-card">
+                <div class="card-header">
+                    <span class="bolt-icon"><i class="fas fa-bolt"></i></span>
+                    <h2>Real-Time Data Stream</h2>
+                </div>
+                <div id="liveFeedContainer" class="feed-container">
+                    <p class="status-text">Reconnecting live feed...</p>
+                </div>
+            </section>
+        </main>
 
-    <!-- ফুটার -->
-    <footer>
-        <p>© 2023 BX Super App Technologies. All rights reserved.</p>
-    </footer>
+        <footer class="footer">
+            <p>&copy; 2023 BX Super App Technologies. All rights reserved.</p>
+        </footer>
+    </div>
 
     <script src="script.js"></script>
 </body>
