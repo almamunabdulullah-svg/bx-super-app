@@ -3,127 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BX Super App - Web3 & Casino Ecosystem</title>
+    <title>BX Super App - Live Real Games Ecosystem</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col items-center">
 
-    <header class="w-full max-w-md bg-slate-900/80 backdrop-blur-md border-b border-slate-800 p-4 sticky top-0 z-50 flex justify-between items-center">
+    <header class="w-full max-w-md bg-slate-900/90 backdrop-blur-md border-b border-slate-800 p-4 sticky top-0 z-50 flex justify-between items-center">
         <div class="flex items-center space-x-2">
-            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black px-3 py-1 rounded-xl text-lg tracking-wider shadow-lg shadow-blue-500/30">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black px-3 py-1 rounded-xl text-lg tracking-wider shadow-lg">
                 BX
             </div>
-            <span class="font-bold text-base tracking-wide bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">BX SUPER-APP</span>
+            <span class="font-bold text-base tracking-wide text-white">BX SUPER-APP</span>
         </div>
         <div class="flex items-center space-x-2">
             <span class="flex h-2.5 w-2.5 relative">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
             </span>
-            <span class="text-xs font-semibold text-emerald-400">MAINNET LIVE</span>
+            <span class="text-xs font-semibold text-emerald-400">REAL MONEY LIVE</span>
         </div>
     </header>
 
-    <main class="w-full max-w-md p-4 pb-24 space-y-5">
-
-        <div class="bg-slate-900/90 border border-indigo-500/30 rounded-2xl p-3 flex flex-col space-y-1.5 shadow-md">
-            <div class="flex justify-between items-center">
-                <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Connected Smart Contract</span>
-                <span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded font-mono">Verified</span>
-            </div>
-            <div class="flex items-center justify-between bg-slate-950 p-2 rounded-xl border border-slate-800">
-                <span id="contractAddress" class="text-[11px] font-mono text-slate-300 truncate mr-2">Ox30Ad271CcBA208215E8Ob607eFBd389486c9CF6A</span>
-                <button onclick="copyContract()" class="text-xs text-indigo-400 hover:text-indigo-300 bg-indigo-500/10 px-2.5 py-1 rounded-lg transition-all">
-                    <i class="fa-regular fa-copy"></i>
-                </button>
-            </div>
-        </div>
+    <main class="w-full max-w-md p-4 pb-24 space-y-4">
 
         <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border border-indigo-500/30 p-5 shadow-2xl">
-            <div class="absolute -right-10 -top-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl"></div>
-            <div class="flex justify-between items-start mb-3">
-                <span class="text-xs uppercase tracking-widest text-indigo-300 font-semibold">Unified Vault Balance</span>
-                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] px-2.5 py-0.5 rounded-full font-medium">On-Chain Synced</span>
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-xs uppercase tracking-widest text-indigo-300 font-semibold">User Wallet Balance</span>
+                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] px-2.5 py-0.5 rounded-full">Secure Vault</span>
             </div>
             <div class="text-3xl font-extrabold tracking-tight text-white mb-4">
-                $<span id="userBalance">250.00</span> <span class="text-xs font-normal text-slate-400">USD</span>
+                $<span id="userBalance">500.00</span> <span class="text-xs font-normal text-slate-400">USD</span>
             </div>
             <div class="flex space-x-3">
-                <button onclick="openAction('Deposit')" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white py-2.5 px-4 rounded-xl text-xs font-bold transition-all shadow-lg shadow-blue-600/20 flex items-center justify-center space-x-1.5">
-                    <i class="fa-solid fa-arrow-down-long"></i>
-                    <span>Deposit (TXID)</span>
+                <button onclick="walletAction('Deposit')" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white py-2.5 px-4 rounded-xl text-xs font-bold transition-all shadow-lg flex items-center justify-center space-x-1.5">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>Deposit Funds</span>
                 </button>
-                <button onclick="openAction('Withdraw')" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-1.5">
-                    <i class="fa-solid fa-shield-halved text-emerald-400"></i>
-                    <span>Secure Withdraw</span>
+                <button onclick="walletAction('Withdraw')" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-1.5">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-emerald-400"></i>
+                    <span>Withdraw Profit</span>
                 </button>
             </div>
         </div>
 
-        <div class="bg-slate-900 border border-indigo-500/40 rounded-3xl p-5 shadow-xl text-center space-y-4">
-            <div class="flex justify-between items-center">
-                <span class="text-xs font-bold text-pink-400 uppercase tracking-wider"><i class="fa-solid fa-dharmachakra"></i> BX Lucky Spin Game</span>
-                <span class="text-[10px] bg-pink-500/10 text-pink-300 px-2 py-0.5 rounded-full">Play & Win</span>
+        <div id="gameArena" class="hidden bg-slate-900 border-2 border-indigo-500/60 rounded-3xl p-5 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 id="activeGameTitle" class="text-sm font-bold text-white uppercase tracking-wider flex items-center space-x-2">
+                    <i class="fa-solid fa-gamepad text-indigo-400"></i> <span>Game Arena</span>
+                </h3>
+                <button onclick="closeGame()" class="bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition-all">
+                    <i class="fa-solid fa-xmark"></i> Close
+                </button>
             </div>
-            <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800">
-                <div id="gameDisplay" class="text-2xl font-black text-white tracking-widest mb-2">READY TO SPIN</div>
-                <p id="gameMessage" class="text-xs text-slate-400">Bet $10 USD per spin. Win up to $50 USD instantly!</p>
-            </div>
-            <button onclick="playLuckySpin()" class="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition-all shadow-lg shadow-pink-600/30 flex items-center justify-center space-x-2">
-                <i class="fa-solid fa-play"></i>
-                <span>Spin Now ($10 Bet)</span>
-            </button>
+
+            <div id="gameContentArea" class="bg-slate-950 p-5 rounded-2xl border border-slate-800 text-center space-y-3">
+                </div>
         </div>
 
         <div>
             <div class="flex justify-between items-center mb-3 px-1">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Ecosystem Modules</h3>
-                <span class="text-xs font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded-md">25 Active</span>
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Select Game to Play</h3>
+                <span class="text-xs font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded-md">Live Platform</span>
             </div>
 
             <div class="grid grid-cols-4 gap-3">
-                <div onclick="selectGame('Casino & Slots')" class="group bg-slate-900 hover:bg-indigo-950/60 border border-slate-800/80 hover:border-indigo-500/50 p-3.5 rounded-2xl flex flex-col items-center justify-center space-y-2 cursor-pointer transition-all duration-200 shadow-md">
-                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 group-hover:bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg transition-all">
+                <div onclick="openGame('Casino & Slots')" class="group bg-slate-900 hover:bg-indigo-950 border border-slate-800 hover:border-indigo-500 p-3 rounded-2xl flex flex-col items-center justify-center space-y-2 cursor-pointer transition-all shadow">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg">
                         <i class="fa-solid fa-dice"></i>
                     </div>
-                    <span class="text-[11px] font-medium text-slate-300 group-hover:text-white text-center leading-tight">Casino</span>
+                    <span class="text-[11px] font-medium text-slate-300 group-hover:text-white text-center">Casino</span>
                 </div>
 
-                <div onclick="selectGame('Teen Patti')" class="group bg-slate-900 hover:bg-indigo-950/60 border border-slate-800/80 hover:border-indigo-500/50 p-3.5 rounded-2xl flex flex-col items-center justify-center space-y-2 cursor-pointer transition-all duration-200 shadow-md">
-                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 group-hover:bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg transition-all">
+                <div onclick="openGame('Teen Patti')" class="group bg-slate-900 hover:bg-indigo-950 border border-slate-800 hover:border-indigo-500 p-3 rounded-2xl flex flex-col items-center justify-center space-y-2 cursor-pointer transition-all shadow">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-lg">
                         <i class="fa-solid fa-heart-pulse"></i>
                     </div>
-                    <span class="text-[11px] font-medium text-slate-300 group-hover:text-white text-center leading-tight">Teen Patti</span>
+                    <span class="text-[11px] font-medium text-slate-300 group-hover:text-white text-center">Teen Patti</span>
                 </div>
 
-                <div onclick="selectGame('Aviator Crash')" class="group bg-slate-900 hover:bg-indigo-950/60 border border-slate-800/80 hover:border-indigo-500/50 p-3.5 rounded-2xl flex flex-col items-center justify-center space-y-2 cursor-pointer transition-all duration-200 shadow-md">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 group-hover:bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg transition-all">
+                <div onclick="openGame('Aviator Crash')" class="group bg-slate-900 hover:bg-indigo-950 border border-slate-800 hover:border-indigo-500 p-3 rounded-2xl flex flex-col items-center justify-center space-y-2 cursor-pointer transition-all shadow">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg">
                         <i class="fa-solid fa-rocket"></i>
                     </div>
-                    <span class="text-[11px] font-medium text-slate-300 group-hover:text-white text-center leading-tight">Crash</span>
+                    <span class="text-[11px] font-medium text-slate-300 group-hover:text-white text-center">Crash</span>
                 </div>
 
-                <div onclick="selectGame('P2P Escrow')" class="group bg-slate-900 hover:bg-indigo-950/60 border border-slate-800/80 hover:border-indigo-500/50 p-3.5 rounded-2xl flex flex-col items-center justify-center space-y-2 cursor-pointer transition-all duration-200 shadow-md">
-                    <div class="w-12 h-12 rounded-xl bg-blue-500/10 group-hover:bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg transition-all">
-                        <i class="fa-solid fa-handshake"></i>
+                <div onclick="openGame('Ludo King')" class="group bg-slate-900 hover:bg-indigo-950 border border-slate-800 hover:border-indigo-500 p-3 rounded-2xl flex flex-col items-center justify-center space-y-2 cursor-pointer transition-all shadow">
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-chess-board"></i>
                     </div>
-                    <span class="text-[11px] font-medium text-slate-300 group-hover:text-white text-center leading-tight">P2P Escrow</span>
+                    <span class="text-[11px] font-medium text-slate-300 group-hover:text-white text-center">Ludo</span>
                 </div>
             </div>
         </div>
 
-        <div id="liveBanner" class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center">
-                    <i class="fa-solid fa-link"></i>
-                </div>
-                <div>
-                    <h4 class="text-xs font-bold text-slate-200">Contract & Game Engine Active</h4>
-                    <p class="text-[11px] text-slate-400">Ready for live betting and profit sync.</p>
-                </div>
-            </div>
-            <span class="text-xs text-emerald-400 font-semibold">Active</span>
+        <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 text-center">
+            <p class="text-xs text-slate-400">Contract: <span class="text-indigo-400 font-mono">Ox30Ad271CcBA...6.9CF6A</span></p>
+            <p class="text-[10px] text-emerald-400 mt-1">All bets are automatically synced and profits are added directly to your wallet.</p>
         </div>
 
     </main>
@@ -134,16 +111,12 @@
             <span class="text-[10px] font-semibold">Home</span>
         </a>
         <a href="#" class="flex flex-col items-center text-slate-400 hover:text-slate-200 space-y-1">
-            <i class="fa-solid fa-arrow-right-arrow-left text-base"></i>
-            <span class="text-[10px] font-medium">P2P</span>
-        </a>
-        <a href="#" class="flex flex-col items-center text-slate-400 hover:text-slate-200 space-y-1">
             <i class="fa-solid fa-gamepad text-base"></i>
             <span class="text-[10px] font-medium">Games</span>
         </a>
         <a href="#" class="flex flex-col items-center text-slate-400 hover:text-slate-200 space-y-1">
-            <i class="fa-solid fa-circle-play text-base"></i>
-            <span class="text-[10px] font-medium">Shorts</span>
+            <i class="fa-solid fa-wallet text-base"></i>
+            <span class="text-[10px] font-medium">Wallet</span>
         </a>
         <a href="#" class="flex flex-col items-center text-slate-400 hover:text-slate-200 space-y-1">
             <i class="fa-solid fa-gear text-base"></i>
@@ -152,62 +125,131 @@
     </nav>
 
     <script>
-        const contractAddress = "Ox30Ad271CcBA208215E8Ob607eFBd389486c9CF6A";
-        let userBalance = 250.00;
+        let balance = 500.00;
 
-        function copyContract() {
-            navigator.clipboard.writeText(contractAddress);
-            alert("Contract address copied!");
+        function updateBalanceDisplay() {
+            document.getElementById('userBalance').innerText = balance.toFixed(2);
         }
 
-        function playLuckySpin() {
-            let betAmount = 10.00;
-            if (userBalance < betAmount) {
-                alert("Insufficient balance in vault!");
-                return;
+        function openGame(gameName) {
+            document.getElementById('gameArena').classList.remove('hidden');
+            document.getElementById('activeGameTitle').innerHTML = `<i class="fa-solid fa-gamepad text-indigo-400"></i> <span>${gameName} - Live Play</span>`;
+            
+            let contentArea = document.getElementById('gameContentArea');
+
+            if (gameName === 'Casino & Slots') {
+                contentArea.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="text-xl font-bold text-amber-400 tracking-wider">🎰 SLOT MACHINE</div>
+                        <p class="text-xs text-slate-400">Bet $20 per spin. Match 3 symbols to win $100!</p>
+                        <div id="slotScreen" class="text-3xl font-black bg-slate-900 py-3 rounded-xl tracking-widest text-white">🍒 🍋 🍊</div>
+                        <button onclick="playSlots()" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow">Spin Slots ($20)</button>
+                    </div>
+                `;
+            } else if (gameName === 'Teen Patti') {
+                contentArea.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="text-xl font-bold text-purple-400 tracking-wider">🃏 TEEN PATTI TABLE</div>
+                        <p class="text-xs text-slate-400">Place your blind bet and test your cards!</p>
+                        <div class="text-2xl font-black bg-slate-900 py-3 rounded-xl text-white">🂡 🂮 🂤</div>
+                        <button onclick="playCardGame()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow">Play Hand ($50)</button>
+                    </div>
+                `;
+            } else if (gameName === 'Aviator Crash') {
+                contentArea.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="text-xl font-bold text-emerald-400 tracking-wider">🚀 CRASH MULTIPLIER</div>
+                        <p id="crashStatus" class="text-xs text-slate-400">Multiplier is rising fast! Cash out before crash.</p>
+                        <div id="multiplierDisplay" class="text-3xl font-black bg-slate-900 py-3 rounded-xl text-emerald-400">1.00x</div>
+                        <button onclick="startCrashGame()" id="crashBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow">Start & Cashout ($25)</button>
+                    </div>
+                `;
+            } else {
+                contentArea.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="text-xl font-bold text-blue-400 tracking-wider">🎲 ${gameName.toUpperCase()}</div>
+                        <p class="text-xs text-slate-400">Roll dice and win instant crypto rewards!</p>
+                        <button onclick="genericWin()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow">Roll & Win ($10)</button>
+                    </div>
+                `;
             }
+        }
 
-            userBalance -= betAmount; // Deduct bet
-            document.getElementById('userBalance').innerText = userBalance.toFixed(2);
-            
-            let display = document.getElementById('gameDisplay');
-            let msg = document.getElementById('gameMessage');
-            
-            display.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-pink-400"></i> SPINNING...`;
-            msg.innerText = "Processing bet through smart contract...";
+        function closeGame() {
+            document.getElementById('gameArena').classList.add('hidden');
+        }
 
-            setTimeout(() => {
-                let outcomes = [0, 15, 30, 50, 0, 20];
-                let winAmount = outcomes[Math.floor(Math.random() * outcomes.length)];
-                
-                if (winAmount > 0) {
-                    userBalance += winAmount;
-                    display.innerText = `YOU WON $${winAmount}!`;
-                    msg.innerText = `Profit synced to contract: ${contractAddress.substring(0,10)}...`;
-                } else {
-                    display.innerText = `TRY AGAIN!`;
-                    msg.innerText = `House edge updated. Better luck next spin!`;
+        function playSlots() {
+            if (balance < 20) { alert("Low balance!"); return; }
+            balance -= 20;
+            updateBalanceDisplay();
+            let symbols = ["💎", "🍋", "🍒", "⭐", "🔔"];
+            let s1 = symbols[Math.floor(Math.random()*symbols.length)];
+            let s2 = symbols[Math.floor(Math.random()*symbols.length)];
+            let s3 = symbols[Math.floor(Math.random()*symbols.length)];
+            document.getElementById('slotScreen').innerText = `${s1} ${s2} ${s3}`;
+            if (s1 === s2 && s2 === s3) {
+                balance += 100;
+                alert("Jackpot! You won $100!");
+            } else {
+                alert("No match. Try again!");
+            }
+            updateBalanceDisplay();
+        }
+
+        function playCardGame() {
+            if (balance < 50) { alert("Low balance!"); return; }
+            balance -= 50;
+            updateBalanceDisplay();
+            if (Math.random() > 0.5) {
+                balance += 120;
+                alert("You won the Teen Patti hand! +$120");
+            } else {
+                alert("You lost the hand!");
+            }
+            updateBalanceDisplay();
+        }
+
+        function startCrashGame() {
+            if (balance < 25) { alert("Low balance!"); return; }
+            balance -= 25;
+            updateBalanceDisplay();
+            let mult = 1.00;
+            let btn = document.getElementById('crashBtn');
+            btn.disabled = true;
+            let interval = setInterval(() => {
+                mult += 0.25;
+                document.getElementById('multiplierDisplay').innerText = mult.toFixed(2) + 'x';
+                if (mult >= 2.50) {
+                    clearInterval(interval);
+                    balance += 60;
+                    alert("Cashed out successfully at 2.50x! Won $60");
+                    updateBalanceDisplay();
+                    btn.disabled = false;
                 }
-                document.getElementById('userBalance').innerText = userBalance.toFixed(2);
-            }, 2000);
+            }, 300);
         }
 
-        function selectGame(name) {
-            document.getElementById('liveBanner').innerHTML = `
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
-                        <i class="fa-solid fa-check"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-xs font-bold text-white">${name} Selected</h4>
-                        <p class="text-[11px] text-slate-400">Ready to play with vault balance.</p>
-                    </div>
-                </div>
-            `;
+        function genericWin() {
+            if (balance < 10) { alert("Low balance!"); return; }
+            balance -= 10;
+            if (Math.random() > 0.4) {
+                balance += 25;
+                alert("Won $25!");
+            } else {
+                alert("Lost round!");
+            }
+            updateBalanceDisplay();
         }
 
-        function openAction(type) {
-            alert(type + ' gateway connected with contract: ' + contractAddress.substring(0, 10) + '...');
+        function walletAction(type) {
+            if (type === 'Deposit') {
+                balance += 100;
+                alert("Deposit successful! +$100 added to vault.");
+            } else {
+                alert("Profit withdrawal request sent to contract: Ox30Ad271CcBA...6.9CF6A");
+            }
+            updateBalanceDisplay();
         }
     </script>
 </body>
