@@ -14,10 +14,7 @@
         .nav-links a { color: #94A3B8; text-decoration: none; font-size: 0.85rem; }
         .nav-links a.active { color: #38BDF8; font-weight: bold; }
 
-        /* Main Container with Sidebar Layout */
         .main-container { display: flex; flex-grow: 1; height: calc(100vh - 50px); overflow: hidden; }
-
-        /* Left Side: Game & Controls */
         .game-section { flex: 1; display: flex; flex-direction: column; padding: 10px; overflow-y: auto; }
         
         .game-top-bar { display: flex; justify-content: space-between; margin-bottom: 8px; align-items: center; }
@@ -43,7 +40,6 @@
         #mainMultiplier.crashed { color: #EF4444; text-shadow: 0 0 20px rgba(239, 68, 68, 0.8); animation: shake 0.4s; }
         @keyframes shake { 0% { transform: translate(4px, 4px); } 50% { transform: translate(-4px, -4px); } 100% { transform: translate(0, 0); } }
 
-        /* Control Panel */
         .control-panel { display: flex; gap: 10px; margin-top: 10px; flex-shrink: 0; }
         .bet-box { flex: 1; background: #0F172A; padding: 10px; border-radius: 8px; border: 1px solid #334155; display: flex; flex-direction: column; gap: 6px; }
         
@@ -61,7 +57,6 @@
         .cashout-btn { background: #CA8A04; color: white; display: none; }
         .autoplay-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: #94A3B8; }
 
-        /* Right Side: Live Dashboard Sidebar */
         .sidebar { width: 320px; background: #0F172A; border-left: 1px solid #1E293B; display: flex; flex-direction: column; flex-shrink: 0; }
         .sidebar-header { background: linear-gradient(to right, #7c2d12, #9a3412); padding: 10px; font-size: 0.75rem; display: flex; justify-content: space-around; text-align: center; border-bottom: 1px solid #1E293B; }
         .sidebar-header div span { display: block; font-weight: bold; font-size: 0.85rem; color: #FFEDD5; }
@@ -70,8 +65,9 @@
         table { width: 100%; border-collapse: collapse; font-size: 0.75rem; text-align: left; }
         th { background: #1E293B; color: #94A3B8; padding: 6px 8px; position: sticky; top: 0; z-index: 2; }
         td { padding: 6px 8px; border-bottom: 1px solid #1E293B; color: #CBD5E1; }
+        .win-text { color: #4ADE80; font-weight: bold; }
+        .loss-text { color: #EF4444; }
 
-        /* Mobile Responsive View */
         @media (max-width: 768px) {
             .main-container { flex-direction: column; overflow-y: auto; }
             body { overflow: auto; height: auto; }
@@ -92,7 +88,6 @@
     </header>
 
     <div class="main-container">
-        <!-- Left Side: Game Screen & Bets -->
         <div class="game-section">
             <div class="game-top-bar">
                 <div class="top-btn-group">
@@ -103,7 +98,6 @@
                 <span style="font-size:0.85rem; color:#94A3B8;">Balance: <span id="userBalance" style="color:#38BDF8; font-weight:bold;">10000</span> BDT</span>
             </div>
 
-            <!-- Game Wrapper for Fullscreen Support -->
             <div id="gameWrapper">
                 <div id="gameScreen">
                     <div class="sky-layer"></div>
@@ -114,11 +108,10 @@
                     </div>
                     <div id="explosionEffect" class="explosion"></div>
 
-                    <div id="mainMultiplier">3</div>
+                    <div id="mainMultiplier">1.00x</div>
                 </div>
             </div>
 
-            <!-- Controls (Dual Betting Support) -->
             <div class="control-panel">
                 <div class="bet-box">
                     <div class="input-row">
@@ -164,12 +157,11 @@
             </div>
         </div>
 
-        <!-- Right Side: Live Dashboard Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">
-                <div>Bets <span id="numBetsCount">2952</span></div>
-                <div>Total <span id="totalBetsAmount">756k BDT</span></div>
-                <div>Win <span id="totalWinAmount">0 BDT</span></div>
+                <div>Bets <span id="numBetsCount">2,840</span></div>
+                <div>Total <span id="totalBetsAmount">782k BDT</span></div>
+                <div>Win <span id="totalWinAmount">340k BDT</span></div>
             </div>
             <div class="sidebar-feed">
                 <table>
@@ -182,14 +174,7 @@
                         </tr>
                     </thead>
                     <tbody id="liveFeedBody">
-                        <tr><td>*******13</td><td>1.00x</td><td>16528 BDT</td><td>0 BDT</td></tr>
-                        <tr><td>*******71</td><td>1.00x</td><td>5585 BDT</td><td>0 BDT</td></tr>
-                        <tr><td>*******03</td><td>1.00x</td><td>1971 BDT</td><td>0 BDT</td></tr>
-                        <tr><td>*******25</td><td>1.00x</td><td>1510 BDT</td><td>0 BDT</td></tr>
-                        <tr><td>*******41</td><td>1.00x</td><td>1166 BDT</td><td>0 BDT</td></tr>
-                        <tr><td>*******39</td><td>1.00x</td><td>1000 BDT</td><td>0 BDT</td></tr>
-                        <tr><td>*******65</td><td>1.00x</td><td>930 BDT</td><td>0 BDT</td></tr>
-                        <tr><td>*******23</td><td>1.00x</td><td>735 BDT</td><td>0 BDT</td></tr>
+                        <!-- ডাইনামিক ফেক এবং রিয়েল ডাটা এখানে দেখাবে -->
                     </tbody>
                 </table>
             </div>
@@ -197,81 +182,29 @@
     </div>
 
     <script>
-        let audioCtx = null;
-        let windNode = null;
-
-        function initAudio() {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-        }
-
-        function playWindSound() {
-            try {
-                initAudio();
-                let bufferSize = audioCtx.sampleRate * 2;
-                let buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-                let output = buffer.getChannelData(0);
-                for (let i = 0; i < bufferSize; i++) output[i] = Math.random() * 2 - 1;
-                windNode = audioCtx.createBufferSource();
-                windNode.buffer = buffer;
-                windNode.loop = true;
-                let filter = audioCtx.createBiquadFilter();
-                filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(400, audioCtx.currentTime);
-                windNode.connect(filter);
-                filter.connect(audioCtx.destination);
-                windNode.start();
-            } catch(e) {}
-        }
-
-        function stopWindSound() {
-            if (windNode) {
-                try { windNode.stop(); } catch(e){}
-                windNode = null;
-            }
-        }
-
-        function playBlastSound() {
-            try {
-                initAudio();
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 0.6);
-                gain.gain.setValueAtTime(1, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.6);
-            } catch(e) {}
-        }
+        let balance = 10000;
+        let currentMultiplier = 1.00;
+        let gameInterval = null;
+        let crashAt = 1.00;
+        let activeBets = { 1: false, 2: false };
+        let gameState = 'IDLE'; 
+        let fakeUsersList = [];
+        let totalBetsValue = 750000;
 
         function toggleFullScreen() {
             let elem = document.getElementById("gameWrapper");
             if (!document.fullscreenElement) {
-                elem.requestFullscreen().catch(err => {
-                    alert(Error attempting to enable fullscreen: ${err.message});
-                });
+                elem.requestFullscreen().catch(err => {});
             } else {
                 document.exitFullscreen();
             }
         }
-
-        let balance = 10000;
-        let currentMultiplier = 1.00;
-        let gameInterval = null;
-        let isPlaying = false;
-        let crashAt = 1.00;
-        let activeBets = { 1: false, 2: false };
 
         function setBet(boxNum, amount) {
             document.getElementById(betAmount${boxNum}).value = amount;
         }
 
         function placeBet(boxNum) {
-            initAudio();
             let betAmt = parseFloat(document.getElementById(betAmount${boxNum}).value);
             if (isNaN(betAmt) || betAmt <= 0 || betAmt > balance) {
                 alert('অপর্যাপ্ত ব্যালেন্স বা ভুল পরিমাণ!');
@@ -285,23 +218,54 @@
             document.getElementById(betBtn${boxNum}).style.display = 'none';
             document.getElementById(cashoutBtn${boxNum}).style.display = 'block';
 
-            if (!isPlaying) {
-                startCountdown();
-            }
+            // রিয়েল ইউজারের বেট সাইডবারে যুক্ত করা
+            addFeedRow("YOU (Real)", "-", betAmt + " BDT", "Running...", "yellow");
         }
 
+        function cashOut(boxNum) {
+            if (!activeBets[boxNum] || gameState !== 'FLYING') return;
+            let betAmt = parseFloat(document.getElementById(betAmount${boxNum}).value);
+            let win = Math.floor(betAmt * currentMultiplier);
+            balance += win;
+            document.getElementById('userBalance').innerText = balance;
+
+            activeBets[boxNum] = false;
+            document.getElementById(cashoutBtn${boxNum}).style.display = 'none';
+            document.getElementById(betBtn${boxNum}).style.display = 'block';
+            
+            addFeedRow("YOU (Real)", currentMultiplier.toFixed(2) + "x", betAmt + " BDT", win + " BDT", "win");
+        }
+
+        function addFeedRow(user, odds, bet, win, statusClass) {
+            let tbody = document.getElementById('liveFeedBody');
+            let tr = document.createElement('tr');
+            
+            let winColorStyle = "";
+            if(statusClass === "win") winColorStyle = "color: #4ADE80; font-weight:bold;";
+            else if(statusClass === "loss") winColorStyle = "color: #EF4444;";
+            else winColorStyle = "color: #FACC15;";
+
+            tr.innerHTML = <td>${user}</td><td>${odds}</td><td>${bet}</td><td style="${winColorStyle}">${win}</td>;
+            tbody.prepend(tr);
+            if(tbody.rows.length > 25) tbody.deleteRow(tbody.rows.length - 1);
+        }
+
+        // ফেক ইউজার জেনারেটর ও অটোমেটিক গেম লুপ
         function startCountdown() {
+            gameState = 'COUNTDOWN';
             let mElem = document.getElementById('mainMultiplier');
             let count = 3;
-            isPlaying = true;
             document.getElementById('explosionEffect').style.display = 'none';
             mElem.classList.remove('crashed');
-            mElem.innerText = count;
+            mElem.innerText = "Next in " + count;
+
+            // নতুন রাউন্ডের জন্য ফেক ডেটা তৈরি
+            generateFakeBetsForRound();
 
             let timer = setInterval(() => {
                 count--;
                 if (count > 0) {
-                    mElem.innerText = count;
+                    mElem.innerText = "Next in " + count;
                 } else {
                     clearInterval(timer);
                     startTheGame();
@@ -309,16 +273,45 @@
             }, 1000);
         }
 
+        function generateFakeBetsForRound() {
+            let tbody = document.getElementById('liveFeedBody');
+            tbody.innerHTML = "";
+            fakeUsersList = [];
+
+            let totalPlayersCount = Math.floor(Math.random() * 800) + 2400;
+            document.getElementById('numBetsCount').innerText = totalPlayersCount.toLocaleString();
+            
+            totalBetsValue += Math.floor(Math.random() * 50000) + 10000;
+            document.getElementById('totalBetsAmount').innerText = Math.floor(totalBetsValue / 1000) + "k BDT";
+
+            // ফেক ইউজারদের লিস্ট তৈরি করা যারা গেমের মধ্যে বেট ধরেছে
+            for(let i=0; i<15; i++) {
+                let maskedUser = "*****" + Math.floor(Math.random() * 90 + 10);
+                let betAmt = Math.floor(Math.random() * 15000) + 200;
+                let targetMultiplier = parseFloat((Math.random() * 5 + 1.1).toFixed(2));
+                
+                fakeUsersList.push({
+                    user: maskedUser,
+                    bet: betAmt,
+                    target: targetMultiplier,
+                    cashedOut: false
+                });
+
+                addFeedRow(maskedUser, "---", betAmt.toLocaleString() + " BDT", "In Play", "yellow");
+            }
+        }
+
         function startTheGame() {
+            gameState = 'FLYING';
             currentMultiplier = 1.00;
-            crashAt = parseFloat((Math.random() * 4 + 1.2).toFixed(2));
-            playWindSound();
+            crashAt = parseFloat((Math.random() * 4 + 1.3).toFixed(2));
 
             let plane = document.getElementById('planeContainer');
             let bottomPos = 20;
             let leftPos = 15;
             plane.style.bottom = bottomPos + '%';
             plane.style.left = leftPos + '%';
+            plane.style.display = 'block';
 
             if (gameInterval) clearInterval(gameInterval);
 
@@ -331,30 +324,42 @@
                 plane.style.bottom = bottomPos + '%';
                 plane.style.left = leftPos + '%';
 
+                // ফেক ইউজারদের অটো ক্যাশআউট হ্যান্ডেল করা (লাইভ দেখাবে কে টাকা তুলল)
+                updateFakeUsersAction();
+
+                // অটো-প্লে চেক
+                for (let i = 1; i <= 2; i++) {
+                    if (activeBets[i] && document.getElementById(autoPlay${i}).checked) {
+                        cashOut(i);
+                    }
+                }
+
                 if (currentMultiplier >= crashAt) {
                     gameOver();
                 }
             }, 100);
         }
 
-        function cashOut(boxNum) {
-            if (!activeBets[boxNum]) return;
-            let betAmt = parseFloat(document.getElementById(betAmount${boxNum}).value);
-            let win = Math.floor(betAmt * currentMultiplier);
-            balance += win;
-            document.getElementById('userBalance').innerText = balance;
-
-            activeBets[boxNum] = false;
-            document.getElementById(cashoutBtn${boxNum}).style.display = 'none';
-            document.getElementById(betBtn${boxNum}).style.display = 'block';
-            alert('জিতেছেন: ' + win + ' BDT');
+        function updateFakeUsersAction() {
+            let rows = document.getElementById('liveFeedBody').rows;
+            for(let i=0; i<fakeUsersList.length; i++) {
+                let fUser = fakeUsersList[i];
+                if(!fUser.cashedOut && currentMultiplier >= fUser.target) {
+                    fUser.cashedOut = true;
+                    let winAmount = Math.floor(fUser.bet * fUser.target);
+                    if(rows[i]) {
+                        rows[i].cells[1].innerText = fUser.target.toFixed(2) + "x";
+                        rows[i].cells[3].innerText = winAmount.toLocaleString() + " BDT";
+                        rows[i].cells[3].style.color = "#4ADE80";
+                        rows[i].cells[3].style.fontWeight = "bold";
+                    }
+                }
+            }
         }
 
         function gameOver() {
             clearInterval(gameInterval);
-            isPlaying = false;
-            stopWindSound();
-            playBlastSound();
+            gameState = 'CRASHED';
 
             let mElem = document.getElementById('mainMultiplier');
             mElem.innerText = "CRASHED (" + crashAt.toFixed(2) + "x)";
@@ -362,13 +367,39 @@
 
             let explosion = document.getElementById('explosionEffect');
             explosion.style.display = 'block';
+            document.getElementById('planeContainer').style.display = 'none';
 
+            // যারা ক্রাশের আগে তুলতে পারেনি তাদের রেড মার্ক করা
+            let rows = document.getElementById('liveFeedBody').rows;
+            for(let i=0; i<fakeUsersList.length; i++) {
+                if(!fakeUsersList[i].cashedOut) {
+                    if(rows[i]) {
+                        rows[i].cells[1].innerText = crashAt.toFixed(2) + "x";
+                        rows[i].cells[3].innerText = "0 BDT";
+                        rows[i].cells[3].style.color = "#EF4444";
+                    }
+                }
+            }
+
+            // রিয়েল ইউজারের লস হ্যান্ডেল করা
             for (let i = 1; i <= 2; i++) {
+                if(activeBets[i]) {
+                    addFeedRow("YOU (Real)", crashAt.toFixed(2) + "x", document.getElementById(betAmount${i}).value + " BDT", "0 BDT", "loss");
+                }
                 activeBets[i] = false;
                 document.getElementById(cashoutBtn${i}).style.display = 'none';
                 document.getElementById(betBtn${i}).style.display = 'block';
             }
+
+            // ৩ সেকেন্ড পর স্বয়ংক্রিয়ভাবে নতুন রাউন্ড শুরু হবে
+            setTimeout(() => {
+                startCountdown();
+            }, 3000);
         }
+
+        window.onload = function() {
+            startCountdown();
+        };
     </script>
 </body>
 </html>
