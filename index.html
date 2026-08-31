@@ -31,7 +31,7 @@
         @keyframes moveBuildings { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
         #planeContainer { position: absolute; bottom: 20%; left: 15%; z-index: 10; transition: transform 0.1s ease-out; }
-        #plane { width: 70px; height: 70px; fill: #38BDF8; filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.8)); }
+        #plane { width: 65px; height: 65px; fill: #38BDF8; filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.8)); transform: rotate(25deg); }
         
         .explosion { position: absolute; width: 120px; height: 120px; background: radial-gradient(circle, #f97316 0%, #ef4444 50%, transparent 80%); border-radius: 50%; z-index: 20; transform: scale(0); animation: explode 0.5s ease-out forwards; display: none; }
         @keyframes explode { 0% { transform: scale(0.2); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
@@ -102,7 +102,7 @@
                     <div class="buildings"></div>
 
                     <div id="planeContainer">
-                        <svg id="plane" viewBox="0 0 576 512"><path d="M485.2 163.1L248.5 256l236.7 92.9c16.4 6.4 27.3 22.2 27.3 39.8v29.7c0 26.1-21.1 47.2-47.2 47.2-5.9 0-11.7-1.1-17.1-3.3L352 433.5V464c0 26.5-21.5 48-48 48s-48-21.5-48-48v-30.5l-106.2 41.7c-5.4 2.1-11.2 3.3-17.1 3.3-26.1 0-47.2-21.1-47.2-47.2v-29.7c0-17.6 10.9-33.4 27.3-39.8L90.8 256L54.2 163.1C37.8 156.7 27 140.9 27 123.3V93.6C27 67.5 48.1 46.4 74.2 46.4c5.9 0 11.7 1.1 17.1 3.3L256 117.4V48c0-26.5 21.5-48 48-48s48 21.5 48 48v69.4l164.7-67.7c5.4-2.1 11.2-3.3 17.1-3.3c26.1 0 47.2 21.1 47.2 47.2v29.7c0 17.6-10.9 33.4-27.3 39.8z"/></svg>
+                        <svg id="plane" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
                     </div>
                     <div id="explosionEffect" class="explosion"></div>
 
@@ -157,9 +157,9 @@
 
         <div class="sidebar">
             <div class="sidebar-header">
-                <div>Bets <span id="numBetsCount">2,912</span></div>
-                <div>Total <span id="totalBetsAmount">782k BDT</span></div>
-                <div>Win <span id="totalWinAmount">340k BDT</span></div>
+                <div>Bets <span id="numBetsCount">5,842</span></div>
+                <div>Total <span id="totalBetsAmount">1.4M BDT</span></div>
+                <div>Win <span id="totalWinAmount">820k BDT</span></div>
             </div>
             <div class="sidebar-feed">
                 <table>
@@ -186,7 +186,8 @@
         let activeBets = { 1: false, 2: false };
         let gameState = 'IDLE'; 
         let fakeUsersList = [];
-        let totalBetsValue = 750000;
+        let totalBetsValue = 1250000;
+        let totalWinValue = 650000;
 
         function toggleFullScreen() {
             let elem = document.getElementById("gameWrapper");
@@ -215,7 +216,7 @@
             document.getElementById(betBtn${boxNum}).style.display = 'none';
             document.getElementById(cashoutBtn${boxNum}).style.display = 'block';
 
-            addFeedRow("YOU (Real)", "-", betAmt + " BDT", "Running...", "yellow");
+            addFeedRow("YOU (Real)", "-", betAmt.toLocaleString() + " BDT", "Running...", "yellow");
         }
 
         function cashOut(boxNum) {
@@ -229,7 +230,7 @@
             document.getElementById(cashoutBtn${boxNum}).style.display = 'none';
             document.getElementById(betBtn${boxNum}).style.display = 'block';
             
-            addFeedRow("YOU (Real)", currentMultiplier.toFixed(2) + "x", betAmt + " BDT", win + " BDT", "win");
+            addFeedRow("YOU (Real)", currentMultiplier.toFixed(2) + "x", betAmt.toLocaleString() + " BDT", win.toLocaleString() + " BDT", "win");
         }
 
         function addFeedRow(user, odds, bet, win, statusClass) {
@@ -243,7 +244,7 @@
 
             tr.innerHTML = <td>${user}</td><td>${odds}</td><td>${bet}</td><td style="${winColorStyle}">${win}</td>;
             tbody.prepend(tr);
-            if(tbody.rows.length > 25) tbody.deleteRow(tbody.rows.length - 1);
+            if(tbody.rows.length > 30) tbody.deleteRow(tbody.rows.length - 1);
         }
 
         function startCountdown() {
@@ -255,7 +256,7 @@
             mElem.classList.remove('crashed');
             mElem.innerText = "Next in " + count;
 
-            generateFakeBetsForRound();
+            generateMassiveBetsForRound();
 
             let timer = setInterval(() => {
                 count--;
@@ -268,21 +269,28 @@
             }, 1000);
         }
 
-        function generateFakeBetsForRound() {
+        function generateMassiveBetsForRound() {
             let tbody = document.getElementById('liveFeedBody');
             tbody.innerHTML = "";
             fakeUsersList = [];
 
-            let totalPlayersCount = Math.floor(Math.random() * 800) + 2400;
+            // ৫০০০ থেকে ৬০০০+ খেলোয়াড়ের র‍্যান্ডম কাউন্ট
+            let totalPlayersCount = Math.floor(Math.random() * 1200) + 5200;
             document.getElementById('numBetsCount').innerText = totalPlayersCount.toLocaleString();
             
-            totalBetsValue += Math.floor(Math.random() * 50000) + 10000;
-            document.getElementById('totalBetsAmount').innerText = Math.floor(totalBetsValue / 1000) + "k BDT";
+            let roundTotalBet = Math.floor(Math.random() * 400000) + 1200000;
+            totalBetsValue += roundTotalBet;
+            document.getElementById('totalBetsAmount').innerText = (totalBetsValue / 1000000).toFixed(1) + "M BDT";
 
-            for(let i=0; i<12; i++) {
-                let maskedUser = "*****" + Math.floor(Math.random() * 90 + 10);
-                let betAmt = Math.floor(Math.random() * 15000) + 200;
-                let targetMultiplier = parseFloat((Math.random() * 4 + 1.1).toFixed(2));
+            let roundTotalWin = Math.floor(roundTotalBet * 0.65);
+            totalWinValue += roundTotalWin;
+            document.getElementById('totalWinAmount').innerText = Math.floor(totalWinValue / 1000) + "k BDT";
+
+            // সাইডবার ফিডে দেখানোর জন্য ১২-১৫ টি ডাইনামিক রো জেনারেট করা
+            for(let i=0; i<14; i++) {
+                let maskedUser = "*****" + Math.floor(Math.random() * 900 + 100);
+                let betAmt = Math.floor(Math.random() * 25000) + 300;
+                let targetMultiplier = parseFloat((Math.random() * 4.5 + 1.1).toFixed(2));
                 
                 fakeUsersList.push({
                     user: maskedUser,
@@ -298,7 +306,7 @@
         function startTheGame() {
             gameState = 'FLYING';
             currentMultiplier = 1.00;
-            crashAt = parseFloat((Math.random() * 4 + 1.2).toFixed(2));
+            crashAt = parseFloat((Math.random() * 4.5 + 1.15).toFixed(2));
 
             let plane = document.getElementById('planeContainer');
             let bottomPos = 20;
@@ -373,13 +381,14 @@
 
             for (let i = 1; i <= 2; i++) {
                 if(activeBets[i]) {
-                    addFeedRow("YOU (Real)", crashAt.toFixed(2) + "x", document.getElementById(betAmount${i}).value + " BDT", "0 BDT", "loss");
+                    addFeedRow("YOU (Real)", crashAt.toFixed(2) + "x", parseFloat(document.getElementById(betAmount${i}).value).toLocaleString() + " BDT", "0 BDT", "loss");
                 }
                 activeBets[i] = false;
                 document.getElementById(cashoutBtn${i}).style.display = 'none';
                 document.getElementById(betBtn${i}).style.display = 'block';
             }
 
+            // ৩ সেকেন্ড পর স্বয়ংক্রিয়ভাবে আবার নতুন রাউন্ড শুরু হবে
             setTimeout(() => {
                 startCountdown();
             }, 3000);
