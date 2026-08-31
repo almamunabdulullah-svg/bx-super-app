@@ -1,0 +1,215 @@
+// DOM Elements
+const connectWalletBtn = document.getElementById('connectWalletBtn');
+const walletStatus = document.getElementById('walletStatus');
+const walletAddressDisplay = document.getElementById('walletAddressDisplay');
+const walletBalance = document.getElementById('walletBalance');
+const liveFeedContainer = document.getElementById('liveFeedContainer');
+
+const myWalletAddress = "0x30Ad271CcBA208215E80b607eFBd389486c9CF6A";
+
+// --- Web3 (Wallet Connect) Part ---
+connectWalletBtn.addEventListener('click', () => {
+    if (typeof window.ethereum !== 'undefined') {
+        console.log('Ethereum wallet is detected!');
+        connectMetaMask();
+    } else {
+        simulateWalletConnection();
+    }
+});
+
+async function connectMetaMask() {
+    try {
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        const account = accounts[0];
+
+        walletAddressDisplay.innerText = account.substring(0, 6) + '...' + account.substring(38);
+        walletStatus.innerText = "Connected via MetaMask";
+        walletStatus.classList.remove('disconnected');
+        walletStatus.classList.add('connected');
+        connectWalletBtn.innerText = "Wallet Connected";
+        connectWalletBtn.classList.add('connected');
+        connectWalletBtn.disabled = true;
+
+        getEthBalance(account);
+    } catch (error) {
+        console.error('User denied account access', error);
+    }
+}
+
+function simulateWalletConnection() {
+    const isAlreadyConnected = walletStatus.classList.contains('connected');
+    if (!isAlreadyConnected) {
+        walletAddressDisplay.innerText = myWalletAddress;
+        walletStatus.innerText = "Demo Mode";
+        walletStatus.classList.remove('disconnected');
+        walletStatus.classList.add('connected');
+        connectWalletBtn.innerText = "Demo Active";
+        connectWalletBtn.classList.add('connected');
+        connectWalletBtn.disabled = true;
+        
+        walletBalance.innerText = "1.4534 ETH";
+    }
+}
+
+async function getEthBalance(address) {
+    walletBalance.innerText = "1.2345 ETH";
+    console.log('Balance fetched for', address);
+}
+
+// --- WebSocket (Live Feed) Part ---
+// আরও স্থিতিশীল এবং রিলায়েবল পাবলিক ইকো সার্ভার লিঙ্ক
+const socketUrl = 'wss://echo.websocket.events'; 
+
+function startLiveWebSocketFeed() {
+    const ws = new WebSocket(socketUrl);
+
+    ws.onopen = () => {
+        console.log('WebSocket connection opened.');
+        ws.send('BX Super App Connected Successfully!');
+        
+        liveFeedContainer.innerHTML = ''; 
+    };
+
+    ws.onmessage = (event) => {
+        console.log('Message from server:', event.data);
+        addLiveFeedCard(event.data);
+    };
+
+    ws.onerror = (error) => {
+        console.error('WebSocket Error:', error);
+        liveFeedContainer.innerHTML = '<p style="color:#EF4444;">Connecting to live stream...</p>';
+        // স্বয়ংক্রিয়ভাবে রিকানেক্ট করার চেষ্টা
+        setTimeout(startLiveWebSocketFeed, 3000);
+    };
+
+    ws.onclose = (event) => {
+        console.log('WebSocket connection closed:', event);
+        liveFeedContainer.innerHTML = '<p style="color:#94A3B8;">Reconnecting live feed...</p>';
+        // সংযোগ বিচ্ছিন্ন হলে ৩ সেকেন্ড পর পর পুনরায় সংযোগের চেষ্টা করবে
+        setTimeout(startLiveWebSocketFeed, 3000);
+    };
+}
+
+function addLiveFeedCard(data) {
+    const timestamp = new Date().toLocaleTimeString();
+    
+    const cardHtml = `
+        <div class="card live-card fade-in" style="display: flex; align-items: center; gap: 15px; border: 1px solid #334155; position: relative; margin-bottom: 1rem; background-color: #1E293B; padding: 1.5rem; border-radius: 10px;">
+            <div class="live-icon" style="font-size: 1.5rem; color: #3B82F6;"><i class="fas fa-bolt"></i></div>
+            <div class="live-content">
+                <h4 style="margin: 0 0 5px 0; color: #F8FAFC;">Live Packet Feed <span style="font-weight:normal; color:#94A3B8; font-size: 0.8rem;">${timestamp}</span></h4>
+                <p style="margin: 0; font-family:monospace; font-size:0.85rem; color:#94A3B8;">Data: "${data}"</p>
+            </div>
+            <span class="live-tag" style="position: absolute; top: 10px; right: 10px; background-color: rgba(239, 68, 68, 0.2); color: #EF4444; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold;">LIVE</span>
+        </div>
+    `;
+    
+    liveFeedContainer.insertAdjacentHTML('afterbegin', cardHtml);
+    
+    if (liveFeedContainer.children.length > 5) {
+        liveFeedContainer.removeChild(liveFeedContainer.lastChild);
+    }
+}
+
+// পেজ লোড হওয়ার সাথে সাথে ওয়েবসোকেট কানেকশন শুরু করা
+startLiveWebSocketFeed();
+Message will disappear in: 23h
+23h
+10:51
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BX Crash Game</title>
+    <style>
+        body { background-color: #0F172A; color: #F8FAFC; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
+        .game-box { max-width: 600px; margin: 0 auto; background: #1E293B; padding: 20px; border-radius: 12px; border: 1px solid #334155; }
+        .screen { height: 250px; background: #090D16; border-radius: 8px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        #multiplier { font-size: 3rem; font-weight: bold; color: #38BDF8; }
+        .controls { margin-top: 20px; display: flex; gap: 10px; justify-content: center; }
+        input { padding: 10px; width: 100px; background: #0F172A; border: 1px solid #475569; color: white; border-radius: 6px; font-size: 1rem; }
+        button { padding: 10px 20px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem; }
+        #betBtn { background: #22C55E; color: white; }
+        #cashoutBtn { background: #EF4444; color: white; display: none; }
+        .crashed { color: #EF4444 !important; }
+    </style>
+</head>
+<body>
+
+    <div class="game-box">
+        <h2>BX Crash Game Engine</h2>
+        <div class="screen">
+            <div id="multiplier">1.00x</div>
+        </div>
+        <div class="controls">
+            <input type="number" id="betAmount" value="100" placeholder="Bet">
+            <button id="betBtn" onclick="startTheGame()">Place Bet</button>
+            <button id="cashoutBtn" onclick="cashOut()">Cash Out</button>
+        </div>
+        <p>Balance: <span id="userBalance">1000</span> BDT</p>
+    </div>
+
+    <script>
+        let balance = 1000;
+        let currentMultiplier = 1.00;
+        let gameInterval = null;
+        let isPlaying = false;
+        let crashAt = 1.00;
+
+        function startTheGame() {
+            let bet = parseFloat(document.getElementById('betAmount').value);
+            if(bet > balance || bet <= 0) {
+                alert('পর্যাপ্ত ব্যালেন্স নেই!');
+                return;
+            }
+            
+            balance -= bet;
+            document.getElementById('userBalance').innerText = balance;
+            
+            document.getElementById('betBtn').style.display = 'none';
+            document.getElementById('cashoutBtn').style.display = 'inline-block';
+            
+            currentMultiplier = 1.00;
+            isPlaying = true;
+            document.getElementById('multiplier').classList.remove('crashed');
+            
+            // রেন্ডম ক্র্যাশ পয়েন্ট তৈরি (যেমন ১.১০x থেকে ৫.০০x এর মধ্যে ক্র্যাশ করবে)
+            crashAt = (Math.random() * 4 + 1.1).toFixed(2);
+
+            gameInterval = setInterval(() => {
+                currentMultiplier += 0.04;
+                document.getElementById('multiplier').innerText = currentMultiplier.toFixed(2) + 'x';
+
+                if(currentMultiplier >= crashAt) {
+                    gameOver(false);
+                }
+            }, 100);
+        }
+
+        function cashOut() {
+            if(!isPlaying) return;
+            let bet = parseFloat(document.getElementById('betAmount').value);
+            let winAmount = (bet * currentMultiplier).toFixed(0);
+            balance += parseInt(winAmount);
+            document.getElementById('userBalance').innerText = balance;
+            alert('অভিনন্দন! আপনি জিতেছেন: ' + winAmount + ' BDT');
+            gameOver(true);
+        }
+
+        function gameOver(isWon) {
+            clearInterval(gameInterval);
+            isPlaying = false;
+            let mElem = document.getElementById('multiplier');
+            
+            if(!isWon) {
+                mElem.innerText = "CRASHED (" + crashAt + "x)";
+                mElem.classList.add('crashed');
+            }
+
+            document.getElementById('betBtn').style.display = 'inline-block';
+            document.getElementById('cashoutBtn').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
