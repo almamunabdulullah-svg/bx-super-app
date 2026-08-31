@@ -1,36 +1,55 @@
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <title>BX Super App - Metro UI</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="metro-container">
-        <header class="app-header">
-            <h1>BX Super App</h1>
-            <input type="text" id="searchInput" placeholder="সেবা বা কয়েন সার্চ করুন..." onkeyup="searchTiles()">
-        </header>
-        
-        <div class="tiles-grid" id="tilesGrid">
-            <div class="tile crypto" onclick="openModule('crypto')">
-                <h3>ক্রিপ্টো ও মেমে মার্কেট</h3>
-                <p>লাইভ DEX ট্রেডিং</p>
-            </div>
-            <div class="tile game" onclick="openModule('game')">
-                <h3>থ্রিডি গেম জোন</h3>
-                <p>১০০% উইনিং সিস্টেম</p>
-            </div>
-            <div class="tile bank" onclick="openModule('bank')">
-                <h3>BX ব্যাংক</h3>
-                <p>গ্লোবাল এআই অ্যাকাউন্ট</p>
-            </div>
-            <div class="tile admin" onclick="openModule('admin')">
-                <h3>মাস্টার অ্যাডমিন</h3>
-                <p>গড মোড কন্ট্রোল</p>
-            </div>
-        </div>
-    </div>
-    <script src="script.js"></script>
-</body>
-</html>
+body {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 30px;
+}
+.app-header {
+    margin-bottom: 40px;
+}
+.app-header h1 {
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+.app-header input {
+    padding: 12px 15px;
+    width: 300px;
+    background: #1e1e1e;
+    border: 1px solid #333;
+    color: white;
+    border-radius: 6px;
+    font-size: 14px;
+}
+.tiles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+.tile {
+    background: #1f1f1f;
+    padding: 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    border-left: 6px solid #007acc;
+    min-height: 100px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.tile:hover {
+    transform: scale(1.03);
+    background: #2a2a2a;
+}
+.tile h3 {
+    margin-top: 0;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.tile p {
+    margin: 0;
+    color: #b0b0b0;
+    font-size: 14px;
+}
+.tile.game { border-left-color: #ffaa00; }
+.tile.bank { border-left-color: #00cc66; }
+.tile.admin { border-left-color: #cc0000; }
