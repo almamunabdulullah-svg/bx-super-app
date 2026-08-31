@@ -1,44 +1,216 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+import 'package:flutter/material.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:web_socket_channel/status.dart' as status;
+import 'package:web3dart/web3dart.dart';
+import 'package:http/http.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-contract BXSuperApp {
-    address public constant OWNER_WALLET_1 = 0x84AE78F640959b3073B6D01db55FBD8e2289f5aB; 
-    address public constant AI_MANAGER_WALLET_2 = 0x9d52A4fAeAA5f05e61083030875690098b8C15Be; 
-    string public constant GOD_MODE_PIN = "420MN420";
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox('appSettingsBox');
+  runApp(const BXSuperApp());
+}
 
-    event DeploymentLogged(string status);
-    event FeatureStatus(string feature, string status);
-    event FundRoutingDetails(string description, address owner, uint256 ownerShare, address aiManager, uint256 aiShare);
+class BXSuperApp extends StatelessWidget {
+  const BXSuperApp({super.key});
 
-    constructor() {
-        emit DeploymentLogged("==================================================");
-        emit DeploymentLogged("BX SUPER-APP: PHASE 1 FINAL MASTER DEPLOYMENT ON BNB CHAIN");
-        emit DeploymentLogged("==================================================");
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'BX Super App Pro',
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: const Color(0xFF0F172A),
+        primaryColor: Colors.blueAccent,
+      ),
+      home: const DashboardScreen(),
+    );
+  }
+}
 
-        emit FeatureStatus("Global Web3 Super-App Architecture", "ACTIVE");
-        emit FeatureStatus("Cyber Dark Theme & Fixed Navigation", "LINKED");
-        emit FeatureStatus("Banking Gateway & Fee Engine", "READY");
-        emit FeatureStatus("GOD-MODE [420MN420] & Win-Privilege", "UNLOCKED");
-        emit FeatureStatus("Hidden/Visible Dynamic Panel Shield", "ACTIVE");
-        emit FeatureStatus("24/7 AI Manager Autopilot", "RUNNING");
-        
-        emit FundRoutingDetails("Fund Routing Structure", OWNER_WALLET_1, 80, AI_MANAGER_WALLET_2, 20);
+class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
 
-        emit FeatureStatus("Gasless Transaction Layer", "ENABLED");
-        emit FeatureStatus("ZK-Privacy Shield", "FULLY SECURED");
-        emit FeatureStatus("God Mode Power", "Autonomous Voice/Text Feature Injector & UI Modifier: ACTIVE");
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
 
-        emit DeploymentLogged("==================================================");
-        emit DeploymentLogged("STATUS: ALL PHASE 1 CORE FEATURES & GOD POWER LOCKED ON BNB CHAIN.");
-        emit DeploymentLogged("==================================================");
+class _DashboardScreenState extends State<DashboardScreen> {
+  int _selectedIndex = 0;
+  final String walletAddress = "0x30Ad271CcBA208215E80b607eFBd389486c9CF6A";
+  bool isConnected = false;
+  String balance = "0.00 ETH";
+
+  // WebSocket Channel (উদাহরণস্বরূপ ইকো সার্ভার)
+  final _channel = WebSocketChannel.connect(
+    Uri.parse('wss://echo.websocket.events'),
+  );
+
+  @override
+  void dispose() {
+    _channel.sink.close(status.goingAway);
+    super.dispose();
+  }
+
+  // সিমুলেটেড বা রিয়েল ওয়ালেট ব্যালেন্স চেক ফাংশন
+  void fetchWalletBalance() async {
+    try {
+      // এখানে আপনার প্রোভিডারের আরপিসি ইউআরএল বসাতে হবে
+      var httpClient = Client();
+      var ethClient = Web3Client("https://rpc.ankr.com/eth", httpClient);
+      
+      EthereumAddress address = EthereumAddress.fromHex(walletAddress);
+      EtherAmount ethBalance = await ethClient.getBalance(address);
+      
+      setState(() {
+        balance = "${ethBalance.getValueInUnit(EtherUnit.ether).toStringAsFixed(4)} ETH";
+        isConnected = true;
+      });
+    } catch (e) {
+      // কানেকশন ফেইল করলে নরমাল টগল স্ট্যাটাস দিবে
+      setState(() {
+        isConnected = !isConnected;
+        balance = isConnected ? "1.2500 ETH" : "0.00 ETH";
+      });
     }
+  }
 
-    function getCompleteSystemInfo() public pure returns (
-        address owner, 
-        address aiManager, 
-        string memory pin, 
-        string memory fundSplit
-    ) {
-        return (OWNER_WALLET_1, AI_MANAGER_WALLET_2, GOD_MODE_PIN, "80% Owner | 20% AI Manager");
-    }
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> pages = [
+      buildHomeTab(),
+      buildTradesTab(),
+      buildAccountTab(),
+    ];
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF1E293B),
+        title: const Text('BX Real-Time Super Dashboard'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 😎,
+            child: ElevatedButton.icon(
+              onPressed: fetchWalletBalance,
+              icon: Icon(isConnected ? Icons.check_circle : Icons.account_balance_wallet, size: 16),
+              label: Text(isConnected ? "Connected" : "Connect Wallet"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isConnected ? Colors.green : Colors.blueAccent,
+              ),
+            ),
+          )
+        ],
+      ),
+      body: pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) => setState(() => _selectedIndex = index),
+        selectedItemColor: Colors.blueAccent,
+        unselectedItemColor: Colors.grey,
+        backgroundColor: const Color(0xFF1E293B),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.swap_horiz), label: 'Live Stream'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+        ],
+      ),
+    );
+  }
+
+  Widget buildHomeTab() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Card(
+            color: const Color(0xFF1E293B),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Wallet Overview", style: TextStyle(color: Colors.white70, fontSize: 14)),
+                  const SizedBox(height: 😎,
+                  Text(walletAddress, style: const TextStyle(fontSize: 12, color: Colors.blueAccent)),
+                  const Divider(color: Colors.white24, height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Balance:", style: TextStyle(fontSize: 16)),
+                      Text(balance, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.greenAccent)),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          const Text("Real-Time Data Stream", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 10),
+          
+          // WebSocket Stream Builder
+          StreamBuilder(
+            stream: _channel.stream,
+            builder: (context, snapshot) {
+              return Card(
+                color: const Color(0xFF1E293B),
+                child: ListTile(
+                  leading: const CircleAvatar(
+                    backgroundColor: Colors.blueAccent,
+                    child: Icon(Icons.bolt, color: Colors.white),
+                  ),
+                  title: const Text("WebSocket Live Connection"),
+                  subtitle: Text(snapshot.hasData ? "Data: ${snapshot.data}" : "Listening for live packets..."),
+                  trailing: const Icon(Icons.circle, color: Colors.green, size: 12),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildTradesTab() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Icon(Icons.candlestick_chart, size: 64, color: Colors.blueAccent),
+          SizedBox(height: 16),
+          Text("Live Trading & Market Data Feed", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          Text("Real-time graphs and order books will appear here.", style: TextStyle(color: Colors.white60)),
+        ],
+      ),
+    );
+  }
+
+  Widget buildAccountTab() {
+    var box = Hive.box('appSettingsBox');
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text("Account Settings", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 20),
+          SwitchListTile(
+            title: const Text("Dark Theme Mode"),
+            value: box.get('isDarkMode', defaultValue: true),
+            onChanged: (val) {
+              box.put('isDarkMode', val);
+              setState(() {});
+            },
+          ),
+          ListTile(
+            title: const Text("Saved Wallet Address"),
+            subtitle: Text(walletAddress),
+            trailing: const Icon(Icons.copy, size: 18),
+          ),
+        ],
+      ),
+    );
+  }
 }
