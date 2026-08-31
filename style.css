@@ -1,55 +1,131 @@
-body {
-    background-color: #121212;
-    color: #ffffff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+* {
+    box-sizing: border-box;
     margin: 0;
-    padding: 30px;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+body {
+    background-color: #0f172a;
+    color: #f8fafc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 480px;
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
 .app-header {
-    margin-bottom: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
-.app-header h1 {
-    font-size: 28px;
-    margin-bottom: 15px;
+
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+    color: #38bdf8;
 }
-.app-header input {
-    padding: 12px 15px;
-    width: 300px;
-    background: #1e1e1e;
-    border: 1px solid #333;
+
+.god-btn {
+    background: #e11d48;
     color: white;
-    border-radius: 6px;
-    font-size: 14px;
-}
-.tiles-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-}
-.tile {
-    background: #1f1f1f;
-    padding: 30px;
+    border: none;
+    padding: 6px 12px;
     border-radius: 8px;
     cursor: pointer;
-    transition: transform 0.2s, background 0.2s;
-    border-left: 6px solid #007acc;
-    min-height: 100px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
-.tile:hover {
-    transform: scale(1.03);
-    background: #2a2a2a;
+
+.dashboard-card {
+    background: #0f172a;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 20px;
 }
-.tile h3 {
-    margin-top: 0;
-    font-size: 20px;
-    margin-bottom: 10px;
+
+.dashboard-card h1 {
+    font-size: 32px;
+    color: #22c55e;
+    margin: 10px 0;
 }
-.tile p {
-    margin: 0;
-    color: #b0b0b0;
-    font-size: 14px;
+
+.action-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
 }
-.tile.game { border-left-color: #ffaa00; }
-.tile.bank { border-left-color: #00cc66; }
-.tile.admin { border-left-color: #cc0000; }
+
+.action-buttons button {
+    background: #334155;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.modules-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.module-box {
+    background: #334155;
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.module-box:hover {
+    background: #475569;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin: 15px 0;
+    background: #0f172a;
+    border: 1px solid #475569;
+    color: white;
+    border-radius: 6px;
+}
+
+.modal-content button {
+    background: #22c55e;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 5px;
+}
