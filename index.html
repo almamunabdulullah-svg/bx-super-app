@@ -21,7 +21,7 @@
         .top-btn-group { display: flex; gap: 8px; }
         .top-pill-btn { background: #1E293B; border: 1px solid #334155; color: #38BDF8; padding: 4px 12px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: bold; }
         
-        #gameWrapper { display: flex; flex-direction: column; flex-grow: 1; min-height: 280px; position: relative; }
+        #gameWrapper { display: flex; flex-direction: column; flex-grow: 1; min-height: 250px; position: relative; }
         #gameScreen { flex-grow: 1; background: linear-gradient(to bottom, #020617, #1e1b4b, #312e81); border-radius: 10px; border: 1px solid #334155; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 30px rgba(0,0,0,0.8); }
         
         .sky-layer { position: absolute; width: 200%; height: 100%; background-image: radial-gradient(white 1px, transparent 1px); background-size: 40px 40px; opacity: 0.15; animation: moveStars 20s linear infinite; }
@@ -31,45 +31,46 @@
         @keyframes moveBuildings { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
         #planeContainer { position: absolute; bottom: 20%; left: 15%; z-index: 10; transition: transform 0.1s ease-out; }
-        #plane { width: 65px; height: 65px; fill: #38BDF8; filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.8)); transform: rotate(25deg); }
+        #plane { width: 55px; height: 55px; fill: #38BDF8; filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.8)); transform: rotate(25deg); }
         
-        .explosion { position: absolute; width: 120px; height: 120px; background: radial-gradient(circle, #f97316 0%, #ef4444 50%, transparent 80%); border-radius: 50%; z-index: 20; transform: scale(0); animation: explode 0.5s ease-out forwards; display: none; }
+        .explosion { position: absolute; width: 100px; height: 100px; background: radial-gradient(circle, #f97316 0%, #ef4444 50%, transparent 80%); border-radius: 50%; z-index: 20; transform: scale(0); animation: explode 0.5s ease-out forwards; display: none; }
         @keyframes explode { 0% { transform: scale(0.2); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
 
-        #mainMultiplier { font-size: 6rem; font-weight: 900; color: #38BDF8; text-shadow: 0 0 20px rgba(56, 189, 248, 0.6); z-index: 5; letter-spacing: -2px; }
+        #mainMultiplier { font-size: 5rem; font-weight: 900; color: #38BDF8; text-shadow: 0 0 20px rgba(56, 189, 248, 0.6); z-index: 5; letter-spacing: -2px; }
         #mainMultiplier.crashed { color: #EF4444; text-shadow: 0 0 20px rgba(239, 68, 68, 0.8); animation: shake 0.4s; }
         @keyframes shake { 0% { transform: translate(4px, 4px); } 50% { transform: translate(-4px, -4px); } 100% { transform: translate(0, 0); } }
 
-        .control-panel { display: flex; gap: 10px; margin-top: 10px; flex-shrink: 0; }
-        .bet-box { flex: 1; background: #0F172A; padding: 10px; border-radius: 8px; border: 1px solid #334155; display: flex; flex-direction: column; gap: 6px; }
+        .control-panel { display: flex; gap: 10px; margin-top: 8px; flex-shrink: 0; }
+        .bet-box { flex: 1; background: #0F172A; padding: 8px; border-radius: 8px; border: 1px solid #334155; display: flex; flex-direction: column; gap: 5px; }
         
         .input-row { display: flex; position: relative; align-items: center; }
-        input[type="number"] { width: 100%; padding: 8px 30px 8px 10px; background: #1E293B; border: 1px solid #475569; color: white; border-radius: 6px; font-size: 0.9rem; }
-        .clear-input { position: absolute; right: 10px; background: none; border: none; color: #94A3B8; cursor: pointer; font-size: 1rem; }
+        input[type="number"] { width: 100%; padding: 6px 25px 6px 8px; background: #1E293B; border: 1px solid #475569; color: white; border-radius: 6px; font-size: 0.85rem; }
+        .clear-input { position: absolute; right: 8px; background: none; border: none; color: #94A3B8; cursor: pointer; font-size: 0.9rem; }
 
-        .buttons-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
-        .quick-btn { padding: 4px; background: #1E293B; color: #E2E8F0; border: 1px solid #334155; border-radius: 4px; font-size: 0.75rem; cursor: pointer; }
+        .buttons-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+        .quick-btn { padding: 3px; background: #1E293B; color: #E2E8F0; border: 1px solid #334155; border-radius: 4px; font-size: 0.7rem; cursor: pointer; }
         .quick-btn:hover { background: #334155; }
 
-        .action-btn { padding: 10px; border: none; border-radius: 6px; font-size: 0.95rem; font-weight: bold; cursor: pointer; text-transform: uppercase; width: 100%; }
+        .action-btn { padding: 8px; border: none; border-radius: 6px; font-size: 0.85rem; font-weight: bold; cursor: pointer; text-transform: uppercase; width: 100%; }
         .bet-btn { background: #F97316; color: white; }
         .bet-btn:hover { background: #EA580C; }
         .cashout-btn { background: #CA8A04; color: white; display: none; }
-        .autoplay-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: #94A3B8; }
+        
+        .autoplay-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: #94A3B8; }
 
-        .sidebar { width: 320px; background: #0F172A; border-left: 1px solid #1E293B; display: flex; flex-direction: column; flex-shrink: 0; }
-        .sidebar-header { background: linear-gradient(to right, #7c2d12, #9a3412); padding: 10px; font-size: 0.75rem; display: flex; justify-content: space-around; text-align: center; border-bottom: 1px solid #1E293B; }
-        .sidebar-header div span { display: block; font-weight: bold; font-size: 0.85rem; color: #FFEDD5; }
+        .sidebar { width: 300px; background: #0F172A; border-left: 1px solid #1E293B; display: flex; flex-direction: column; flex-shrink: 0; }
+        .sidebar-header { background: linear-gradient(to right, #7c2d12, #9a3412); padding: 8px; font-size: 0.7rem; display: flex; justify-content: space-around; text-align: center; border-bottom: 1px solid #1E293B; }
+        .sidebar-header div span { display: block; font-weight: bold; font-size: 0.8rem; color: #FFEDD5; }
         
         .sidebar-feed { flex-grow: 1; overflow-y: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.75rem; text-align: left; }
-        th { background: #1E293B; color: #94A3B8; padding: 6px 8px; position: sticky; top: 0; z-index: 2; }
-        td { padding: 6px 8px; border-bottom: 1px solid #1E293B; color: #CBD5E1; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.7rem; text-align: left; }
+        th { background: #1E293B; color: #94A3B8; padding: 5px 6px; position: sticky; top: 0; z-index: 2; }
+        td { padding: 5px 6px; border-bottom: 1px solid #1E293B; color: #CBD5E1; }
 
         @media (max-width: 768px) {
             .main-container { flex-direction: column; overflow-y: auto; }
             body { overflow: auto; height: auto; }
-            .sidebar { width: 100%; height: 250px; border-left: none; border-top: 1px solid #1E293B; }
+            .sidebar { width: 100%; height: 220px; border-left: none; border-top: 1px solid #1E293B; }
             .control-panel { flex-direction: column; }
         }
     </style>
@@ -93,7 +94,7 @@
                     <button class="top-pill-btn">HISTORY</button>
                     <button class="top-pill-btn" onclick="toggleFullScreen()">⛶ Fullscreen</button>
                 </div>
-                <span style="font-size:0.85rem; color:#94A3B8;">Balance: <span id="userBalance" style="color:#38BDF8; font-weight:bold;">10000</span> BDT</span>
+                <span style="font-size:0.8rem; color:#94A3B8;">Balance: <span id="userBalance" style="color:#38BDF8; font-weight:bold;">10000</span> BDT</span>
             </div>
 
             <div id="gameWrapper">
@@ -199,13 +200,17 @@
         }
 
         function setBet(boxNum, amount) {
-            document.getElementById(betAmount${boxNum}).value = amount;
+            document.getElementById(`betAmount${boxNum}`).value = amount;
         }
 
         function placeBet(boxNum) {
-            let betAmt = parseFloat(document.getElementById(betAmount${boxNum}).value);
-            if (isNaN(betAmt) || betAmt <= 0 || betAmt > balance) {
-                alert('অপর্যাপ্ত ব্যালেন্স বা ভুল পরিমাণ!');
+            let betAmt = parseFloat(document.getElementById(`betAmount${boxNum}`).value);
+            if (isNaN(betAmt) || betAmt <= 0) {
+                alert('অনুগ্রহ করে সঠিক পরিমাণ লিখুন!');
+                return;
+            }
+            if (betAmt > balance) {
+                alert('আপনার পর্যাপ্ত ব্যালেন্স নেই!');
                 return;
             }
 
@@ -213,28 +218,29 @@
             document.getElementById('userBalance').innerText = balance;
             activeBets[boxNum] = true;
 
-            document.getElementById(betBtn${boxNum}).style.display = 'none';
-            document.getElementById(cashoutBtn${boxNum}).style.display = 'block';
+            document.getElementById(`betBtn${boxNum}`).style.display = 'none';
+            document.getElementById(`cashoutBtn${boxNum}`).style.display = 'block';
 
             addFeedRow("YOU (Real)", "-", betAmt.toLocaleString() + " BDT", "Running...", "yellow");
         }
 
         function cashOut(boxNum) {
             if (!activeBets[boxNum] || gameState !== 'FLYING') return;
-            let betAmt = parseFloat(document.getElementById(betAmount${boxNum}).value);
+            let betAmt = parseFloat(document.getElementById(`betAmount${boxNum}`).value);
             let win = Math.floor(betAmt * currentMultiplier);
             balance += win;
             document.getElementById('userBalance').innerText = balance;
 
             activeBets[boxNum] = false;
-            document.getElementById(cashoutBtn${boxNum}).style.display = 'none';
-            document.getElementById(betBtn${boxNum}).style.display = 'block';
+            document.getElementById(`cashoutBtn${boxNum}`).style.display = 'none';
+            document.getElementById(`betBtn${boxNum}`).style.display = 'block';
             
             addFeedRow("YOU (Real)", currentMultiplier.toFixed(2) + "x", betAmt.toLocaleString() + " BDT", win.toLocaleString() + " BDT", "win");
         }
 
         function addFeedRow(user, odds, bet, win, statusClass) {
             let tbody = document.getElementById('liveFeedBody');
+            if(!tbody) return;
             let tr = document.createElement('tr');
             
             let winColorStyle = "";
@@ -242,7 +248,7 @@
             else if(statusClass === "loss") winColorStyle = "color: #EF4444;";
             else winColorStyle = "color: #FACC15;";
 
-            tr.innerHTML = <td>${user}</td><td>${odds}</td><td>${bet}</td><td style="${winColorStyle}">${win}</td>;
+            tr.innerHTML = `<td>${user}</td><td>${odds}</td><td>${bet}</td><td style="${winColorStyle}">${win}</td>`;
             tbody.prepend(tr);
             if(tbody.rows.length > 30) tbody.deleteRow(tbody.rows.length - 1);
         }
@@ -271,10 +277,10 @@
 
         function generateMassiveBetsForRound() {
             let tbody = document.getElementById('liveFeedBody');
+            if(!tbody) return;
             tbody.innerHTML = "";
             fakeUsersList = [];
 
-            // ৫০০০ থেকে ৬০০০+ খেলোয়াড়ের র‍্যান্ডম কাউন্ট
             let totalPlayersCount = Math.floor(Math.random() * 1200) + 5200;
             document.getElementById('numBetsCount').innerText = totalPlayersCount.toLocaleString();
             
@@ -286,9 +292,8 @@
             totalWinValue += roundTotalWin;
             document.getElementById('totalWinAmount').innerText = Math.floor(totalWinValue / 1000) + "k BDT";
 
-            // সাইডবার ফিডে দেখানোর জন্য ১২-১৫ টি ডাইনামিক রো জেনারেট করা
             for(let i=0; i<14; i++) {
-                let maskedUser = "*****" + Math.floor(Math.random() * 900 + 100);
+                let maskedUser = "*******" + Math.floor(Math.random() * 900 + 100);
                 let betAmt = Math.floor(Math.random() * 25000) + 300;
                 let targetMultiplier = parseFloat((Math.random() * 4.5 + 1.1).toFixed(2));
                 
@@ -328,7 +333,7 @@
                 updateFakeUsersAction();
 
                 for (let i = 1; i <= 2; i++) {
-                    if (activeBets[i] && document.getElementById(autoPlay${i}).checked) {
+                    if (activeBets[i] && document.getElementById(`autoPlay${i}`).checked) {
                         cashOut(i);
                     }
                 }
@@ -340,7 +345,9 @@
         }
 
         function updateFakeUsersAction() {
-            let rows = document.getElementById('liveFeedBody').rows;
+            let tbody = document.getElementById('liveFeedBody');
+            if(!tbody) return;
+            let rows = tbody.rows;
             for(let i=0; i<fakeUsersList.length; i++) {
                 let fUser = fakeUsersList[i];
                 if(!fUser.cashedOut && currentMultiplier >= fUser.target) {
@@ -368,27 +375,29 @@
             explosion.style.display = 'block';
             document.getElementById('planeContainer').style.display = 'none';
 
-            let rows = document.getElementById('liveFeedBody').rows;
-            for(let i=0; i<fakeUsersList.length; i++) {
-                if(!fakeUsersList[i].cashedOut) {
-                    if(rows[i]) {
-                        rows[i].cells[1].innerText = crashAt.toFixed(2) + "x";
-                        rows[i].cells[3].innerText = "0 BDT";
-                        rows[i].cells[3].style.color = "#EF4444";
+            let tbody = document.getElementById('liveFeedBody');
+            if(tbody) {
+                let rows = tbody.rows;
+                for(let i=0; i<fakeUsersList.length; i++) {
+                    if(!fakeUsersList[i].cashedOut) {
+                        if(rows[i]) {
+                            rows[i].cells[1].innerText = crashAt.toFixed(2) + "x";
+                            rows[i].cells[3].innerText = "0 BDT";
+                            rows[i].cells[3].style.color = "#EF4444";
+                        }
                     }
                 }
             }
 
             for (let i = 1; i <= 2; i++) {
                 if(activeBets[i]) {
-                    addFeedRow("YOU (Real)", crashAt.toFixed(2) + "x", parseFloat(document.getElementById(betAmount${i}).value).toLocaleString() + " BDT", "0 BDT", "loss");
+                    addFeedRow("YOU (Real)", crashAt.toFixed(2) + "x", parseFloat(document.getElementById(`betAmount${i}`).value).toLocaleString() + " BDT", "0 BDT", "loss");
                 }
                 activeBets[i] = false;
-                document.getElementById(cashoutBtn${i}).style.display = 'none';
-                document.getElementById(betBtn${i}).style.display = 'block';
+                document.getElementById(`cashoutBtn${i}`).style.display = 'none';
+                document.getElementById(`betBtn${i}`).style.display = 'block';
             }
 
-            // ৩ সেকেন্ড পর স্বয়ংক্রিয়ভাবে আবার নতুন রাউন্ড শুরু হবে
             setTimeout(() => {
                 startCountdown();
             }, 3000);
