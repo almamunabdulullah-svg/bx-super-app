@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BX Super App - Live Gaming Lobby</title>
+    <title>BX Super-App - Ultimate Gaming Engine</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* গ্রাফিক্স ও পারফরম্যান্স বুস্ট */
         @keyframes pulseGlow {
             0%, 100% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); }
             50% { box-shadow: 0 0 30px rgba(245, 158, 11, 0.8); }
@@ -14,6 +15,17 @@
         .gaming-glow { animation: pulseGlow 2s infinite; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* লোডিং স্পিনার */
+        .lds-ring { display: inline-block; position: relative; width: 40px; height: 40px; }
+        .lds-ring div { box-sizing: border-box; display: block; position: absolute; width: 32px; height: 32px; margin: 4px; border: 4px solid #f59e0b; border-radius: 50%; animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite; border-color: #f59e0b transparent transparent transparent; }
+        .lds-ring div:nth-child(1) { animation-delay: -0.45s; }
+        .lds-ring div:nth-child(2) { animation-delay: -0.3s; }
+        .lds-ring div:nth-child(3) { animation-delay: -0.15s; }
+        @keyframes lds-ring { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* গেম কার্ডের স্থির সাইজ */
+        .game-card-fixed { height: 180px; }
     </style>
 </head>
 <body class="bg-[#0b0e14] text-slate-100 font-sans antialiased min-h-screen flex flex-col items-center">
@@ -24,11 +36,14 @@
             <div class="bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 font-black px-3 py-1 rounded-xl text-lg tracking-wider shadow-md">
                 BX
             </div>
-            <span class="font-black text-sm tracking-widest text-white">LIVE LOBBY</span>
+            <span class="font-black text-sm tracking-widest text-white">SMOOTH ENGINE</span>
         </div>
-        <div class="bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 rounded-full flex items-center space-x-1.5">
-            <span class="h-2 w-2 rounded-full bg-emerald-400 animate-ping"></span>
-            <span class="text-[10px] font-bold text-emerald-400">REAL MONEY API</span>
+        <div class="flex items-center space-x-1.5">
+             <span class="relative flex h-3 w-3">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+             </span>
+            <span class="text-[10px] font-bold text-emerald-400">SYNCED</span>
         </div>
     </header>
 
@@ -38,8 +53,8 @@
         <!-- Vault Balance Card -->
         <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-amber-500/30 p-4 shadow-xl">
             <div class="flex justify-between items-center mb-2">
-                <span class="text-[11px] uppercase tracking-wider text-amber-400 font-semibold">Active Vault Balance</span>
-                <span class="bg-amber-500/10 text-amber-400 text-[10px] px-2 py-0.5 rounded-full font-mono">Real Pay: ON</span>
+                <span class="text-[11px] uppercase tracking-wider text-amber-400 font-semibold">Core Vault Balance</span>
+                <span class="bg-emerald-500/10 text-emerald-400 text-[10px] px-2 py-0.5 rounded-full font-mono">Block: #8942301</span>
             </div>
             <div class="text-2xl font-extrabold text-white mb-3">
                 ৳<span id="userBalance">15,000.00</span> <span class="text-xs font-normal text-slate-400">BDT</span>
@@ -47,107 +62,38 @@
             <div class="flex space-x-2">
                 <button onclick="walletAction('Deposit')" class="flex-1 bg-amber-500 hover:bg-amber-400 text-slate-950 py-2 rounded-xl text-xs font-bold transition-all shadow-md flex items-center justify-center space-x-1">
                     <i class="fa-solid fa-wallet"></i>
-                    <span>Deposit ৳5000</span>
+                    <span>Deposit</span>
                 </button>
-                <button onclick="openBrowserLobby()" class="flex-1 bg-gradient-to-r from-red-600 to-amber-600 hover:opacity-90 text-white py-2 rounded-xl text-xs font-bold transition-all shadow-md flex items-center justify-center space-x-1 gaming-glow">
-                    <i class="fa-solid fa-globe"></i>
-                    <span>Open Game Browser (5000+ Games)</span>
+                <button onclick="walletAction('Withdraw')" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-1">
+                    <i class="fa-solid fa-arrow-right-arrow-left text-amber-400"></i>
+                    <span>Withdraw</span>
                 </button>
             </div>
         </div>
 
-        <!-- Featured Banner -->
-        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-950/80 via-slate-900 to-slate-950 border border-amber-500/50 p-4 shadow-xl">
-            <span class="bg-red-500 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-widest">● VIP CASINO API</span>
-            <h2 class="text-lg font-black text-white mt-2">Instant Real Money Play</h2>
-            <p class="text-[11px] text-slate-300 mt-0.5">Click any game below to play with real balance deductions and win instantly.</p>
+        <!-- Search & Filter Bar -->
+        <div class="w-full sticky top-[57px] z-40 bg-[#0b0e14] py-2">
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+                <input type="text" id="searchInput" placeholder="Search 5000+ Games (Instant Filter)..." class="w-full bg-[#0f172a] border border-slate-700 text-white rounded-full py-2.5 pl-12 pr-4 text-xs placeholder:text-slate-500 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all">
+            </div>
         </div>
 
-        <!-- Quick Categories -->
-        <div class="flex space-x-2 overflow-x-auto no-scrollbar py-1">
-            <button onclick="filterCategory('all', this)" class="cat-btn bg-amber-500 text-slate-950 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap shadow">All Games</button>
-            <button onclick="filterCategory('crash', this)" class="cat-btn bg-slate-900 text-slate-300 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap">Crash & Fast</button>
-            <button onclick="filterCategory('slots', this)" class="cat-btn bg-slate-900 text-slate-300 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap">Slots 3D</button>
-            <button onclick="filterCategory('arcade', this)" class="cat-btn bg-slate-900 text-slate-300 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap">Arcade</button>
+        <!-- Game Grid (This will be populated by the engine) -->
+        <div id="loadingOverlay" class="flex justify-center items-center py-10 hidden">
+             <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
         </div>
 
-        <!-- Game List Grid -->
         <div id="gamesGrid" class="grid grid-cols-2 gap-3">
-            <!-- Game 1 -->
-            <div data-category="crash" onclick="launchPaidGame('Aviator Pro', 300, 'crash')" class="game-card bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/50 rounded-2xl p-3 flex flex-col justify-between cursor-pointer transition-all shadow-md group">
-                <div class="h-24 rounded-xl bg-gradient-to-br from-red-600/30 to-slate-900 flex flex-col items-center justify-center text-red-400 relative">
-                    <i class="fa-solid fa-rocket text-3xl animate-bounce"></i>
-                    <span class="text-[10px] font-mono text-red-300 mt-1">Stake: ৳300</span>
-                </div>
-                <div class="mt-3">
-                    <h4 class="text-xs font-bold text-white flex justify-between"><span>Aviator Pro</span><span class="text-[9px] bg-red-500/20 text-red-400 px-1 rounded">Live</span></h4>
-                    <p class="text-[10px] text-amber-400 mt-0.5">Win up to x1000</p>
-                </div>
-            </div>
-
-            <!-- Game 2 -->
-            <div data-category="slots" onclick="launchPaidGame('Western Slot 3D', 200, 'slot')" class="game-card bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/50 rounded-2xl p-3 flex flex-col justify-between cursor-pointer transition-all shadow-md group">
-                <div class="h-24 rounded-xl bg-gradient-to-br from-amber-600/30 to-slate-900 flex flex-col items-center justify-center text-amber-400 relative">
-                    <i class="fa-solid fa-hat-cowboy text-3xl group-hover:scale-110 transition-transform"></i>
-                    <span class="text-[10px] font-mono text-amber-300 mt-1">Stake: ৳200</span>
-                </div>
-                <div class="mt-3">
-                    <h4 class="text-xs font-bold text-white flex justify-between"><span>Western Slot</span><span class="text-[9px] bg-amber-500/20 text-amber-400 px-1 rounded">3D</span></h4>
-                    <p class="text-[10px] text-amber-400 mt-0.5">Win up to x500</p>
-                </div>
-            </div>
-
-            <!-- Game 3 -->
-            <div data-category="arcade" onclick="launchPaidGame('Highway Racer', 150, 'embed', 'https://www.onlinegames.io/embed/highway-racer-pro/')" class="game-card bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/50 rounded-2xl p-3 flex flex-col justify-between cursor-pointer transition-all shadow-md group">
-                <div class="h-24 rounded-xl bg-gradient-to-br from-blue-600/30 to-slate-900 flex flex-col items-center justify-center text-blue-400 relative">
-                    <i class="fa-solid fa-car-side text-3xl group-hover:scale-110 transition-transform"></i>
-                    <span class="text-[10px] font-mono text-blue-300 mt-1">Stake: ৳150</span>
-                </div>
-                <div class="mt-3">
-                    <h4 class="text-xs font-bold text-white flex justify-between"><span>Highway Racer</span><span class="text-[9px] bg-blue-500/20 text-blue-400 px-1 rounded">Arcade</span></h4>
-                    <p class="text-[10px] text-amber-400 mt-0.5">Real Play Embed</p>
-                </div>
-            </div>
-
-            <!-- Game 4 -->
-            <div data-category="arcade" onclick="launchPaidGame('Tile Match Pro', 100, 'embed', 'https://www.htmlgames.com/embed/tilematch/')" class="game-card bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/50 rounded-2xl p-3 flex flex-col justify-between cursor-pointer transition-all shadow-md group">
-                <div class="h-24 rounded-xl bg-gradient-to-br from-emerald-600/30 to-slate-900 flex flex-col items-center justify-center text-emerald-400 relative">
-                    <i class="fa-solid fa-puzzle-piece text-3xl group-hover:scale-110 transition-transform"></i>
-                    <span class="text-[10px] font-mono text-emerald-300 mt-1">Stake: ৳100</span>
-                </div>
-                <div class="mt-3">
-                    <h4 class="text-xs font-bold text-white flex justify-between"><span>Tile Match</span><span class="text-[9px] bg-emerald-500/20 text-emerald-400 px-1 rounded">Puzzle</span></h4>
-                    <p class="text-[10px] text-amber-400 mt-0.5">Real Play Embed</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Dedicated Separate Browser Modal (5000+ Games Hub) -->
-        <div id="browserModal" class="hidden fixed inset-0 z-50 bg-slate-950/98 backdrop-blur-xl flex flex-col">
-            <div class="bg-slate-900 border-b border-slate-800 p-3.5 flex justify-between items-center shadow-lg">
-                <div class="flex items-center space-x-2">
-                    <div class="bg-amber-500 text-slate-950 font-bold px-2.5 py-0.5 rounded text-xs">BX BROWSER</div>
-                    <span class="text-xs font-bold text-white">5000+ Games Hub (One-Click Live)</span>
-                </div>
-                <button onclick="closeBrowserLobby()" class="bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition-all">
-                    <i class="fa-solid fa-xmark"></i> Close Browser
-                </button>
-            </div>
-            <div class="bg-slate-900/50 px-3 py-2 border-b border-slate-800 flex items-center space-x-2">
-                <span class="text-[10px] text-amber-400 font-mono">Active Balance: <strong id="browserBal">৳15,000.00</strong></span>
-                <span class="text-[10px] text-slate-400">| Click any game in portal to launch with ৳100 entry fee.</span>
-            </div>
-            <div class="flex-1 w-full bg-black relative">
-                <iframe src="https://www.onlinegames.io/" class="w-full h-full border-0" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
-            </div>
+            <!-- Game Cards will appear here dynamically -->
         </div>
 
         <!-- Single Game Action Modal -->
-        <div id="gameModal" class="hidden fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-lg flex items-center justify-center p-4">
-            <div class="bg-slate-900 border border-amber-500/50 w-full max-w-sm rounded-3xl p-5 shadow-2xl space-y-4">
+        <div id="gameModal" class="hidden fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-lg flex items-center justify-center p-4 transition-opacity duration-300 opacity-0" style="opacity: 0;">
+            <div class="bg-slate-900 border border-amber-500/50 w-full max-w-sm rounded-3xl p-5 shadow-2xl space-y-4 transform scale-95 transition-transform duration-300" style="transform: scale(0.95);">
                 <div class="flex justify-between items-center border-b border-slate-800 pb-3">
                     <h3 id="modalTitle" class="text-xs font-bold text-white uppercase tracking-wider flex items-center space-x-2">
-                        <i class="fa-solid fa-circle-play text-amber-500"></i> <span>Live Play Arena</span>
+                        <i class="fa-solid fa-circle-play text-amber-500"></i> <span>Live Session</span>
                     </h3>
                     <button onclick="closeModal()" class="bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-2.5 py-1 rounded-lg text-xs font-bold transition-all">
                         <i class="fa-solid fa-xmark"></i> Close
@@ -167,13 +113,13 @@
             <i class="fa-solid fa-fire text-sm"></i>
             <span class="text-[9px] font-semibold">Lobby</span>
         </a>
-        <a href="#" onclick="openBrowserLobby(); return false;" class="flex flex-col items-center text-slate-400 hover:text-white space-y-0.5">
-            <i class="fa-solid fa-globe text-sm"></i>
-            <span class="text-[9px] font-medium">Browser</span>
+        <a href="#" class="flex flex-col items-center text-slate-400 hover:text-white space-y-0.5">
+            <i class="fa-solid fa-dice text-sm"></i>
+            <span class="text-[9px] font-medium">Casino</span>
         </a>
         <a href="#" class="flex flex-col items-center text-slate-400 hover:text-white space-y-0.5">
-            <i class="fa-solid fa-wallet text-sm"></i>
-            <span class="text-[9px] font-medium">Wallet</span>
+            <i class="fa-solid fa-ticket text-sm"></i>
+            <span class="text-[9px] font-medium">Ticket</span>
         </a>
         <a href="#" class="flex flex-col items-center text-slate-400 hover:text-white space-y-0.5">
             <i class="fa-solid fa-user text-sm"></i>
@@ -181,41 +127,95 @@
         </a>
     </nav>
 
-    <!-- Script Engine -->
+    <!-- Ultimate Game Engine Script -->
     <script>
         let balance = 15000.00;
         let activeInterval = null;
+        let allGames = []; // This will hold the 5000+ games data
 
         function updateBal() {
             document.getElementById('userBalance').innerText = balance.toLocaleString('en-US', {minimumFractionDigits: 2});
-            document.getElementById('browserBal').innerText = '৳' + balance.toLocaleString('en-US', {minimumFractionDigits: 2});
         }
 
-        function openBrowserLobby() {
-            document.getElementById('browserModal').classList.remove('hidden');
+        // 1. ASYNC ENGINE: ফেইক এপিআই ডাটা ফেচিং (বাস্তব ইন্টিগ্রেশনে এখানে আপনার এপিআই URL বসবে)
+        async function fetchGamesEngine() {
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            
+            // সিমুলেশন: ধরুন এটি একটি বিশাল JSON রেসপন্স যা এপিআই থেকে আসছে
+            // বাস্তবে আপনার এপিআই থেকে ৫০০-১০০০ গেমের ডাটা আসবে
+            const mockApiResponse = [];
+            const categories = ['crash', 'slots', 'arcade'];
+            const icons = ['rocket', 'hat-cowboy', 'puzzle-piece', 'car-side', 'gem', 'microchip'];
+
+            // ৫০০০ গেমের ডাটা তৈরি করা হলো (পারফরম্যান্স টেস্টিংয়ের জন্য)
+            for (let i = 1; i <= 5000; i++) {
+                mockApiResponse.push({
+                    id: i,
+                    name: `Game ${i} - ${categories[i%3].toUpperCase()}`,
+                    category: categories[i%3],
+                    icon: icons[i%6],
+                    stake: 10 + (i%50), // 10 থেকে 60 টাকার মধ্যে এন্ট্রি ফি
+                    multiplier: 500 + (i%2000) // 500x থেকে 2500x
+                });
+            }
+
+            // ডাটা পাওয়ার পর গ্রিড রেন্ডার করা
+            setTimeout(() => {
+                allGames = mockApiResponse;
+                renderGamesGrid(allGames);
+                document.getElementById('loadingOverlay').classList.add('hidden');
+            }, 800); // 800ms লোডিং সিমুলেশন
         }
 
-        function closeBrowserLobby() {
-            document.getElementById('browserModal').classList.add('hidden');
-        }
+        // 2. VIRTUAL RENDERER: স্মুথলি গেম গ্রিড তৈরি করা
+        function renderGamesGrid(gamesToRender) {
+            const grid = document.getElementById('gamesGrid');
+            grid.innerHTML = ''; // আগের লিস্ট পরিষ্কার করা
 
-        function filterCategory(cat, btn) {
-            document.querySelectorAll('.cat-btn').forEach(b => {
-                b.className = "cat-btn bg-slate-900 text-slate-300 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap";
+            // পারফরম্যান্সের জন্য DocumentFragment ব্যবহার করা হচ্ছে (DOM রিফ্লো কমায়)
+            const fragment = document.createDocumentFragment();
+
+            // সব গেম লুপ করে কার্ড তৈরি করা
+            gamesToRender.forEach(game => {
+                const card = document.createElement('div');
+                card.className = "game-card-fixed bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/50 rounded-2xl p-3 flex flex-col justify-between cursor-pointer transition-all shadow-md group";
+                card.onclick = () => launchPaidGame(game.name, game.stake, game.category);
+
+                // কার্ডের ভেতরের HTML
+                card.innerHTML = `
+                    <div class="h-24 rounded-xl bg-gradient-to-br from-${game.category === 'crash' ? 'red' : game.category === 'slots' ? 'amber' : 'blue'}-600/30 to-slate-900 flex flex-col items-center justify-center text-${game.category === 'crash' ? 'red' : game.category === 'slots' ? 'amber' : 'blue'}-400 relative overflow-hidden">
+                        <i class="fa-solid fa-${game.icon} text-3xl group-hover:scale-110 transition-transform"></i>
+                        <span class="text-[10px] font-mono mt-1 opacity-70">${game.name.split(' - ')[1]}</span>
+                    </div>
+                    <div class="mt-3">
+                        <h4 class="text-xs font-bold text-white flex justify-between">
+                            <span>${game.name.split(' - ')[0]}</span>
+                            <span class="text-[9px] bg-${game.category === 'crash' ? 'red' : game.category === 'slots' ? 'amber' : 'blue'}-500/20 text-${game.category === 'crash' ? 'red' : game.category === 'slots' ? 'amber' : 'blue'}-400 px-1 rounded">HD</span>
+                        </h4>
+                        <p class="text-[10px] text-amber-400 mt-0.5">Stake: ৳${game.stake.toFixed(2)}</p>
+                    </div>
+                `;
+                fragment.appendChild(card);
             });
-            btn.className = "cat-btn bg-amber-500 text-slate-950 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap shadow";
 
-            document.querySelectorAll('.game-card').forEach(card => {
-                if (cat === 'all' || card.getAttribute('data-category') === cat) {
-                    card.style.display = "flex";
-                } else {
-                    card.style.display = "none";
-                }
-            });
+            grid.appendChild(fragment);
         }
 
-        // Real Money Paid Game Launch System
-        function launchPaidGame(name, fee, type, embedUrl = '') {
+        // 3. INSTANT FILTER ENGINE: সার্চ বারের জন্য ইনস্ট্যান্ট ফিল্টারিং
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keyup', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredGames = allGames.filter(game => 
+                game.name.toLowerCase().includes(searchTerm) || 
+                game.category.toLowerCase().includes(searchTerm)
+            );
+            // ফিল্টার করা ডাটা দিয়ে পুনরায় গ্রিড রেন্ডার করা (খুব দ্রুত কাজ করবে)
+            renderGamesGrid(filteredGames.slice(0, 200)); // পারফরম্যান্সের জন্য প্রথম ২০০টি রেজাল্ট দেখানো
+        });
+
+
+        // Game Launch System (Real Money)
+        function launchPaidGame(name, fee, type) {
             if (balance < fee) {
                 alert("আপনার ভল্টে পর্যাপ্ত ব্যালেন্স নেই! দয়া করে আগে ডিপোজিট করুন।");
                 return;
@@ -225,113 +225,5 @@
             balance -= fee;
             updateBal();
 
-            document.getElementById('gameModal').classList.remove('hidden');
-            document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-circle-play text-amber-500"></i> <span>${name} (Stake: ৳${fee} Deducted)</span>`;
-            
-            let body = document.getElementById('modalBody');
-
-            if (type === 'crash') {
-                body.innerHTML = `
-                    <div class="space-y-3">
-                        <div class="text-[11px] font-bold text-amber-400">AVIATOR LIVE MULTIPLIER (Fee: ৳${fee})</div>
-                        <div class="h-32 bg-slate-900 rounded-xl flex flex-col items-center justify-center border border-red-500/30 relative">
-                            <i class="fa-solid fa-rocket text-3xl text-red-400 animate-bounce"></i>
-                            <div id="multiplierText" class="text-2xl font-black text-white mt-1 font-mono">1.00x</div>
-                        </div>
-                        <button onclick="cashOutGame(${fee})" id="crashBtn" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs shadow-lg animate-pulse">CASHOUT NOW</button>
-                    </div>
-                `;
-                startCrashLive(fee);
-            } else if (type === 'slot') {
-                body.innerHTML = `
-                    <div class="space-y-3">
-                        <div class="text-[11px] font-bold text-amber-400">3D SLOT REEL (Fee: ৳${fee})</div>
-                        <div id="slotScreen" class="h-28 bg-slate-900 rounded-xl flex items-center justify-center space-x-2 text-2xl font-bold border border-amber-500/30 text-amber-400">
-                            <span>💎</span><span>⭐</span><span>🎰</span>
-                        </div>
-                        <button onclick="spinPaidSlot(${fee})" class="w-full bg-amber-500 text-slate-950 font-bold py-2.5 rounded-xl text-xs shadow-lg">Spin Reels & Win</button>
-                    </div>
-                `;
-            } else if (type === 'embed') {
-                body.innerHTML = `
-                    <div class="space-y-2">
-                        <div class="text-[10px] text-emerald-400 font-mono">Live Session Active | Fee Paid: ৳${fee}</div>
-                        <iframe src="${embedUrl}" class="w-full h-64 rounded-xl border border-slate-800 bg-black" sandbox="allow-scripts allow-same-origin"></iframe>
-                    </div>
-                `;
-            }
-        }
-
-        let currentMultiplier = 1.00;
-        function startCrashLive(fee) {
-            currentMultiplier = 1.00;
-            let target = 1.3 + Math.random() * 6;
-            activeInterval = setInterval(() => {
-                currentMultiplier += 0.08;
-                let el = document.getElementById('multiplierText');
-                if (el) {
-                    if (currentMultiplier >= target) {
-                        clearInterval(activeInterval);
-                        el.innerText = currentMultiplier.toFixed(2) + 'x CRASHED!';
-                        let btn = document.getElementById('crashBtn');
-                        if (btn) {
-                            btn.innerText = "GAME OVER (LOST STAKE)";
-                            btn.className = "w-full bg-slate-800 text-slate-400 font-bold py-2.5 rounded-xl text-xs";
-                            btn.onclick = null;
-                        }
-                    } else {
-                        el.innerText = currentMultiplier.toFixed(2) + 'x';
-                    }
-                }
-            }, 150);
-        }
-
-        function cashOutGame(fee) {
-            if (activeInterval) clearInterval(activeInterval);
-            let winAmt = Math.floor(fee * currentMultiplier);
-            balance += winAmt;
-            updateBal();
-            let btn = document.getElementById('crashBtn');
-            if (btn) {
-                btn.innerText = `SUCCESS! WON ৳${winAmt}`;
-                btn.className = "w-full bg-amber-500 text-slate-950 font-bold py-2.5 rounded-xl text-xs";
-                btn.onclick = null;
-            }
-        }
-
-        function spinPaidSlot(fee) {
-            let screen = document.getElementById('slotScreen');
-            screen.innerHTML = `<span class="animate-spin"><i class="fa-solid fa-spinner"></i></span>`;
-            setTimeout(() => {
-                let symbols = ['💎', '⭐', '🎰', '🔥', '👑'];
-                let s1 = symbols[Math.floor(Math.random()*symbols.length)];
-                let s2 = symbols[Math.floor(Math.random()*symbols.length)];
-                let s3 = symbols[Math.floor(Math.random()*symbols.length)];
-                screen.innerHTML = `<span>${s1}</span><span>${s2}</span><span>${s3}</span>`;
-
-                if (s1 === s2 || s2 === s3) {
-                    let win = fee * 4;
-                    balance += win;
-                    updateBal();
-                    alert("🎉 অভিনন্দন! আপনি স্লট গেমে জিতেছেন: ৳" + win);
-                } else {
-                    alert("আফসোস! এই স্পিনে কোনো ম্যাচ হয়নি।");
-                }
-            }, 600);
-        }
-
-        function closeModal() {
-            if (activeInterval) clearInterval(activeInterval);
-            document.getElementById('gameModal').classList.add('hidden');
-        }
-
-        function walletAction(type) {
-            if (type === 'Deposit') {
-                balance += 5000;
-                updateBal();
-                alert("সফলভাবে ৳৫,০০০ ডিপোজিট করা হয়েছে!");
-            }
-        }
-    </script>
-</body>
-</html>
+            const modal = document.getElementById('gameModal');
+            const modalContent = modal.querySelector
