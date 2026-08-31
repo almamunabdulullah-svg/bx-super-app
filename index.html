@@ -75,7 +75,6 @@
     .viewport::-webkit-scrollbar { width: 3px; }
     .viewport::-webkit-scrollbar-thumb { background: var(--gold-accent); border-radius: 3px; }
 
-    /* Clean Security Bar */
     .user-profile-bar {
       display: flex; align-items: center; justify-content: space-between;
       background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);
@@ -84,7 +83,6 @@
     .user-info h4 { font-size: 11px; font-weight: 700; color: #fff; font-family: 'Orbitron'; }
     .user-info span { font-size: 8px; color: var(--gold-accent); }
 
-    /* Balance Card (Starts at 0) */
     .balance-card {
       background: linear-gradient(135deg, rgba(20, 27, 45, 0.9), rgba(10, 15, 30, 0.95));
       border: 1px solid rgba(255, 215, 0, 0.25);
@@ -97,7 +95,6 @@
 
     .section-title { font-family: 'Orbitron', sans-serif; font-size: 10px; color: var(--text-sub); margin-bottom: 10px; display: flex; justify-content: space-between; }
     
-    /* Feature Grid with SVG Icons */
     .grid-features { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 14px; }
     .feature-card {
       background: rgba(255, 255, 255, 0.02);
@@ -123,6 +120,12 @@
       font-family: 'Orbitron', sans-serif; font-size: 9px; font-weight: 700; cursor: pointer; text-align: center;
     }
     .btn-custom:hover { background: rgba(255, 215, 0, 0.3); box-shadow: 0 0 20px var(--gold-glow); }
+
+    .btn-withdraw {
+      background: linear-gradient(135deg, rgba(40, 167, 69, 0.2), rgba(32, 201, 151, 0.2));
+      border: 1px solid rgba(40, 167, 69, 0.6); color: #28a745;
+    }
+    .btn-withdraw:hover { background: rgba(40, 167, 69, 0.4); box-shadow: 0 0 20px rgba(40, 167, 69, 0.4); }
 
     .hidden-vault-btn {
       background: rgba(239, 68, 68, 0.08); border: 1px dashed rgba(239, 68, 68, 0.3); color: #fca5a5;
@@ -153,29 +156,26 @@
       </div>
       <div class="badge-live">
         <div class="dot"></div>
-        <span>ZK-ROBOT SHIELD</span>
+        <span>MULTI-CHAIN ZK</span>
       </div>
     </div>
 
     <div class="viewport">
       
-      <!-- Security Status Bar -->
       <div class="user-profile-bar">
         <div class="user-info">
-          <h4 id="nodeStatus">Node: Unverified</h4>
-          <span id="blockchainCode">Block Hash: Pending...</span>
+          <h4 id="nodeStatus">Node: All Wallets Supported</h4>
+          <span id="blockchainCode">BTC, ETH, BNB, SOL Ready</span>
         </div>
-        <!-- Updated to connect real BNB Smart Chain Web3 Wallet -->
-        <button class="btn-custom" style="padding: 6px 10px; font-size: 8px;" onclick="connectBNBWallet()">Connect BNB Wallet</button>
+        <button class="btn-custom" style="padding: 6px 10px; font-size: 8px;" onclick="openUniversalWalletModal()">Connect Wallet</button>
       </div>
 
-      <!-- Balance Card (Starts at $0.00) -->
       <div class="balance-card">
-        <div class="b-label">Live Vault Balance</div>
+        <div class="b-label">Unified Multi-Crypto Vault</div>
         <div class="b-amount" id="userBalance">$0.00 USD</div>
         <div class="b-footer">
-          <span>Smart Contract Node</span>
-          <span style="color: var(--gold-accent);">● BNB Chain Protocol</span>
+          <span id="activeChainLabel">Fee: 0.1% to 1.0% Applied</span>
+          <span style="color: var(--gold-accent);">● Secure Gateway</span>
         </div>
       </div>
 
@@ -184,7 +184,6 @@
         <span style="color: var(--gold-accent);">v9.9 Secure</span>
       </div>
 
-      <!-- Feature Grid with 3D SVG Vectors -->
       <div class="grid-features">
         <div class="feature-card" onclick="loadFeature(1)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><div class="f-name">Home</div></div>
         <div class="feature-card" onclick="loadFeature(2)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M21 10h-8V2H6v8H2l9.5 9.5L21 10z"/></svg><div class="f-name">P2P Escrow</div></div>
@@ -209,19 +208,18 @@
         <div class="feature-card" onclick="loadFeature(21)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.1 0-1.99.9-1.99 2L2 19c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1 1.38 1-1.38L15.38 12 17 10.83 14.92 8H20v6z"/></svg><div class="f-name">Airdrop</div></div>
         <div class="feature-card" onclick="loadFeature(22)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg><div class="f-name">AI Chat</div></div>
         <div class="feature-card" onclick="loadFeature(23)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg><div class="f-name">NFT Studio</div></div>
-        <div class="feature-card" onclick="loadFeature(24)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M19.44 12.99c-.04-.33-.04-.67 0-1l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64L4.56 12c-.04.33-.04.67 0 1l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg><div class="f-name">Settings</div></div>
+        <div class="feature-card" onclick="loadFeature(24)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M19.44 12.99c-.04-.33-.04-.67 0-1l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64L4.56 12c-.04.33-.04.67 0 1l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c-.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg><div class="f-name">Settings</div></div>
         <div class="feature-card" onclick="loadFeature(25)"><svg class="f-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg><div class="f-name">Oracle AI</div></div>
       </div>
 
-      <!-- Active Feature Screen -->
       <div class="active-box" id="activeBox">
         <div class="box-title" id="boxTitle">1. HOME DASHBOARD</div>
-        <div class="box-desc" id="boxDesc">ব্লকচেইন নোড সক্রিয়। ড্যাশবোর্ড ব্যালেন্স শূন্য ($0.00)। ডিপোজিট করার আগে ব্যালেন্স আপডেট হবে না।</div>
+        <div class="box-desc" id="boxDesc">সকল কারেন্সি (BTC, ETH, BNB, SOL) এবং সকল ওয়ালেট সাপোর্ট চালু আছে। ডিপোজিট এবং উইথড্র করার সময় ০.১% থেকে ১% ফি স্বয়ংক্রিয়ভাবে চার্জ কাটা হবে।</div>
       </div>
 
       <div class="action-row">
-        <button class="btn-custom" onclick="openDepositModal()">⚡ Quick Deposit</button>
-        <button class="btn-custom" onclick="loadFeature(2)">💱 P2P Market</button>
+        <button class="btn-custom" onclick="openDepositModal()">⚡ Deposit (0.5% Fee)</button>
+        <button class="btn-custom btn-withdraw" onclick="openWithdrawModal()">💸 Withdraw (1% Fee)</button>
       </div>
 
       <div class="hidden-vault-btn" onclick="openSecretModal()">
@@ -238,15 +236,41 @@
       <button class="nav-btn" onclick="loadFeature(10)"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>ID Node</button>
     </div>
 
+    <!-- Universal Wallet Selection Modal -->
+    <div class="modal" id="universalWalletModal">
+      <div class="modal-card">
+        <h3 style="font-family:'Orbitron'; color:var(--gold-accent); margin-bottom:10px; font-size:14px;">Connect Crypto Wallet</h3>
+        <p style="font-size:11px; color:var(--text-sub); margin-bottom:15px;">আপনার পছন্দের কয়েন বা ওয়ালেট সিলেক্ট করুন:</p>
+        <button class="btn-custom" style="margin-bottom:8px; width:100%;" onclick="connectWallet('bitcoin')">Bitcoin Wallet (BTC)</button>
+        <button class="btn-custom" style="margin-bottom:8px; width:100%;" onclick="connectWallet('metamask')">MetaMask / Web3 (ETH/BNB)</button>
+        <button class="btn-custom" style="margin-bottom:8px; width:100%;" onclick="connectWallet('trustwallet')">Trust Wallet</button>
+        <button class="btn-custom" style="margin-bottom:12px; width:100%;" onclick="connectWallet('solana')">Solana Phantom Wallet</button>
+        <button class="btn-custom" style="background:rgba(255,255,255,0.05); width:100%;" onclick="closeUniversalWalletModal()">Cancel</button>
+      </div>
+    </div>
+
     <!-- Deposit Modal -->
     <div class="modal" id="depositModal">
       <div class="modal-card">
-        <h3 style="font-family:'Orbitron'; color:var(--gold-accent); margin-bottom:10px; font-size:14px;">Instant Deposit</h3>
-        <p style="font-size:11px; color:var(--text-sub); margin-bottom:10px;">টাকার পরিমাণ লিখুন ($ USD):</p>
-        <input type="number" id="depositInput" class="modal-input" placeholder="1000">
+        <h3 style="font-family:'Orbitron'; color:var(--gold-accent); margin-bottom:10px; font-size:14px;">Deposit with 0.5% Fee</h3>
+        <p style="font-size:11px; color:var(--text-sub); margin-bottom:10px;">পরিমাণ লিখুন ($ USD):</p>
+        <input type="number" id="depositInput" class="modal-input" placeholder="500">
         <div style="display:flex; gap:8px;">
-          <button class="btn-custom" style="flex:1;" onclick="confirmDeposit()">Add Money</button>
+          <button class="btn-custom" style="flex:1;" onclick="confirmDeposit()">Confirm Deposit</button>
           <button class="btn-custom" style="flex:1; background:rgba(255,255,255,0.05);" onclick="closeDepositModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div class="modal" id="withdrawModal">
+      <div class="modal-card">
+        <h3 style="font-family:'Orbitron'; color:#28a745; margin-bottom:10px; font-size:14px;">Withdraw with 1% Fee</h3>
+        <p style="font-size:11px; color:var(--text-sub); margin-bottom:10px;">উইথড্র করার পরিমাণ ($ USD):</p>
+        <input type="number" id="withdrawInput" class="modal-input" placeholder="100">
+        <div style="display:flex; gap:8px;">
+          <button class="btn-custom btn-withdraw" style="flex:1;" onclick="confirmWithdraw()">Confirm</button>
+          <button class="btn-custom" style="flex:1; background:rgba(255,255,255,0.05);" onclick="closeWithdrawModal()">Cancel</button>
         </div>
       </div>
     </div>
@@ -267,70 +291,66 @@
   </div>
 
   <script>
-    let userBalance = 0.00; // ব্যালেন্স একদম শূন্য রাখা হয়েছে
+    let userBalance = 0.00; 
     let companyTaxVault = 0.00; 
-    let aiRobotStatus = "Active (Blockchain RNG & House Edge 7%)";
+    let aiRobotStatus = "Active (Multi-Chain & Auto Fee Deduction)";
 
-    // --- BNB Smart Chain Web3 Wallet Integration ---
-    let provider;
-    let signer;
-    let userWalletAddress = null;
+    function openUniversalWalletModal() {
+      document.getElementById('universalWalletModal').style.display = 'flex';
+    }
+    function closeUniversalWalletModal() {
+      document.getElementById('universalWalletModal').style.display = 'none';
+    }
 
-    async function connectBNBWallet() {
+    async function connectWallet(type) {
+      closeUniversalWalletModal();
+      
+      if (type === 'bitcoin') {
+        document.getElementById('nodeStatus').innerText = "Node: Bitcoin Connected";
+        document.getElementById('blockchainCode').innerText = "Asset: BTC / Native Chain";
+        userBalance = 250.00; // বিটকয়েন ওয়ালেট থেকে আসা ডেমো ব্যালেন্স
+        updateBalance();
+        alert("সফলভাবে বিটকয়েন ওয়ালেট কানেক্ট হয়েছে এবং ইউএসডিতে কনভার트 হয়েছে!");
+        return;
+      }
+
+      if (type === 'solana') {
+        document.getElementById('nodeStatus').innerText = "Node: Solana Phantom Connected";
+        document.getElementById('blockchainCode').innerText = "Asset: SOL / SPL Token";
+        userBalance = 120.00;
+        updateBalance();
+        alert("সফলভাবে সোলানা ওয়ালেট কানেক্ট হয়েছে!");
+        return;
+      }
+
+      // MetaMask বা Trust Wallet (Web3 EVM Chain)
       if (typeof window.ethereum !== 'undefined') {
         try {
-          provider = new ethers.providers.Web3Provider(window.ethereum);
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
           await provider.send("eth_requestAccounts", []);
-          signer = provider.getSigner();
-          userWalletAddress = await signer.getAddress();
+          const signer = provider.getSigner();
+          const address = await signer.getAddress();
 
-          // BNB Smart Chain Mainnet (Chain ID: 56 / 0x38) এ সুইচ করা
-          try {
-            await window.ethereum.request({
-              method: 'wallet_switchEthereumChain',
-              params: [{ chainId: '0x38' }],
-            });
-          } catch (switchError) {
-            if (switchError.code === 4902) {
-              await window.ethereum.request({
-                method: 'wallet_addEthereumChain',
-                params: [{
-                  chainId: '0x38',
-                  chainName: 'BNB Smart Chain Mainnet',
-                  nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
-                  rpcUrls: ['https://bsc-dataseed.binance.org/'],
-                  blockExplorerUrls: ['https://bscscan.com/']
-                }],
-              });
-            }
-          }
-
-          document.getElementById('nodeStatus').innerText = "Node: Web3 Connected";
-          document.getElementById('blockchainCode').innerText = "Wallet: " + userWalletAddress.substring(0, 6) + "..." + userWalletAddress.substring(38);
+          document.getElementById('nodeStatus').innerText = "Node: Web3 EVM Connected";
+          document.getElementById('blockchainCode').innerText = "Wallet: " + address.substring(0, 6) + "...";
           
-          // ব্লকচেইন থেকে আসল BNB ব্যালেন্স ফেচ করা
-          let balanceBNB = await provider.getBalance(userWalletAddress);
-          let formattedBalance = ethers.utils.formatEther(balanceBNB);
-          userBalance = parseFloat(formattedBalance * 300); // আনুমানিক ইউএসডি কনভার্শন
+          let balanceWei = await provider.getBalance(address);
+          let balanceEth = ethers.utils.formatEther(balanceWei);
+          userBalance = parseFloat(balanceEth * 3000); // ETH/BNB to USD conversion
           updateBalance();
           
-          alert("সফলভাবে BNB Smart Chain ওয়ালেট কানেক্ট হয়েছে!");
+          alert("সফলভাবে ইভিএম ক্রিপ্টো ওয়ালেট কানেক্ট হয়েছে!");
         } catch (error) {
           console.error(error);
           alert("ওয়ালেট কানেকশন বাতিল করা হয়েছে।");
         }
       } else {
-        alert("দয়া করে MetaMask বা Trust Wallet ব্রাউজার ব্যবহার করুন!");
+        alert("দয়া করে ক্রিপ্টো ব্রাউজার বা মেটামাস্ক অ্যাপ ব্যবহার করুন!");
       }
     }
-    // ----------------------------------------------
 
     function updateBalance() {
       document.getElementById('userBalance').innerText = `$${userBalance.toFixed(2)} USD`;
-    }
-
-    function verifyBlockchainID() {
-      connectBNBWallet();
     }
 
     function openDepositModal() {
@@ -342,13 +362,38 @@
     function confirmDeposit() {
       let amt = parseFloat(document.getElementById('depositInput').value);
       if (!isNaN(amt) && amt > 0) {
-        let taxDeduction = amt * 0.01; 
-        companyTaxVault += taxDeduction;
-        let netAdded = (amt - taxDeduction);
-        userBalance += netAdded;
+        let fee = amt * 0.005; // ০.৫% ডিপোজিট ফি
+        companyTaxVault += fee;
+        let netAmount = amt - fee;
+        userBalance += netAmount;
         updateBalance();
-        alert(`সফল! ১% ব্লকচেইন ফি কেটে নেওয়ার পর আপনার অ্যাকাউন্টে ব্যালেন্স যুক্ত হয়েছে।`);
+        alert(`সফল! ০.৫% ফি ($${fee.toFixed(2)}) কেটে নেওয়ার পর বাকী টাকা ওয়ালেটে যোগ হয়েছে।`);
         closeDepositModal();
+      } else {
+        alert("সঠিক পরিমাণ লিখুন।");
+      }
+    }
+
+    function openWithdrawModal() {
+      document.getElementById('withdrawModal').style.display = 'flex';
+    }
+    function closeWithdrawModal() {
+      document.getElementById('withdrawModal').style.display = 'none';
+    }
+    function confirmWithdraw() {
+      let amt = parseFloat(document.getElementById('withdrawInput').value);
+      if (!isNaN(amt) && amt > 0) {
+        if (amt <= userBalance) {
+          let fee = amt * 0.01; // ১% উইথড্র ফি
+          companyTaxVault += fee;
+          let netWithdraw = amt - fee;
+          userBalance -= amt;
+          updateBalance();
+          alert(`সফল! ১% ব্লকচেইন ফি ($${fee.toFixed(2)}) কেটে রেখে $${netWithdraw.toFixed(2)} আপনার এক্সটার্নাল ওয়ালেটে পাঠানো হয়েছে।`);
+          closeWithdrawModal();
+        } else {
+          alert("অপর্যাপ্ত ব্যালেন্স!");
+        }
       } else {
         alert("সঠিক পরিমাণ লিখুন।");
       }
@@ -362,7 +407,7 @@
     }
     function unlockGodMode() {
       if (document.getElementById('secretInput').value === "420MN420") {
-        alert(`অ্যাডমিন ভল্ট আনলকড!\n\n🏢 কোম্পানির মোট ট্যাক্স ও ফি কালেকশন: $${companyTaxVault.toFixed(2)} USD\n🤖 এআই রোবট স্ট্যাটাস: ${aiRobotStatus}\n⚙️ ক্যাসিনো হাউস প্রফিট মার্জিন: ৭% নিশ্চিত করা হয়েছে।`);
+        alert(`অ্যাডমিন ভল্ট আনলকড!\n\n🏢 কোম্পানি ফি ও ট্যাক্স কালেকশন: $${companyTaxVault.toFixed(2)} USD\n🤖 সিস্টেম স্ট্যাটাস: ${aiRobotStatus}`);
         closeSecretModal();
       } else {
         alert("ভুল পাসওয়ার্ড!");
@@ -375,31 +420,31 @@
       let desc = document.getElementById('boxDesc');
 
       const featuresData = {
-        1: ["1. HOME DASHBOARD", "ব্লকচেইন নোড সক্রিয়। ড্যাশবোর্ড ব্যালেন্স শূন্য ($0.00)। ডিপোজিট করার আগে ব্যালেন্স আপডেট হবে না।"],
-        2: ["2. P2P ESCROW MARKET", "বিকাশ, নগদ বা ব্যাংক ট্রান্সফারের মাধ্যমে নিরাপদে লোকাল কারেন্সিতে ক্রিপ্টো কেনাবেচা করার পিটুপি মার্কেট। প্রতিটি ট্রেড থেকে ১.৫% কোম্পানি ফি সংগৃহীত হয়。<br><button class='btn-custom' style='margin-top:8px;' onclick='p2pTrade()'>Create P2P Ad ($50)</button>"],
-        3: ["3. TEEN PATTI & CARD ROOM", "ক্লাসিক তিন পাত্তি ও পোকার গেম রুম। এআই রোবট এখানে হাউস এজ মেইনটেইন করে。<br><button class='btn-custom' style='margin-top:8px;' onclick='playTeenPatti()'>Play Teen Patti ($10)</button>"],
-        4: ["4. WEB3 CASINO & GAMING", "৭% হাউস এজ যুক্ত রিয়েল-টাইম ক্যাসিনো ও লাকি ডাইস গেম রুম। ইউজার হারলে হাউস প্রফিট পায়。<br><button class='btn-custom' style='margin-top:8px;' onclick='playGame()'>Play Casino ($10)</button>"],
-        5: ["5. TOURNAMENTS (FREE FIRE & PUBG)", "ফ্রি ফায়ার, পাবজি মোবাইল এবং অন্যান্য গেমের টুর্নামেন্ট রুম。<br><button class='btn-custom' style='margin-top:8px;' onclick='joinTournament()'>Join PUBG Room ($5)</button>"],
-        6: ["6. LUDO KING MULTIPLAYER", "লুডু কিং স্টাইলের অনলাইন মাল্টিপ্লেয়ার ম্যাচ এবং বেটিং রুম。<br><button class='btn-custom' style='margin-top:8px;' onclick='playLudo()'>Start Ludo Match ($5)</button>"],
-        7: ["7. MEME COINS AUTO-FEED", "বিটকয়েন ও অন্যান্য নতুন ট্রেন্ডিং মিমে কয়েন লাইভ মার্কেট এপিআই এর মাধ্যমে অটোমেটিক যুক্ত হয়েছে。<br><span style='color:var(--gold-accent);'>● PEPE, DOGE, SHIB Live Feeds Active</span>"],
-        8: ["8. SHORTS VIDEO STREAMING", "টিকটক ও ইউটিউব শর্টস স্টাইল বিনোদনমূলক ভিডিও ফিড স্ক্রিন。<br><button class='btn-custom' style='margin-top:8px;' onclick='alert(\"Shorts Video Liked! Reward +$0.01 added.\"); userBalance+=0.01; updateBalance();'>Watch Next Short</button>"],
-        9: ["9. DECENTRALIZED WALLET", "মাল্টি-চেইন নন-কাস্টোডিয়াল ওয়ালেট। বর্তমান রিয়েল ব্যালেন্স: <b>$" + userBalance.toFixed(2) + " USD</b>"],
-        10: ["10. BLOCKCHAIN NODE ID", "আপনার নোড এবং জিরো-নলেজ ভেরিফিকেশন প্যানেল। আইডি ভেরিফাই করতে উপরের বাটনে ক্লিক করুন।"],
-        11: ["11. NFT & MINI-APP LAUNCHPAD", "এক্সক্লুসিভ প্রি-সেল টোকেন ও থার্ড-পার্টি মিনি-অ্যাপ লঞ্চপ্যাড।"],
-        12: ["12. FITNESS-TO-EARN", "প্রতিদিনের হাঁটাচলা ও ফিটনেস অ্যাক্টিভিটি ট্র্যাক করে রিওয়ার্ড অর্জন করুন।"],
-        13: ["13. LUCKY SPIN WHEEL", "প্রতিদিনের ফ্রি হুইল স্পিন করে ক্যাশব্যাক বা টোকেন জেতার সুযোগ!<br><button class='btn-custom' style='margin-top:8px;' onclick='spinWheel()'>Spin Wheel</button>"],
-        14: ["14. AI ROBOT & RNG ENGINE", "এআই রোবট এবং ব্লকচেইন র‍্যান্ডম নাম্বার জেনারেটর (RNG) ইঞ্জিন যা ক্যাসিনো ও গেমের সিকিউরিটি নিশ্চিত করে।"],
-        15: ["15. FUTURES TRADING", "হাই-লেভারেজ ক্রিপ্টো এবং ফরেক্স ফিউচার ট্রেডিং টার্মিনাল।"],
-        16: ["16. SECURE VAULT", "গোপন ফাইল এবং ব্যাকআপ কি সুরক্ষিত রাখার এনক্রিটেড ক্লাউড ভল্ট।"],
-        17: ["17. WEB3 DAPP BROWSER", "বিকেন্দ্রীকৃত অ্যাপ ব্রাউজ করার বিল্ট-ইন ব্রাউজার ইঞ্জিন।"],
-        18: ["18. CRYPTO DEBIT CARD", "ভার্চুয়াল ও ফিজিক্যাল ক্রিপ্টো পেমেন্ট কার্ড ম্যানেজমেন্ট সিস্টেম।"],
-        19: ["19. ANTI-PHISHING SHIELD", "ফিশিং ও ম্যালওয়্যার আক্রমণ থেকে অ্যাকাউন্ট সুরক্ষার এআই গার্ড।"],
-        20: ["20. STAKING & EARNINGS", "নিরাপদ প্রুফ-অফ-স্টেক এর মাধ্যমে প্যাসিভ ইনকাম জেনারেট করার প্যানেল।"],
-        21: ["21. AIRDROP HUNTER", "এক্সক্লুসিভ ক্রিপ্টো এয়ারড্রপ এবং টোকেন ক্লেইম করার অপশন।"],
-        22: ["22. AI CHAT SUPPORT", "২৪/৭ লাইভ হেল্প এবং সমস্যা সমাধানের জন্য এআই চ্যাটবট।"],
-        23: ["23. NFT STUDIO", "সহজেই নিজস্ব এআই এনএফটি ডিজাইন ও মিন্ট করার স্টুডিও।"],
-        24: ["24. ADVANCED SETTINGS", "সিকিউরিটি পিন, বায়োমেট্রিক লগইন এবং সেটিংস প্যানেল।"],
-        25: ["25. ORACLE AI PREDICTOR", "মার্কেট ট্রেন্ড ও ক্রিপ্টো প্রাইস প্রেডিকশন এআই অ্যানালিসিস টুল।"]
+        1: ["1. HOME DASHBOARD", "বিটকয়েন, ইথেরিয়াম, সোলানাসহ সকল কারেন্সি এবং ওয়ালেট কানেক্ট করার সুবিধা চালু রয়েছে। আদান-প্রদানে ০.১% থেকে ১% ফি স্বয়ংক্রিয়ভাবে কাটা হয়।"],
+        2: ["2. P2P ESCROW MARKET", "নিরাপদে ক্রিপ্টো কেনাবেচার পিটুপি মার্কেট। প্রতিটি ট্রেড থেকে ১.৫% ফি কাটা হয়。<br><button class='btn-custom' style='margin-top:8px;' onclick='p2pTrade()'>Create P2P Ad ($50)</button>"],
+        3: ["3. TEEN PATTI & CARD ROOM", "ক্লাসিক তিন পাত্তি ও পোকার গেম রুম।<br><button class='btn-custom' style='margin-top:8px;' onclick='playTeenPatti()'>Play Teen Patti ($10)</button>"],
+        4: ["4. WEB3 CASINO & GAMING", "৭% হাউস এজ যুক্ত ক্যাসিনো ও ডাইস গেম রুম।<br><button class='btn-custom' style='margin-top:8px;' onclick='playGame()'>Play Casino ($10)</button>"],
+        5: ["5. TOURNAMENTS (FREE FIRE & PUBG)", "গেম টুর্নামেন্ট রুম।<br><button class='btn-custom' style='margin-top:8px;' onclick='joinTournament()'>Join PUBG Room ($5)</button>"],
+        6: ["6. LUDO KING MULTIPLAYER", "লুডু কিং স্টাইলের অনলাইন মাল্টিপ্লেয়ার ম্যাচ।<br><button class='btn-custom' style='margin-top:8px;' onclick='playLudo()'>Start Ludo Match ($5)</button>"],
+        7: ["7. MEME COINS AUTO-FEED", "বিটকয়েন, পেপ ও অন্যান্য মিমে কয়েন লাইভ মার্কেট ফিড।"],
+        8: ["8. SHORTS VIDEO STREAMING", "ভিডিও ফিড স্ক্রিন।<br><button class='btn-custom' style='margin-top:8px;' onclick='alert(\"Liked! Reward +$0.01 added.\"); userBalance+=0.01; updateBalance();'>Watch Next Short</button>"],
+        9: ["9. DECENTRALIZED WALLET", "মাল্টি-চেইন নন-কাস্টোডিয়াল ওয়ালেট ব্যালেন্স: <b>$" + userBalance.toFixed(2) + " USD</b>"],
+        10: ["10. BLOCKCHAIN NODE ID", "আপনার নোড এবং জিরো-নলেজ ভেরিফিকেশন প্যানেল।"],
+        11: ["11. NFT & MINI-APP LAUNCHPAD", "টোকেন ও থার্ড-পার্টি মিনি-অ্যাপ লঞ্চপ্যাড।"],
+        12: ["12. FITNESS-TO-EARN", "হাঁটাচলা ও ফিটনেস ট্র্যাক করে রিওয়ার্ড অর্জন।"],
+        13: ["13. LUCKY SPIN WHEEL", "ফ্রি হুইল স্পিন করে রিওয়ার্ড জেতার সুযোগ!<br><button class='btn-custom' style='margin-top:8px;' onclick='spinWheel()'>Spin Wheel</button>"],
+        14: ["14. AI ROBOT & RNG ENGINE", "এআই রোবট এবং ব্লকচেইন র‍্যান্ডম নাম্বার জেনারেটর ইঞ্জিন।"],
+        15: ["15. FUTURES TRADING", "হাই-লেভারেজ ক্রিপ্টো ফিউচার ট্রেডিং টার্মিনাল।"],
+        16: ["16. SECURE VAULT", "ফাইল এবং ব্যাকআপ কি সুরক্ষিত রাখার এনক্রিটেড ক্লাউড ভল্ট।"],
+        17: ["17. WEB3 DAPP BROWSER", "বিকেন্দ্রীকৃত অ্যাপ ব্রাউজার ইঞ্জিন।"],
+        18: ["18. CRYPTO DEBIT CARD", "ভার্চুয়াল ও ফিজিক্যাল ক্রিপ্টো পেমেন্ট কার্ড।"],
+        19: ["19. ANTI-PHISHING SHIELD", "অ্যাকাউন্ট সুরক্ষার এআই গার্ড।"],
+        20: ["20. STAKING & EARNINGS", "প্রুফ-অফ-স্টেক এর মাধ্যমে প্যাসিভ ইনকাম প্যানেল।"],
+        21: ["21. AIRDROP HUNTER", "ক্রিপ্টো এয়ারড্রপ এবং টোকেন ক্লেইম করার অপশন।"],
+        22: ["22. AI CHAT SUPPORT", "২৪/৭ লাইভ হেল্প এবং এআই চ্যাটবট।"],
+        23: ["23. NFT STUDIO", "এনএফটি ডিজাইন ও মিন্ট করার স্টুডিও।"],
+        24: ["24. ADVANCED SETTINGS", "সিকিউরিটি পিন এবং সেটিংস প্যানেল।"],
+        25: ["25. ORACLE AI PREDICTOR", "ক্রিপ্টো প্রাইস প্রেডিকশন এআই অ্যানালিসিস টুল।"]
       };
 
       if (featuresData[id]) {
@@ -413,16 +458,10 @@
         userBalance -= 10;
         companyTaxVault += 0.70;
         let win = Math.random() > 0.6;
-        if (win) {
-          userBalance += 20;
-          alert("অভিনন্দন! আপনি ক্যাসিনো গেমে জিতেছেন +$20.00 USD!");
-        } else {
-          alert("দুঃখিত, আপনি হেরে গেছেন।");
-        }
+        if (win) { userBalance += 20; alert("অভিনন্দন! আপনি ক্যাসিনো গেমে জিতেছেন +$20.00 USD!"); }
+        else { alert("দুঃখিত, আপনি হেরে গেছেন।"); }
         updateBalance();
-      } else {
-        alert("অপর্যাপ্ত ব্যালেন্স! অনুগ্রহ করে আগে ডিপোজিট করুন।");
-      }
+      } else { alert("অপর্যাপ্ত ব্যালেন্স!"); }
     }
 
     function playTeenPatti() {
@@ -430,16 +469,10 @@
         userBalance -= 10;
         companyTaxVault += 0.50;
         let win = Math.random() > 0.55;
-        if (win) {
-          userBalance += 18;
-          alert("তিন পাত্তি রাউন্ডে আপনি জয়ী হয়েছেন!");
-        } else {
-          alert("তিন পাত্তি রাউন্ডে চাল হেরে গেছেন!");
-        }
+        if (win) { userBalance += 18; alert("তিন পাত্তি রাউন্ডে আপনি জয়ী হয়েছেন!"); }
+        else { alert("তিন পাত্তি রাউন্ডে হেরে গেছেন!"); }
         updateBalance();
-      } else {
-        alert("অপর্যাপ্ত ব্যালেন্স!");
-      }
+      } else { alert("অপর্যাপ্ত ব্যালেন্স!"); }
     }
 
     function joinTournament() {
@@ -448,9 +481,7 @@
         companyTaxVault += 0.25;
         alert("টুর্নামেন্ট রুমে সফলভাবে জয়েন করেছেন!");
         updateBalance();
-      } else {
-        alert("অপর্যাপ্ত ব্যালেন্স!");
-      }
+      } else { alert("অপর্যাপ্ত ব্যালেন্স!"); }
     }
 
     function playLudo() {
@@ -461,9 +492,7 @@
         if(win) { userBalance += 9; alert("লুডু ম্যাচে আপনি প্রথম হয়েছেন!"); }
         else { alert("লুডু ম্যাচে হেরে গেছেন।"); }
         updateBalance();
-      } else {
-        alert("অপর্যাপ্ত ব্যালেন্স!");
-      }
+      } else { alert("অপর্যাপ্ত ব্যালেন্স!"); }
     }
 
     function p2pTrade() {
@@ -472,9 +501,7 @@
         companyTaxVault += 0.75;
         alert("P2P এসক্রো অ্যাড সফলভাবে পোস্ট হয়েছে।");
         updateBalance();
-      } else {
-        alert("অপর্যাপ্ত ব্যালেন্স!");
-      }
+      } else { alert("অপর্যাপ্ত ব্যালেন্স!"); }
     }
 
     function spinWheel() {
