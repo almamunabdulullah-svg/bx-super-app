@@ -1,147 +1,344 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BX Super-App - Global 21-Feature System</title>
+  <title>BX Super-App - Elite Web3 Ecosystem</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Rajdhani:wght@500;600;700&display=swap');
+
     :root {
-      --bg: #070913;
-      --card: rgba(255, 255, 255, 0.03);
-      --border: rgba(255, 255, 255, 0.08);
-      --accent: #00e5ff;
-      --text: #ffffff;
-      --muted: #94a3b8;
+      --bg-primary: #030712;
+      --panel-bg: rgba(13, 20, 38, 0.85);
+      --border-glow: rgba(0, 229, 255, 0.25);
+      --accent-cyan: #00e5ff;
+      --accent-green: #22c55e;
+      --accent-red: #ef4444;
+      --accent-purple: #a855f7;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
     }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+
     body {
-      margin: 0;
-      padding: 10px;
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-primary);
+      background-image: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #030712 85%);
+      color: var(--text-main);
+      font-family: 'Rajdhani', sans-serif;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      padding: 10px;
     }
-    .app {
+
+    .app-frame {
       width: 100%;
       max-width: 440px;
-      background: linear-gradient(145deg, #0e1422, #04060b);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 16px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+      height: 92vh;
+      max-height: 880px;
+      background: var(--panel-bg);
+      backdrop-filter: blur(30px);
+      border: 1px solid var(--border-glow);
+      border-radius: 30px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      position: relative;
     }
-    .header {
+
+    /* Header */
+    .top-header {
+      padding: 16px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(0, 0, 0, 0.4);
     }
-    .brand {
-      font-size: 15px;
-      font-weight: bold;
-      color: var(--accent);
+
+    .brand-box { display: flex; align-items: center; gap: 10px; }
+    .brand-logo {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 15px; color: #030712;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
     }
-    .balance-box {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 12px;
-      text-align: center;
-      margin-bottom: 12px;
+    .brand-title { font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 0.5px; }
+
+    .status-badge {
+      font-size: 11px; color: var(--accent-green);
+      background: rgba(34, 197, 94, 0.1); padding: 4px 10px; border-radius: 20px;
+      border: 1px solid rgba(34, 197, 94, 0.3); display: flex; align-items: center; gap: 6px;
     }
-    .ticker {
-      background: rgba(0, 229, 255, 0.05);
-      border-left: 3px solid var(--accent);
-      padding: 5px 8px;
-      font-size: 10px;
-      color: var(--accent);
-      margin-bottom: 12px;
-      border-radius: 4px;
+    .status-dot { width: 6px; height: 6px; background: var(--accent-green); border-radius: 50%; box-shadow: 0 0 8px var(--accent-green); }
+
+    /* Live Ticker */
+    .ticker-bar {
+      background: rgba(0, 229, 255, 0.04);
+      border-bottom: 1px solid rgba(0, 229, 255, 0.12);
+      padding: 6px 15px; font-size: 11px; white-space: nowrap; overflow: hidden; color: var(--accent-cyan);
     }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-bottom: 12px;
+    .ticker-content { display: inline-block; animation: ticker 28s linear infinite; }
+    @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+    /* Viewport */
+    .main-viewport { flex: 1; overflow-y: auto; padding: 16px; scroll-behavior: smooth; }
+    .main-viewport::-webkit-scrollbar { width: 3px; }
+    .main-viewport::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.2); border-radius: 3px; }
+
+    /* Wallet Card */
+    .wallet-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.8));
+      border: 1px solid var(--border-glow);
+      border-radius: 20px; padding: 20px; margin-bottom: 16px; position: relative; overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
-    .btn {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 8px 4px;
-      text-align: center;
-      color: var(--text);
-      font-size: 10px;
-      cursor: pointer;
+    .wallet-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+    .wallet-amount { font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 700; color: var(--accent-cyan); margin: 6px 0; text-shadow: 0 0 12px rgba(0, 229, 255, 0.4); }
+    .wallet-stats { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.06); }
+
+    /* Section Title */
+    .section-title { font-family: 'Orbitron', sans-serif; font-size: 12px; color: var(--text-muted); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+
+    /* Grid Menu with Premium Vector Icons */
+    .grid-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+    .menu-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px; padding: 12px 4px; text-align: center; cursor: pointer; transition: all 0.25s ease;
     }
-    .btn:hover {
-      border-color: var(--accent);
+    .menu-item:hover, .menu-item.active {
+      background: rgba(0, 229, 255, 0.08); border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(0, 229, 255, 0.2); transform: translateY(-2px);
     }
-    .view {
-      background: rgba(0,0,0,0.4);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px;
-      text-align: center;
-      min-height: 75px;
+    .menu-icon { width: 26px; height: 26px; margin: 0 auto 6px auto; display: block; filter: drop-shadow(0 0 6px rgba(0,229,255,0.6)); }
+    .menu-name { font-size: 10px; font-weight: 600; color: var(--text-main); text-transform: uppercase; }
+
+    /* Dynamic Screen */
+    .dynamic-screen {
+      background: rgba(0, 0, 0, 0.45); border: 1px solid var(--border-glow); border-radius: 18px; padding: 18px; min-height: 140px; margin-bottom: 16px;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.6);
     }
-    .god-mode {
-      margin-top: 10px;
-      background: rgba(255, 0, 0, 0.05);
-      border: 1px dashed rgba(255, 0, 0, 0.3);
-      padding: 8px;
-      border-radius: 8px;
-      text-align: center;
-      font-size: 11px;
-      cursor: pointer;
-      color: #ff4d4d;
+    .screen-header { font-family: 'Orbitron', sans-serif; font-size: 13px; color: var(--accent-cyan); margin-bottom: 8px; display: flex; justify-content: space-between; }
+    .screen-body { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+    /* Action Row */
+    .action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .btn-action {
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(168, 85, 247, 0.15));
+      border: 1px solid var(--border-glow); color: var(--text-main); padding: 12px; border-radius: 14px;
+      font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 600; cursor: pointer; text-align: center; transition: 0.2s;
     }
+    .btn-action:hover { background: linear-gradient(135deg, rgba(0, 229, 255, 0.3), rgba(168, 85, 247, 0.3)); box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); }
+
+    /* God Button */
+    .god-btn {
+      background: rgba(239, 68, 68, 0.08); border: 1px dashed rgba(239, 68, 68, 0.35); color: #fca5a5;
+      padding: 12px; border-radius: 14px; text-align: center; font-size: 11px; font-weight: 700; cursor: pointer; margin-bottom: 10px;
+    }
+    .god-btn:hover { background: rgba(239, 68, 68, 0.15); border-color: var(--accent-red); }
+
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      height: 64px; background: rgba(3, 7, 18, 0.95); border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex; justify-content: space-around; align-items: center; padding: 0 10px;
+    }
+    .nav-item { background: none; border: none; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; cursor: pointer; font-size: 10px; font-weight: 600; }
+    .nav-item svg { width: 20px; height: 20px; margin-bottom: 3px; fill: currentColor; }
+    .nav-item.active, .nav-item:hover { color: var(--accent-cyan); text-shadow: 0 0 10px rgba(0, 229, 255, 0.5); }
+
+    /* Modal */
+    .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 100; padding: 20px; }
+    .modal-box { background: #0f172a; border: 1px solid var(--accent-cyan); border-radius: 20px; padding: 22px; width: 100%; max-width: 360px; box-shadow: 0 0 30px rgba(0, 229, 255, 0.4); text-align: center; }
+    .modal-title { font-family: 'Orbitron', sans-serif; font-size: 15px; color: var(--accent-cyan); margin-bottom: 12px; }
+    .modal-input { width: 100%; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 10px; padding: 10px 14px; color: #fff; font-size: 14px; margin-bottom: 14px; outline: none; text-align: center; font-family: 'Orbitron', sans-serif; }
+    .modal-btn-row { display: flex; gap: 10px; }
+    .modal-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; }
+    .btn-confirm { background: var(--accent-cyan); color: #030712; }
+    .btn-cancel { background: rgba(255,255,255,0.08); color: #fff; }
   </style>
 </head>
 <body>
-  <div class="app">
-    <div class="header">
-      <div class="brand">BX Super-App (21 Systems)</div>
-      <div style="font-size: 10px; color: var(--muted);">AI Active</div>
+
+  <div class="app-frame">
+    
+    <!-- Top Header -->
+    <div class="top-header">
+      <div class="brand-box">
+        <div class="brand-logo">BX</div>
+        <div class="brand-title">BX Super-App</div>
+      </div>
+      <div class="status-badge">
+        <div class="status-dot"></div>
+        <span>AI Secure</span>
+      </div>
     </div>
-    <div class="balance-box">
-      <div style="font-size: 10px; color: var(--muted);">Global Portfolio</div>
-      <div style="font-size: 20px; font-weight: bold; color: var(--accent);">$15,005.68 USD</div>
+
+    <!-- Live Ticker -->
+    <div class="ticker-bar">
+      <div class="ticker-content">
+        🔴 Live Ticker: User @crypto_king won $5,400 in Casino • Gasless transaction executed successfully • AI Manager optimized 80%-20% revenue split • ZK-Privacy Shield Active •
+      </div>
     </div>
-    <div class="ticker">
-      🔴 লাইভ টিক্কার: গ্যাসলেস ট্রানজেকশন ও এসক্রো প্রটেকশন active।
+
+    <!-- Main Viewport -->
+    <div class="main-viewport">
+      
+      <!-- Wallet Card -->
+      <div class="wallet-card">
+        <div class="wallet-label">Global Portfolio Balance</div>
+        <div class="wallet-amount" id="balanceDisplay">$15,005.68 USD</div>
+        <div class="wallet-stats">
+          <span>200+ Countries Ready</span>
+          <span style="color: var(--accent-green); font-weight: 700;">● 0.1% Fee Active</span>
+        </div>
+      </div>
+
+      <!-- Section Title -->
+      <div class="section-title">
+        <span>Ecosystem Modules (21 Systems)</span>
+        <span style="color: var(--accent-cyan); font-size: 10px;">Web3 Core</span>
+      </div>
+
+      <!-- Grid Menu with Premium Vector Icons -->
+      <div class="grid-menu">
+        <div class="menu-item active" onclick="loadModule('Home', 'হোম ড্যাশবোর্ড: গ্লোবাল সুপার-অ্যাপ আর্কিটেকচার ও রিয়েল-টাইম ওভারভিউ active।')">
+          <svg class="menu-icon" viewBox="0 0 24 24"><path fill="#00e5ff" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+          <span class="menu-name">Home</span>
+        </div>
+        <div class="menu-item" onclick="loadModule('Market', 'মার্কেট ও সোয়াপ: মাল্টি-চেইন ব্রিজ ও ক্রস-চেইন সোয়াপ (ইথেরিয়াম, সোলানা, পলিগন)।')">
+          <svg class="menu-icon" viewBox="0 0 24 24"><path fill="#00e5ff" d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>
+          <span class="menu-name">Market</span>
+        </div>
+        <div class="menu-item" onclick="loadModule('Gaming', 'গেমিং ও ক্যাসিনো: ৭০% হাউস এজ ও জিরো গ্যাস ফি সহ ইনস্ট্যান্ট উইনিং সিস্টেম।')">
+          <svg class="menu-icon" viewBox="0 0 24 24"><path fill="#00e5ff" d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-4c-.83 0-1.5-.67-1.5-1.5S17.67 8 18.5 8s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+          <span class="menu-name">Casino</span>
+        </div>
+        <div class="menu-item" onclick="loadModule('Wallet', 'ওয়ালেট ও পিটুপি: ডিসেন্ট্রালাইজড এসক্রো প্রটেকশন ও গ্লোবাল লোকাল ব্যাংকিং গেটওয়ে।')">
+          <svg class="menu-icon" viewBox="0 0 24 24"><path fill="#00e5ff" d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+          <span class="menu-name">Wallet</span>
+        </div>
+        <div class="menu-item" onclick="loadModule('Profile', 'প্রোফাইল ও কেওয়াইসি: জীরো-নলেজ প্রুফ প্রাইভেসি (ZK-Privacy Shield) ও ইউজার ভেরিফিকেশন।')">
+          <svg class="menu-icon" viewBox="0 0 24 24"><path fill="#00e5ff" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          <span class="menu-name">Profile</span>
+        </div>
+        <div class="menu-item" onclick="loadModule('Launchpad', 'এনএফটি লাঞ্চপ্যাড: এক্সক্লুসিভ ডিজিটাল অ্যাসেট ও থার্ড-পার্টি মিনি-অ্যাপ ইন্টিগ্রেশন।')">
+          <svg class="menu-icon" viewBox="0 0 24 24"><path fill="#00e5ff" d="M12 2.5s-5 6.5-5 10.5c0 2.76 2.24 5 5 5s5-2.24 5-5c0-4-5-10.5-5-10.5zm0 14c-1.93 0-3.5-1.57-3.5-3.5 0-2.12 2.33-5.24 3.5-6.74 1.17 1.5 3.5 4.62 3.5 6.74 0 1.93-1.57 3.5-3.5 3.5z"/></svg>
+          <span class="menu-name">NFTs</span>
+        </div>
+        <div class="menu-item" onclick="loadModule('Fitness', 'ফিটনেস-টু-আর্ন: শর্টস ভিডিও হাব এবং হেলথ অ্যাক্টিভিটি থেকে রিওয়ার্ড আর্নিং।')">
+          <svg class="menu-icon" viewBox="0 0 24 24"><path fill="#00e5ff" d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+          <span class="menu-name">Fitness</span>
+        </div>
+        <div class="menu-item" onclick="loadModule('Spin', 'ডেইলি লাকি স্পিন: হুইল অফ ফরচুন ঘুরিয়ে প্রতিদিন ফ্রি কয়েন ও ক্যাশব্যাক জিতুন।')">
+          <svg class="menu-icon" viewBox="0 0 24 24"><path fill="#00e5ff" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+          <span class="menu-name">Spin</span>
+        </div>
+      </div>
+
+      <!-- Dynamic Screen -->
+      <div class="dynamic-screen">
+        <div class="screen-header">
+          <span id="screenTitle">SYSTEM READY</span>
+          <span style="font-size: 10px; color: var(--text-muted);">AI Engine v9.4</span>
+        </div>
+        <div class="screen-body" id="screenDesc">
+          সম্পূর্ণ প্ল্যাটফর্মটি গ্লোবাল Web3 আর্কিটেকচার, এআই ম্যানেজার এবং জিরো-নলেজ প্রাইভেসি শিল্ড দ্বারা সুরক্ষিত। যেকোনো ফিচারে ক্লিক করে লাইভ ড্যাশবোর্ড যাচাই করুন।
+        </div>
+      </div>
+
+      <!-- Quick Action Rows -->
+      <div class="action-row">
+        <button class="btn-action" onclick="triggerDeposit()">⚡ Quick Deposit</button>
+        <button class="btn-action" onclick="triggerVoiceAI()">🎙️ Voice Command</button>
+      </div>
+
+      <!-- God Mode Admin Trigger -->
+      <div class="god-btn" onclick="openGodModeModal()">
+        🔐 God Mode Admin Panel (Secret Code: 420MN420)
+      </div>
+
     </div>
-    <div class="grid">
-      <div class="btn" onclick="openTab('Home', 'হোম ড্যাশবোর্ড active.')">🏠<br>Home</div>
-      <div class="btn" onclick="openTab('Market', 'ক্রস-চেইন সোয়াপ active.')">📈<br>Market</div>
-      <div class="btn" onclick="openTab('Gaming', '৭০% হাউস এজ active.')">🎮<br>Gaming</div>
-      <div class="btn" onclick="openTab('Wallet', 'এসক্রো ও গেটওয়ে active.')">👝<br>Wallet</div>
-      <div class="btn" onclick="openTab('Profile', 'কেওয়াইসি active.')">👤<br>Profile</div>
-      <div class="btn" onclick="openTab('Launchpad', 'এনএফটি ও মিনি-অ্যাপ active.')">🚀<br>Launchpad</div>
-      <div class="btn" onclick="openTab('Fitness', 'ফিটনেস-টু-আর্ন active.')">⚡<br>Fitness</div>
-      <div class="btn" onclick="openTab('Spin', 'ডেইলি লাকি স্পিন active.')">🎯<br>Spin</div>
+
+    <!-- Bottom Fixed Navigation Bar (5 Items) -->
+    <div class="bottom-nav">
+      <button class="nav-item active" onclick="switchNav(this, 'Home')">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home
+      </button>
+      <button class="nav-item" onclick="switchNav(this, 'Market')">
+        <svg viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>Swap
+      </button>
+      <button class="nav-item" onclick="switchNav(this, 'Gaming')">
+        <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg>Gaming
+      </button>
+      <button class="nav-item" onclick="switchNav(this, 'Wallet')">
+        <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9z"/></svg>Wallet
+      </button>
+      <button class="nav-item" onclick="switchNav(this, 'Profile')">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Profile
+      </button>
     </div>
-    <div class="view" id="screenView">
-      <h4 style="margin: 0 0 4px 0; color: var(--accent);">সিস্টেম প্রস্তুত</h4>
-      <p style="font-size: 11px; color: var(--muted); margin: 0;">যেকোনো ফিচারে ক্লিক করুন।</p>
+
+    <!-- God Mode Modal -->
+    <div class="modal-overlay" id="godModal">
+      <div class="modal-box">
+        <div class="modal-title">God Mode Security</div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Enter owner secret privilege code:</p>
+        <input type="password" id="godCodeInput" class="modal-input" placeholder="420MN420">
+        <div class="modal-btn-row">
+          <button class="modal-btn btn-confirm" onclick="verifyGodCode()">Access</button>
+          <button class="modal-btn btn-cancel" onclick="closeGodModal()">Cancel</button>
+        </div>
+      </div>
     </div>
-    <div class="god-mode" onclick="activateGodMode()">
-      🔐 গড মোড অ্যাডমিন প্যানেল (কোড: 420MN420)
-    </div>
+
   </div>
+
   <script>
-    function openTab(title, desc) {
-      document.getElementById('screenView').innerHTML = `<h4 style="margin: 0 0 4px 0; color: var(--accent);">${title}</h4><p style="font-size: 11px; color: var(--muted); margin: 0;">${desc}</p>`;
+    function loadModule(title, desc) {
+      document.getElementById('screenTitle').innerText = title;
+      document.getElementById('screenDesc').innerText = desc;
     }
-    function activateGodMode() {
-      let code = prompt("মালিকের সিক্রেট কোড দিন (420MN420):");
+
+    function switchNav(btn, tabName) {
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      btn.classList.add('active');
+      loadModule(tabName, `সুইচ করা হয়েছে: ${tabName} মডিউল সক্রিয়। রিয়েল-টাইম ড্যাশবোর্ড এবং এআই প্রটেকশন চালু আছে।`);
+    }
+
+    function triggerDeposit() {
+      let amount = prompt("টাকার পরিমাণ লিখুন (যেমন: ৫০০ টাকা বা ৫০ ডলার):");
+      if (amount) {
+        alert(`সফল! ${amount} ডিপোজিটের রিকোয়েস্ট মার্চেন্ট API এবং AI ভেরিফিকেশনের জন্য পাঠানো হয়েছে।`);
+      }
+    }
+
+    function triggerVoiceAI() {
+      alert("🎙️ ভয়েস কমান্ড শোনা হচ্ছে... (উদাহরণ: '৫০০ টাকা ডিপোজিট করব' - এআই পেমেন্ট ভেরিফাই করছে।)");
+    }
+
+    function openGodModeModal() {
+      document.getElementById('godModal').style.display = 'flex';
+      document.getElementById('godCodeInput').value = '';
+    }
+
+    function closeGodModal() {
+      document.getElementById('godModal').style.display = 'none';
+    }
+
+    function verifyGodCode() {
+      let code = document.getElementById('godCodeInput').value;
       if (code === "420MN420") {
-        alert("স্বাগতম বস! গড মোড অ্যাডমিন প্যানেল active।");
-      } else if (code !== null) {
-        alert("ভুল সিক্রেট কোড!");
+        closeGodModal();
+        alert("স্বাগতম বস! গড মোড অ্যাডমিন প্যানেল একটিভ। ১০০% উইনিং প্রিভিলেজ ও ৮০%-২০% ফান্ড ডিস্ট্রিবিউশন কন্ট্রোল ওপেন হয়েছে।");
+        document.getElementById('balanceDisplay').innerText = "$999,999.00 USD [ADMIN]";
+      } else {
+        alert("ভুল সিক্রেট কোড! এক্সেস ডিনাইড।");
+        closeGodModal();
       }
     }
   </script>
