@@ -65,8 +65,6 @@
         table { width: 100%; border-collapse: collapse; font-size: 0.75rem; text-align: left; }
         th { background: #1E293B; color: #94A3B8; padding: 6px 8px; position: sticky; top: 0; z-index: 2; }
         td { padding: 6px 8px; border-bottom: 1px solid #1E293B; color: #CBD5E1; }
-        .win-text { color: #4ADE80; font-weight: bold; }
-        .loss-text { color: #EF4444; }
 
         @media (max-width: 768px) {
             .main-container { flex-direction: column; overflow-y: auto; }
@@ -159,7 +157,7 @@
 
         <div class="sidebar">
             <div class="sidebar-header">
-                <div>Bets <span id="numBetsCount">2,840</span></div>
+                <div>Bets <span id="numBetsCount">2,912</span></div>
                 <div>Total <span id="totalBetsAmount">782k BDT</span></div>
                 <div>Win <span id="totalWinAmount">340k BDT</span></div>
             </div>
@@ -174,7 +172,6 @@
                         </tr>
                     </thead>
                     <tbody id="liveFeedBody">
-                        <!-- ডাইনামিক ফেক এবং রিয়েল ডাটা এখানে দেখাবে -->
                     </tbody>
                 </table>
             </div>
@@ -218,7 +215,6 @@
             document.getElementById(betBtn${boxNum}).style.display = 'none';
             document.getElementById(cashoutBtn${boxNum}).style.display = 'block';
 
-            // রিয়েল ইউজারের বেট সাইডবারে যুক্ত করা
             addFeedRow("YOU (Real)", "-", betAmt + " BDT", "Running...", "yellow");
         }
 
@@ -250,16 +246,15 @@
             if(tbody.rows.length > 25) tbody.deleteRow(tbody.rows.length - 1);
         }
 
-        // ফেক ইউজার জেনারেটর ও অটোমেটিক গেম লুপ
         function startCountdown() {
             gameState = 'COUNTDOWN';
             let mElem = document.getElementById('mainMultiplier');
             let count = 3;
             document.getElementById('explosionEffect').style.display = 'none';
+            document.getElementById('planeContainer').style.display = 'block';
             mElem.classList.remove('crashed');
             mElem.innerText = "Next in " + count;
 
-            // নতুন রাউন্ডের জন্য ফেক ডেটা তৈরি
             generateFakeBetsForRound();
 
             let timer = setInterval(() => {
@@ -284,11 +279,10 @@
             totalBetsValue += Math.floor(Math.random() * 50000) + 10000;
             document.getElementById('totalBetsAmount').innerText = Math.floor(totalBetsValue / 1000) + "k BDT";
 
-            // ফেক ইউজারদের লিস্ট তৈরি করা যারা গেমের মধ্যে বেট ধরেছে
-            for(let i=0; i<15; i++) {
+            for(let i=0; i<12; i++) {
                 let maskedUser = "*****" + Math.floor(Math.random() * 90 + 10);
                 let betAmt = Math.floor(Math.random() * 15000) + 200;
-                let targetMultiplier = parseFloat((Math.random() * 5 + 1.1).toFixed(2));
+                let targetMultiplier = parseFloat((Math.random() * 4 + 1.1).toFixed(2));
                 
                 fakeUsersList.push({
                     user: maskedUser,
@@ -304,14 +298,13 @@
         function startTheGame() {
             gameState = 'FLYING';
             currentMultiplier = 1.00;
-            crashAt = parseFloat((Math.random() * 4 + 1.3).toFixed(2));
+            crashAt = parseFloat((Math.random() * 4 + 1.2).toFixed(2));
 
             let plane = document.getElementById('planeContainer');
             let bottomPos = 20;
             let leftPos = 15;
             plane.style.bottom = bottomPos + '%';
             plane.style.left = leftPos + '%';
-            plane.style.display = 'block';
 
             if (gameInterval) clearInterval(gameInterval);
 
@@ -324,10 +317,8 @@
                 plane.style.bottom = bottomPos + '%';
                 plane.style.left = leftPos + '%';
 
-                // ফেক ইউজারদের অটো ক্যাশআউট হ্যান্ডেল করা (লাইভ দেখাবে কে টাকা তুলল)
                 updateFakeUsersAction();
 
-                // অটো-প্লে চেক
                 for (let i = 1; i <= 2; i++) {
                     if (activeBets[i] && document.getElementById(autoPlay${i}).checked) {
                         cashOut(i);
@@ -369,7 +360,6 @@
             explosion.style.display = 'block';
             document.getElementById('planeContainer').style.display = 'none';
 
-            // যারা ক্রাশের আগে তুলতে পারেনি তাদের রেড মার্ক করা
             let rows = document.getElementById('liveFeedBody').rows;
             for(let i=0; i<fakeUsersList.length; i++) {
                 if(!fakeUsersList[i].cashedOut) {
@@ -381,7 +371,6 @@
                 }
             }
 
-            // রিয়েল ইউজারের লস হ্যান্ডেল করা
             for (let i = 1; i <= 2; i++) {
                 if(activeBets[i]) {
                     addFeedRow("YOU (Real)", crashAt.toFixed(2) + "x", document.getElementById(betAmount${i}).value + " BDT", "0 BDT", "loss");
@@ -391,7 +380,6 @@
                 document.getElementById(betBtn${i}).style.display = 'block';
             }
 
-            // ৩ সেকেন্ড পর স্বয়ংক্রিয়ভাবে নতুন রাউন্ড শুরু হবে
             setTimeout(() => {
                 startCountdown();
             }, 3000);
