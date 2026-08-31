@@ -1,109 +1,36 @@
-// DOM Elements
-const connectWalletBtn = document.getElementById('connectWalletBtn');
-const walletStatus = document.getElementById('walletStatus');
-const walletAddressDisplay = document.getElementById('walletAddressDisplay');
-const walletBalance = document.getElementById('walletBalance');
-const liveFeedContainer = document.getElementById('liveFeedContainer');
-
-const myWalletAddress = "0x30Ad271CcBA208215E80b607eFBd389486c9CF6A";
-
-// --- Web3 (Wallet Connect) Part ---
-connectWalletBtn.addEventListener('click', () => {
-    if (typeof window.ethereum !== 'undefined') {
-        console.log('Ethereum wallet is detected!');
-        connectMetaMask();
-    } else {
-        simulateWalletConnection();
-    }
-});
-
-async function connectMetaMask() {
-    try {
-        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        const account = accounts[0];
-
-        walletAddressDisplay.innerText = account.substring(0, 6) + '...' + account.substring(38);
-        walletStatus.innerText = "Connected via MetaMask";
-        walletStatus.classList.remove('disconnected');
-        walletStatus.classList.add('connected');
-        connectWalletBtn.innerText = "Wallet Connected";
-        connectWalletBtn.classList.add('connected');
-        connectWalletBtn.disabled = true;
-
-        getEthBalance(account);
-    } catch (error) {
-        console.error('User denied account access', error);
-    }
-}
-
-function simulateWalletConnection() {
-    const isAlreadyConnected = walletStatus.classList.contains('connected');
-    if (!isAlreadyConnected) {
-        walletAddressDisplay.innerText = myWalletAddress;
-        walletStatus.innerText = "Demo Mode";
-        walletStatus.classList.remove('disconnected');
-        walletStatus.classList.add('connected');
-        connectWalletBtn.innerText = "Demo Active";
-        connectWalletBtn.classList.add('connected');
-        connectWalletBtn.disabled = true;
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <title>BX Super App - Metro UI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="metro-container">
+        <header class="app-header">
+            <h1>BX Super App</h1>
+            <input type="text" id="searchInput" placeholder="সেবা বা কয়েন সার্চ করুন..." onkeyup="searchTiles()">
+        </header>
         
-        walletBalance.innerText = "1.4534 ETH";
-    }
-}
-
-async function getEthBalance(address) {
-    walletBalance.innerText = "1.2345 ETH";
-    console.log('Balance fetched for', address);
-}
-
-// --- WebSocket (Live Feed) Part ---
-const socketUrl = 'wss://ws.ifelse.io'; 
-
-function startLiveWebSocketFeed() {
-    const ws = new WebSocket(socketUrl);
-
-    ws.onopen = () => {
-        console.log('WebSocket connection opened.');
-        ws.send('BX Super App Live Connection Established');
-        liveFeedContainer.innerHTML = ''; 
-    };
-
-    ws.onmessage = (event) => {
-        console.log('Message from server:', event.data);
-        addLiveFeedCard(event.data);
-    };
-
-    ws.onerror = (error) => {
-        console.error('WebSocket Error:', error);
-        liveFeedContainer.innerHTML = '<p style="color:#EF4444;">Connecting to live stream...</p>';
-    };
-
-    ws.onclose = (event) => {
-        console.log('WebSocket connection closed:', event);
-        liveFeedContainer.innerHTML = '<p style="color:#94A3B8;">Reconnecting live feed...</p>';
-        setTimeout(startLiveWebSocketFeed, 3000);
-    };
-}
-
-function addLiveFeedCard(data) {
-    const timestamp = new Date().toLocaleTimeString();
-    
-    const cardHtml = `
-        <div class="card live-card fade-in" style="display: flex; align-items: center; gap: 15px; border: 1px solid #334155; position: relative; margin-bottom: 1rem; background-color: #1E293B; padding: 1.5rem; border-radius: 10px;">
-            <div class="live-icon" style="font-size: 1.5rem; color: #3B82F6;"><i class="fas fa-bolt"></i></div>
-            <div class="live-content">
-                <h4 style="margin: 0 0 5px 0; color: #F8FAFC;">Live Packet Feed <span style="font-weight:normal; color:#94A3B8; font-size: 0.8rem;">${timestamp}</span></h4>
-                <p style="margin: 0; font-family:monospace; font-size:0.85rem; color:#94A3B8;">Data: "${data}"</p>
+        <div class="tiles-grid" id="tilesGrid">
+            <div class="tile crypto" onclick="openModule('crypto')">
+                <h3>ক্রিপ্টো ও মেমে মার্কেট</h3>
+                <p>লাইভ DEX ট্রেডিং</p>
             </div>
-            <span class="live-tag" style="position: absolute; top: 10px; right: 10px; background-color: rgba(239, 68, 68, 0.2); color: #EF4444; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold;">LIVE</span>
+            <div class="tile game" onclick="openModule('game')">
+                <h3>থ্রিডি গেম জোন</h3>
+                <p>১০০% উইনিং সিস্টেম</p>
+            </div>
+            <div class="tile bank" onclick="openModule('bank')">
+                <h3>BX ব্যাংক</h3>
+                <p>গ্লোবাল এআই অ্যাকাউন্ট</p>
+            </div>
+            <div class="tile admin" onclick="openModule('admin')">
+                <h3>মাস্টার অ্যাডমিন</h3>
+                <p>গড মোড কন্ট্রোল</p>
+            </div>
         </div>
-    `;
-    
-    liveFeedContainer.insertAdjacentHTML('afterbegin', cardHtml);
-    
-    if (liveFeedContainer.children.length > 5) {
-        liveFeedContainer.removeChild(liveFeedContainer.lastChild);
-    }
-}
-
-startLiveWebSocketFeed();
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
