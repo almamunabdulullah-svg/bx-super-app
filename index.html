@@ -1,315 +1,67 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BX Super App - Universal Hybrid Ecosystem</title>
-    <style>
-        :root {
-            --bg-main: #0b0e11;
-            --bg-card: #181a20;
-            --border-color: #23272e;
-            --accent-gold: #f0b90b;
-            --text-main: #eaecef;
-            --text-muted: #848e9c;
-            --green: #0ecb81;
-        }
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            margin: 0;
-            padding: 15px;
-        }
-        /* Top Profile & Balance Bar */
-        .top-user-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #2b313a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: var(--accent-gold);
-            border: 1px solid var(--accent-gold);
-        }
-        .user-details h4 {
-            margin: 0;
-            font-size: 14px;
-        }
-        .user-details p {
-            margin: 0;
-            font-size: 11px;
-            color: var(--green);
-        }
-        .balance-box {
-            text-align: right;
-        }
-        .balance-box span {
-            font-size: 12px;
-            color: var(--text-muted);
-            display: block;
-        }
-        .balance-box strong {
-            font-size: 16px;
-            color: var(--accent-gold);
-        }
-
-        /* Controls Bar */
-        .controls-bar {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .search-bar {
-            flex: 1;
-            padding: 10px 12px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            border-radius: 6px;
-            font-size: 13px;
-        }
-        .settings-btn, .currency-select {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        /* Grid Layout */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            padding: 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .card:hover {
-            border-color: var(--accent-gold);
-        }
-        .card h3 {
-            margin: 0 0 5px 0;
-            font-size: 15px;
-        }
-        .card p {
-            margin: 0;
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-        .view-section {
-            display: none;
-        }
-        .back-btn {
-            background: var(--border-color);
-            color: var(--text-main);
-            border: none;
-            padding: 8px 14px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-bottom: 15px;
-            font-size: 13px;
-        }
-        .admin-panel {
-            background: #1e1515;
-            border: 1px solid #ff4d4d;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-        }
-        .stats-box {
-            background: #12151c;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            font-size: 12px;
-        }
-    </style>
+    <title>BX Super App - Global Crypto & Fintech Ecosystem</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="app-container">
+        <!-- Header / Global Switcher -->
+        <header class="app-header">
+            <div class="logo">BX Super App</div>
+            <div class="global-controls">
+                <select id="currencySelector" onchange="updateCurrency()">
+                    <option value="USD">USD ($)</option>
+                    <option value="BDT">BDT (৳)</option>
+                    <option value="EUR">EUR (€)</option>
+                    <option value="AED">AED (د.إ)</option>
+                </select>
+                <button onclick="openGodModeModal()" class="god-btn">🔒 God Mode</button>
+            </div>
+        </header>
 
-    <!-- Home Dashboard -->
-    <div id="homeView">
-        <!-- User Profile & Balance Section -->
-        <div class="top-user-bar">
-            <div class="user-info">
-                <div class="user-avatar">BX</div>
-                <div class="user-details">
-                    <h4>মাস্টার ইউজার</h4>
-                    <p>● সিকিউরড কানেক্টেড</p>
-                </div>
+        <!-- Dashboard Assets Overview -->
+        <section class="dashboard-card">
+            <h3>My Wallet Assets</h3>
+            <h1 id="balanceDisplay">৳0.00005</h1>
+            <div class="action-buttons">
+                <button>Send</button>
+                <button>Receive</button>
+                <button>History</button>
+                <button>Approvals</button>
             </div>
-            <div class="balance-box">
-                <span>ব্যালেন্স</span>
-                <strong id="userBalance">$1,250.00</strong>
-            </div>
-        </div>
+        </section>
 
-        <!-- Search, Currency & Settings Bar -->
-        <div class="controls-bar">
-            <input type="text" class="search-bar" id="searchInput" placeholder="সেবা বা কয়েন সার্চ করুন..." onkeyup="filterCards()">
-            <select class="currency-select" id="currencySelect" onchange="changeCurrency()">
-                <option value="USD">USD ($)</option>
-                <option value="BDT">BDT (৳)</option>
-                <option value="EUR">EUR (€)</option>
-                <option value="AED">AED (د.إ)</option>
-            </select>
-            <button class="settings-btn" onclick="openSettings()">⚙️</button>
-        </div>
-        
-        <!-- Main Feature Cards Grid -->
-        <div class="grid-container" id="cardGrid">
-            <div class="card" onclick="openModule('crypto')">
-                <h3>ক্রিপ্টো ও মেমে</h3>
-                <p>DEX স্ক্রিনার ও লাইভ ফিড</p>
+        <!-- Quick Modules & Navigation -->
+        <section class="modules-grid">
+            <div class="module-box" onclick="location.href='game.html'">
+                <h3>🎮 BX Gaming & Casino</h3>
+                <p>70% Company / 30% User Win Ratio</p>
             </div>
-            <div class="card" onclick="openModule('game')">
-                <h3>গেম ও ক্যাসিনো</h3>
-                <p>৪K থ্রিডি গেম জোন</p>
+            <div class="module-box" onclick="alert('AI Messaging & Multi-Tasking Bot Active')">
+                <h3>🤖 Binance AI Bot</h3>
+                <p>Smart Trading & Auto Tax (0.1%)</p>
             </div>
-            <div class="card" onclick="openModule('bank')">
-                <h3>BX ব্যাংক</h3>
-                <p>২০০ দেশের ভার্চুয়াল অ্যাকাউন্ট</p>
+            <div class="module-box" onclick="alert('BX Virtual Bank Connected to Blockchain')">
+                <h3>🏦 BX Virtual Bank</h3>
+                <p>Global Routing & 200 Country Support</p>
             </div>
-            <div class="card" onclick="openModule('ai')">
-                <h3>এআই প্লাগ-ইন</h3>
-                <p>অটো অ্যাপ এগ্রিগেটর</p>
-            </div>
+        </section>
+    </div>
+
+    <!-- God Mode Modal -->
+    <div id="godModal" class="modal">
+        <div class="modal-content">
+            <h2>Master God Mode Access</h2>
+            <p>Master Contract: <code>0x30Ad271CcBA208215E80b607eFBd389486c9CF6A</code></p>
+            <input type="password" id="masterPass" placeholder="Enter Master Password (420MM420)">
+            <button onclick="verifyGodMode()">Unlock Backend</button>
+            <button onclick="closeGodModeModal()">Cancel</button>
         </div>
     </div>
 
-    <!-- Inner Dynamic Workspace -->
-    <div id="innerView" class="view-section">
-        <button class="back-btn" onclick="goHome()">← মূল ড্যাশবোর্ডে ফিরুন</button>
-        <div id="innerContent"></div>
-    </div>
-
-    <script>
-        let isAdminActive = sessionStorage.getItem("godMode") === "true";
-
-        function filterCards() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let cards = document.getElementsByClassName('card');
-            for (let i = 0; i < cards.length; i++) {
-                let text = cards[i].innerText.toLowerCase();
-                cards[i].style.display = text.includes(input) ? "" : "none";
-            }
-            
-            // Secret keyword trigger for Admin God Mode
-            if (input === "420mm420" || input === "admin") {
-                let pass = prompt("মাস্টার পাসওয়ার্ড প্রবেশ করুন:");
-                if (pass === "420MM420") {
-                    isAdminActive = true;
-                    sessionStorage.setItem("godMode", "true");
-                    alert("মাস্টার অ্যাডমিন (গড মোড) সফলভাবে ব্যাকগ্রাউন্ডে অ্যাক্টিভেট হয়েছে!");
-                    document.getElementById('searchInput').value = "";
-                    filterCards();
-                } else {
-                    alert("ভুল পাসওয়ার্ড!");
-                }
-            }
-        }
-
-        function changeCurrency() {
-            let cur = document.getElementById('currencySelect').value;
-            let bal = document.getElementById('userBalance');
-            if(cur === 'BDT') bal.innerText = "৳146,250";
-            else if(cur === 'EUR') bal.innerText = "€1,150";
-            else if(cur === 'AED') bal.innerText = "د.إ4,590";
-            else bal.innerText = "$1,250.00";
-        }
-
-        function openSettings() {
-            showContent(`
-                <h2>সিস্টেম ও গ্লোবাল সেটিংস</h2>
-                <p>এখান থেকে ২০০টি দেশের ভাষা, কারেন্সি, বায়োমেট্রিক সিকিউরিটি এবং এআই রোবট নোটিফিকেশন কনফিগার করা যাবে।</p>
-                <div class="stats-box">ভাষা: বাংলা / ইংরেজি (অটো সিঙ্ক)</div>
-                <div class="stats-box">অ্যান্টি-ট্র্যাকিং মাস্কেটিং: ইউরোপ, আমেরিকা ও দুবাই প্রক্সি সক্রিয়।</div>
-            `);
-        }
-
-        function openModule(type) {
-            if (type === 'crypto') {
-                showContent(`
-                    <h2>ক্রিপ্টো ও মেমে মার্কেট</h2>
-                    <p>লাইভ DEX স্ক্রিনার ও জিএমজিএন ফিড সংযুক্ত। প্রতিটি ট্রানজাকশনে সাইলেন্টলি ০.১% ট্যাক্স সরাসরি মাস্টার ওয়ালেটে জমা হচ্ছে।</p>
-                    <div class="stats-box">ব্লকচেইন নোড: বিএনবি চেইন কানেক্টেড।</div>
-                `);
-            } else if (type === 'game') {
-                showContent(`
-                    <h2>গেম ও ক্যাসিনো জোন</h2>
-                    <p>মেলবেট স্টাইল হাই-স্পিড ৪K থ্রিডি গেম ইঞ্জিন রেন্ডারিং চলছে।</p>
-                    <div class="stats-box">নিরাপত্তা ও পেআউট রোবট: ফুললি অটোমেটেড।</div>
-                `);
-            } else if (type === 'bank') {
-                showContent(`
-                    <h2>BX ব্যাংক ও ভার্চুয়াল অ্যাকাউন্ট</h2>
-                    <p>এআই-নিয়ন্ত্রিত ২০০টি দেশের লোকাল ব্যাংকিং ও রাউটিং নাম্বার জেনারেটর প্রস্তুত।</p>
-                    <div class="stats-box">এসক্রো ভল্ট লক: সুরক্ষিত।</div>
-                `);
-            } else if (type === 'ai') {
-                showContent(`
-                    <h2>ইউনিভার্সাল এআই প্লাগ-ইন ও অ্যাডস</h2>
-                    <p>থ্রিডি মিশন এবং ইউটিউব-টিকটক স্টাইল প্ল্যাটফর্ম এগ্রিগেটর। থার্ড-পার্টি গেমের আয় থেকে স্বয়ংক্রিয় ৫% কমিশন যুক্ত হচ্ছে।</p>
-                    <div class="stats-box">এআই সাব-রোবট টিম: রানিং।</div>
-                `);
-            }
-        }
-
-        function showContent(html) {
-            document.getElementById('homeView').style.display = 'none';
-            document.getElementById('innerView').style.display = 'block';
-            
-            let finalHtml = html;
-            if (isAdminActive) {
-                finalHtml += `
-                    <div class="admin-panel">
-                        <h3 style="color: #ff4d4d; margin-top:0;">⚡ মাস্টার অ্যাডমিন গড মোড প্যানেল</h3>
-                        <p>স্মার্ট কন্ট্রাক্ট অ্যাড্রেস: <code>0x30Ad271CcBA208215E80b607eFBd389486c9CF6A</code></p>
-                        <p>সেন্ট্রাল বিএনবি ব্লকচেইন মাস্টার রোবট নেটওয়ার্ক এবং ডার্ক-ওয়েব সিক্রেট প্রোটোকল সম্পূর্ণ সুরক্ষিত ও সংযুক্ত রয়েছে। সাধারণ ব্যবহারকারীরা এই প্যানেল বা প্রফিট রেশিও দেখতে পাবে না।</p>
-                        <button class="back-btn" onclick="deactivateAdmin()" style="background:#ff4d4d; color:white; margin-bottom:0;">লগআউট গড মোড</button>
-                    </div>
-                `;
-            }
-            document.getElementById('innerContent').innerHTML = finalHtml;
-        }
-
-        function goHome() {
-            document.getElementById('innerView').style.display = 'none';
-            document.getElementById('homeView').style.display = 'block';
-        }
-
-        function deactivateAdmin() {
-            isAdminActive = false;
-            sessionStorage.removeItem("godMode");
-            alert("গড মোড ডিঅ্যাক্টিভেট করা হয়েছে।");
-            goHome();
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
