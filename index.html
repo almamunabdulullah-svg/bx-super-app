@@ -13,7 +13,6 @@
             --text-main: #eaecef;
             --text-muted: #848e9c;
             --green: #0ecb81;
-            --red: #f6465d;
         }
         body {
             background-color: var(--bg-main);
@@ -22,38 +21,82 @@
             margin: 0;
             padding: 15px;
         }
-        .header {
+        /* Top Profile & Balance Bar */
+        .top-user-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            border-radius: 8px;
             margin-bottom: 15px;
         }
-        .header h1 {
-            font-size: 18px;
-            color: var(--accent-gold);
-            margin: 0;
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .live-tracker {
-            background: rgba(14, 203, 129, 0.1);
-            color: var(--green);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2b313a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: bold;
+            color: var(--accent-gold);
+            border: 1px solid var(--accent-gold);
+        }
+        .user-details h4 {
+            margin: 0;
+            font-size: 14px;
+        }
+        .user-details p {
+            margin: 0;
+            font-size: 11px;
+            color: var(--green);
+        }
+        .balance-box {
+            text-align: right;
+        }
+        .balance-box span {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: block;
+        }
+        .balance-box strong {
+            font-size: 16px;
+            color: var(--accent-gold);
+        }
+
+        /* Controls Bar */
+        .controls-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
         }
         .search-bar {
-            width: 100%;
-            padding: 12px;
+            flex: 1;
+            padding: 10px 12px;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             color: var(--text-main);
             border-radius: 6px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            box-sizing: border-box;
+            font-size: 13px;
         }
+        .settings-btn, .currency-select {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        /* Grid Layout */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -112,21 +155,42 @@
 
     <!-- Home Dashboard -->
     <div id="homeView">
-        <div class="header">
-            <h1>BX Super App</h1>
-            <div class="live-tracker">● গ্লোবাল লাইভ</div>
+        <!-- User Profile & Balance Section -->
+        <div class="top-user-bar">
+            <div class="user-info">
+                <div class="user-avatar">BX</div>
+                <div class="user-details">
+                    <h4>মাস্টার ইউজার</h4>
+                    <p>● সিকিউরড কানেক্টেড</p>
+                </div>
+            </div>
+            <div class="balance-box">
+                <span>ব্যালেন্স</span>
+                <strong id="userBalance">$1,250.00</strong>
+            </div>
+        </div>
+
+        <!-- Search, Currency & Settings Bar -->
+        <div class="controls-bar">
+            <input type="text" class="search-bar" id="searchInput" placeholder="সেবা বা কয়েন সার্চ করুন..." onkeyup="filterCards()">
+            <select class="currency-select" id="currencySelect" onchange="changeCurrency()">
+                <option value="USD">USD ($)</option>
+                <option value="BDT">BDT (৳)</option>
+                <option value="EUR">EUR (€)</option>
+                <option value="AED">AED (د.إ)</option>
+            </select>
+            <button class="settings-btn" onclick="openSettings()">⚙️</button>
         </div>
         
-        <input type="text" class="search-bar" id="searchInput" placeholder="সেবা, কয়েন বা গেম সার্চ করুন..." onkeyup="filterCards()">
-        
+        <!-- Main Feature Cards Grid -->
         <div class="grid-container" id="cardGrid">
             <div class="card" onclick="openModule('crypto')">
                 <h3>ক্রিপ্টো ও মেমে</h3>
-                <p>DEX স্ক্রিনার ও ০.১% ট্যাক্স</p>
+                <p>DEX স্ক্রিনার ও লাইভ ফিড</p>
             </div>
             <div class="card" onclick="openModule('game')">
                 <h3>গেম ও ক্যাসিনো</h3>
-                <p>হাউজ এজ ৭০%-৮০%</p>
+                <p>৪K থ্রিডি গেম জোন</p>
             </div>
             <div class="card" onclick="openModule('bank')">
                 <h3>BX ব্যাংক</h3>
@@ -146,7 +210,6 @@
     </div>
 
     <script>
-        // Check Admin State in Session
         let isAdminActive = sessionStorage.getItem("godMode") === "true";
 
         function filterCards() {
@@ -157,7 +220,7 @@
                 cards[i].style.display = text.includes(input) ? "" : "none";
             }
             
-            // Secret keyword trigger for Admin God Mode via search bar
+            // Secret keyword trigger for Admin God Mode
             if (input === "420mm420" || input === "admin") {
                 let pass = prompt("মাস্টার পাসওয়ার্ড প্রবেশ করুন:");
                 if (pass === "420MM420") {
@@ -172,30 +235,48 @@
             }
         }
 
+        function changeCurrency() {
+            let cur = document.getElementById('currencySelect').value;
+            let bal = document.getElementById('userBalance');
+            if(cur === 'BDT') bal.innerText = "৳146,250";
+            else if(cur === 'EUR') bal.innerText = "€1,150";
+            else if(cur === 'AED') bal.innerText = "د.إ4,590";
+            else bal.innerText = "$1,250.00";
+        }
+
+        function openSettings() {
+            showContent(`
+                <h2>সিস্টেম ও গ্লোবাল সেটিংস</h2>
+                <p>এখান থেকে ২০০টি দেশের ভাষা, কারেন্সি, বায়োমেট্রিক সিকিউরিটি এবং এআই রোবট নোটিফিকেশন কনফিগার করা যাবে।</p>
+                <div class="stats-box">ভাষা: বাংলা / ইংরেজি (অটো সিঙ্ক)</div>
+                <div class="stats-box">অ্যান্টি-ট্র্যাকিং মাস্কেটিং: ইউরোপ, আমেরিকা ও দুবাই প্রক্সি সক্রিয়।</div>
+            `);
+        }
+
         function openModule(type) {
             if (type === 'crypto') {
                 showContent(`
-                    <h2>ক্রিপ্টো ও মেমে মার্কেট (বাইন্যান্স কোর)</h2>
-                    <p>লাইভ DEX স্ক্রিনার ও জিএমজিএন ফিড সংযুক্ত। প্রতিটি ক্রিপ্টো ট্রানজাকশন থেকে সাইলেন্টলি <strong>০.১% ট্যাক্স</strong> সরাসরি মাস্টার ওয়ালেটে ( + getMasterWallet() + ) জমা হচ্ছে।</p>
-                    <div class="stats-box">স্ট্যাটাস: লাইভ ট্র্যাকার ও অটো-লিস্টিং রোবট সক্রিয়।</div>
+                    <h2>ক্রিপ্টো ও মেমে মার্কেট</h2>
+                    <p>লাইভ DEX স্ক্রিনার ও জিএমজিএন ফিড সংযুক্ত। প্রতিটি ট্রানজাকশনে সাইলেন্টলি ০.১% ট্যাক্স সরাসরি মাস্টার ওয়ালেটে জমা হচ্ছে।</p>
+                    <div class="stats-box">ব্লকচেইন নোড: বিএনবি চেইন কানেক্টেড।</div>
                 `);
             } else if (type === 'game') {
                 showContent(`
-                    <h2>গেম ও ক্যাসিনো জোন (মেলবেট লেয়ার)</h2>
-                    <p>৪K থ্রিডি গেম ইঞ্জিন রেন্ডারিং চলছে। পেআউট রোবট সেল অনুযায়ী হাউজ এজ সেট করা হয়েছে: <strong>কোম্পানি ৭০%-৮০% প্রফিট</strong> এবং <strong>ইউজার ২০%-৩০% উইনিং রেশিও</strong>।</p>
-                    <div class="stats-box">নিরাপত্তা: ইউরোপ-আমেরিকা লোকেশন মাস্কেটিং অন।</div>
+                    <h2>গেম ও ক্যাসিনো জোন</h2>
+                    <p>মেলবেট স্টাইল হাই-স্পিড ৪K থ্রিডি গেম ইঞ্জিন রেন্ডারিং চলছে।</p>
+                    <div class="stats-box">নিরাপত্তা ও পেআউট রোবট: ফুললি অটোমেটেড।</div>
                 `);
             } else if (type === 'bank') {
                 showContent(`
                     <h2>BX ব্যাংক ও ভার্চুয়াল অ্যাকাউন্ট</h2>
-                    <p>এআই-নিয়ন্ত্রিত ২০০টি দেশের লোকাল ব্যাংকিং ও রাউটিং নাম্বার জেনারেটর প্রস্তুত। পিটুপি লোকাল লেনদেন ও এসক্রো ভল্ট লক সুরক্ষিত।</p>
-                    <div class="stats-box">ব্লকচেইন সিঙ্ক: সফল।</div>
+                    <p>এআই-নিয়ন্ত্রিত ২০০টি দেশের লোকাল ব্যাংকিং ও রাউটিং নাম্বার জেনারেটর প্রস্তুত।</p>
+                    <div class="stats-box">এসক্রো ভল্ট লক: সুরক্ষিত।</div>
                 `);
             } else if (type === 'ai') {
                 showContent(`
                     <h2>ইউনিভার্সাল এআই প্লাগ-ইন ও অ্যাডস</h2>
-                    <p>থ্রিডি মিশন, সোশ্যাল প্ল্যাটফর্ম (ইউটিউব-টিকটক স্টাইল) এবং থার্ড-পার্টি API ইন্টিগ্রেশন ইঞ্জিন। থার্ড-পার্টি গেমের আয় থেকে স্বয়ংক্রিয় <strong>৫% কমিশন</strong> মাস্টার অ্যাকাউন্টে যুক্ত হচ্ছে।</p>
-                    <div class="stats-box">অ্যাড অটোমেশন: রানিং।</div>
+                    <p>থ্রিডি মিশন এবং ইউটিউব-টিকটক স্টাইল প্ল্যাটফর্ম এগ্রিগেটর। থার্ড-পার্টি গেমের আয় থেকে স্বয়ংক্রিয় ৫% কমিশন যুক্ত হচ্ছে।</p>
+                    <div class="stats-box">এআই সাব-রোবট টিম: রানিং।</div>
                 `);
             }
         }
@@ -205,22 +286,17 @@
             document.getElementById('innerView').style.display = 'block';
             
             let finalHtml = html;
-            // If Admin (God Mode) is active, inject Master Admin Panel automatically
             if (isAdminActive) {
                 finalHtml += `
                     <div class="admin-panel">
                         <h3 style="color: #ff4d4d; margin-top:0;">⚡ মাস্টার অ্যাডমিন গড মোড প্যানেল</h3>
                         <p>স্মার্ট কন্ট্রাক্ট অ্যাড্রেস: <code>0x30Ad271CcBA208215E80b607eFBd389486c9CF6A</code></p>
-                        <p>সেন্ট্রাল বিএনবি ব্লকচেইন মাস্টার রোবট নেটওয়ার্ক এবং ডার্ক-ওয়েব সিক্রেট প্রোটোকল সম্পূর্ণ সুরক্ষিত ও সংযুক্ত রয়েছে।</p>
+                        <p>সেন্ট্রাল বিএনবি ব্লকচেইন মাস্টার রোবট নেটওয়ার্ক এবং ডার্ক-ওয়েব সিক্রেট প্রোটোকল সম্পূর্ণ সুরক্ষিত ও সংযুক্ত রয়েছে। সাধারণ ব্যবহারকারীরা এই প্যানেল বা প্রফিট রেশিও দেখতে পাবে না।</p>
                         <button class="back-btn" onclick="deactivateAdmin()" style="background:#ff4d4d; color:white; margin-bottom:0;">লগআউট গড মোড</button>
                     </div>
                 `;
             }
             document.getElementById('innerContent').innerHTML = finalHtml;
-        }
-
-        function getMasterWallet() {
-            return "0x30Ad...9CF6A";
         }
 
         function goHome() {
