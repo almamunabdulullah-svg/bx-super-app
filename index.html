@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BX Super App - Global Finance & Gaming</title>
+    <title>BX Super App - Master Global Platform</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,11 +15,11 @@
                 <span class="user-id">ID: 889921</span>
             </div>
             <div class="search-bar">
-                <input type="text" placeholder="Global Search (Coins, Features, Games)...">
+                <input type="text" id="globalSearch" placeholder="Search Coins, P2P, Banking..." onkeyup="searchFeatures()">
             </div>
             <div class="selectors">
-                <select id="langSelect"><option>EN</option><option>BN</option></select>
-                <select id="currencySelect"><option>USD</option><option>BDT</option></select>
+                <select id="langSelect" onchange="changeLanguage()"><option value="EN">EN</option><option value="BN">BN</option></select>
+                <select id="currencySelect" onchange="changeCurrency()"><option value="USD">USD</option><option value="BDT">BDT</option></select>
             </div>
         </header>
 
@@ -28,21 +28,21 @@
             <div class="asset-ad-box">
                 <div class="total-asset-card">
                     <h3>Total Assets</h3>
-                    <p class="balance-val">$50,430.00</p>
+                    <p class="balance-val" id="totalBalance">$0.00</p>
                 </div>
                 <div class="google-ad-box">
-                    <span>Sponsored Ad (High-CPC)</span>
+                    <span>Google High-CPC Ad Active</span>
                 </div>
             </div>
 
-            <!-- Tiles Grid Menu -->
+            <!-- Tiles Grid Menu with Direct Links -->
             <div class="tiles-grid">
-                <div class="tile-item" onclick="location.href='game.html'">🎮 Game & Casino Zone</div>
-                <div class="tile-item">💱 P2P Trading Hub</div>
-                <div class="tile-item">🪙 Meme Coin Auto-List</div>
-                <div class="tile-item">🏦 BX Secure Banking</div>
-                <div class="tile-item">🌐 Social-Fi Hub</div>
-                <div class="tile-item">🔒 Secret Admin Vault</div>
+                <div class="tile-item" onclick="openFeature('game')">🎮 Game & Casino Zone</div>
+                <div class="tile-item" onclick="openFeature('p2p')">💱 P2P Trading Hub</div>
+                <div class="tile-item" onclick="openFeature('meme')">🪙 Meme Coin Auto-List</div>
+                <div class="tile-item" onclick="openFeature('banking')">🏦 BX Secure Banking</div>
+                <div class="tile-item" onclick="openFeature('social')">🌐 Social-Fi Hub</div>
+                <div class="tile-item" onclick="openFeature('vault')">🔒 Secret Admin Vault</div>
             </div>
         </main>
     </div>
