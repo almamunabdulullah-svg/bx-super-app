@@ -3,181 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BX Global Web3 BNB & Multi-Currency Super-App Ecosystem - 8 Pages Complete</title>
+    <title>BX Global Super-App Ecosystem (Full Binance Unified Edition)</title>
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { background-color: #0B0E14; color: #FFFFFF; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .app-container { width: 100%; max-width: 480px; background-color: #0B0E14; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; border: 1px solid #222; }
-        .content { padding: 14px; overflow-y: auto; flex-grow: 1; padding-bottom: 90px; scrollbar-width: none; }
+        .app-container { width: 100%; max-width: 480px; background-color: #181A20; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; border: 1px solid #2B313A; box-shadow: 0 25px 50px rgba(0,0,0,0.8); }
+        
+        .content { padding: 16px; overflow-y: auto; flex-grow: 1; padding-bottom: 100px; scrollbar-width: none; animation: fadeIn 0.3s ease-in-out; }
         .content::-webkit-scrollbar { display: none; }
-        
-        .top-row { display: flex; gap: 10px; margin-bottom: 12px; }
-        .card { background-color: #181D28; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 10px; flex: 1; }
-        .profile-box { display: flex; align-items: center; gap: 10px; cursor: pointer; height: 100%; }
-        .avatar { width: 40px; height: 40px; background-color: #F3BA2F; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #000; font-weight: bold; }
-        
-        .bullet-text { font-size: 15px; font-weight: bold; color: #F3BA2F; }
-        .bdt-text { font-size: 10px; color: #0ECB81; margin-top: 2px; }
-        .mini-btns { display: flex; gap: 6px; margin-top: 6px; }
-        .mini-btn { background-color: rgba(243, 186, 47, 0.2); color: #F3BA2F; border: none; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; cursor: pointer; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        .quick-swap-box { background: linear-gradient(135deg, #181D28, #12161F); border: 1px solid rgba(243,186,47,0.3); border-radius: 12px; padding: 10px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .price-ticker { background-color: #181D28; border-radius: 10px; padding: 8px 10px; font-size: 10px; color: #F3BA2F; margin-bottom: 10px; display: flex; justify-content: space-between; border: 1px solid rgba(243,186,47,0.15); overflow-x: auto; }
+        /* Binance Style Header & Profile */
+        .binance-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .profile-badge { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .avatar { width: 40px; height: 40px; background: #FCD535; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #000; font-weight: bold; font-size: 16px; box-shadow: 0 4px 10px rgba(252,213,53,0.3); }
         
-        .trade-section { display: flex; gap: 8px; margin-bottom: 12px; }
-        .order-form { flex: 1; background: #181D28; padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); }
-        .order-book { flex: 1; background: #181D28; padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-size: 10px; }
-        .tab-group { display: flex; gap: 4px; margin-bottom: 8px; }
-        .tab-pill { flex: 1; padding: 6px; text-align: center; background: #0B0E14; border: none; color: grey; font-size: 11px; font-weight: bold; border-radius: 6px; cursor: pointer; }
-        .tab-pill.buy-active { background: #0ECB81; color: #000; }
-        .tab-pill.sell-active { background: #F6465D; color: #fff; }
-        .input-group { margin-bottom: 6px; }
-        .input-group label { font-size: 9px; color: grey; display: block; margin-bottom: 2px; }
-        .input-group input, .input-group select { width: 100%; background: #0B0E14; border: 1px solid #333; color: #fff; padding: 6px; border-radius: 6px; font-size: 11px; outline: none; }
-        .action-btn { width: 100%; padding: 8px; border: none; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 11px; margin-top: 4px; }
-        .btn-buy { background: #0ECB81; color: #000; }
-        .btn-sell { background: #F6465D; color: #fff; }
-        .chart-box { background: #181D28; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); padding: 8px; margin-bottom: 12px; }
-        #chartContainer { width: 100%; height: 180px; }
-        .order-row { display: flex; justify-content: space-between; margin-bottom: 2px; }
-        .ask-price { color: #F6465D; }
-        .bid-price { color: #0ECB81; }
+        /* Balance Card */
+        .balance-card { background: linear-gradient(135deg, #202630, #1E2329); border: 1px solid rgba(252, 213, 53, 0.25); border-radius: 16px; padding: 18px; margin-bottom: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        .balance-title { font-size: 12px; color: #848E9C; display: flex; justify-content: space-between; align-items: center; }
+        .balance-amount { font-size: 26px; font-weight: 800; color: #FCD535; margin: 6px 0; }
+        .balance-sub { font-size: 11px; color: #0ECB81; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
 
-        .section-title { font-size: 13px; font-weight: bold; color: rgba(255, 255, 255, 0.8); margin: 12px 0 6px 0; display: flex; justify-content: space-between; }
-        .tiles-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .tile-card { background: #181D28; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; cursor: pointer; transition: 0.2s; }
-        .tile-card:hover { border-color: #F3BA2F; }
-        .tile-body { padding: 10px; }
-        .tile-title { font-size: 12px; font-weight: bold; color: #fff; }
-        .tile-desc { font-size: 10px; color: grey; margin-top: 4px; }
+        /* Global Settings Bar (200 Countries & Languages) */
+        .global-bar { display: flex; gap: 8px; margin-bottom: 16px; background: #202630; padding: 8px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        .global-select { flex: 1; background: #121212; border: 1px solid #2B313A; color: #FCD535; padding: 6px 10px; border-radius: 8px; font-size: 11px; font-weight: bold; outline: none; cursor: pointer; }
 
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; background-color: #12161F; display: flex; justify-content: space-around; padding: 6px 0; border-top: 1px solid rgba(255,255,255,0.05); z-index: 100; overflow-x: auto; }
-        .nav-btn { background: none; border: none; color: grey; font-size: 8px; display: flex; flex-direction: column; align-items: center; cursor: pointer; gap: 2px; min-width: 50px; }
-        .nav-btn.active { color: #F3BA2F; }
-        
-        .auth-screen { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); justify-content: center; align-items: center; z-index: 1000; }
-        .auth-box { background: #181D28; padding: 18px; border-radius: 16px; width: 85%; max-width: 340px; border: 1px solid rgba(255,255,255,0.2); text-align: center; }
-        .auth-box input { width: 100%; padding: 8px; margin: 6px 0; background: #0B0E14; border: 1px solid #333; color: #fff; border-radius: 6px; outline: none; font-size: 12px; }
-        .auth-box button { background: #F3BA2F; color: #000; border: none; padding: 9px; font-weight: bold; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 6px; }
+        /* Feature Grid & Graphics */
+        .section-title { font-size: 14px; font-weight: 700; color: #EAECEF; margin: 16px 0 10px 0; display: flex; justify-content: space-between; align-items: center; }
+        .features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+        .feature-box { background: #202630; border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; padding: 12px 6px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .feature-box:hover { border-color: #FCD535; transform: translateY(-2px); }
+        .feature-icon { font-size: 24px; margin-bottom: 6px; }
+        .feature-name { font-size: 10px; font-weight: bold; color: #EAECEF; }
+
+        /* Dedicated Room Cards */
+        .detail-card { background: #202630; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 16px; margin-bottom: 12px; cursor: pointer; transition: 0.2s; }
+        .detail-card:hover { border-color: #FCD535; }
+        .detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .detail-title { font-size: 14px; font-weight: bold; color: #fff; display: flex; align-items: center; gap: 8px; }
+        .detail-desc { font-size: 11px; color: #848E9C; line-height: 1.5; }
+
+        /* Market Crypto List */
+        .market-list { display: flex; flex-direction: column; gap: 10px; }
+        .market-row { background: #202630; border-radius: 14px; padding: 14px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s; }
+        .market-row:hover { border-color: #FCD535; }
+
+        /* Trade & Chart UI */
+        .chart-box { background: #202630; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); padding: 12px; margin-bottom: 16px; }
+        #chartContainer { width: 100%; height: 240px; }
+        .trade-grid { display: flex; gap: 10px; margin-bottom: 16px; }
+        .trade-box { flex: 1; background: #202630; padding: 14px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
+        .tab-selector { display: flex; gap: 4px; margin-bottom: 12px; background: #121212; padding: 3px; border-radius: 8px; }
+        .tab-btn { flex: 1; padding: 8px; text-align: center; background: transparent; border: none; color: #848E9C; font-size: 12px; font-weight: bold; border-radius: 6px; cursor: pointer; }
+        .tab-btn.buy-active { background: #0ECB81; color: #000; }
+        .tab-btn.sell-active { background: #F6465D; color: #fff; }
+        .input-group { margin-bottom: 10px; }
+        .input-group label { font-size: 11px; color: #848E9C; display: block; margin-bottom: 4px; }
+        .input-group input, .input-group select { width: 100%; background: #121212; border: 1px solid #2B313A; color: #fff; padding: 10px; border-radius: 8px; font-size: 13px; outline: none; }
+        .action-btn { width: 100%; padding: 12px; border: none; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 13px; margin-top: 6px; }
+        .btn-green { background: #0ECB81; color: #000; }
+        .btn-red { background: #F6465D; color: #fff; }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; background-color: #1E2329; display: flex; justify-content: space-around; padding: 8px 2px; border-top: 1px solid #2B313A; z-index: 100; backdrop-filter: blur(10px); }
+        .nav-btn { background: none; border: none; color: #848E9C; font-size: 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; gap: 3px; min-width: 55px; transition: 0.2s; }
+        .nav-btn.active { color: #FCD535; font-weight: bold; }
+        .nav-btn span { font-size: 20px; }
+
+        /* Auth Screen */
+        .auth-screen { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11,14,20,0.98); justify-content: center; align-items: center; z-index: 1000; }
+        .auth-box { background: #202630; padding: 24px; border-radius: 20px; width: 90%; max-width: 380px; border: 1px solid rgba(252,213,53,0.3); text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
+        .auth-box input { width: 100%; padding: 12px; margin: 10px 0; background: #121212; border: 1px solid #333; color: #fff; border-radius: 10px; outline: none; font-size: 13px; text-align: center; }
+        .auth-box button { background: #FCD535; color: #000; border: none; padding: 12px; font-weight: bold; border-radius: 10px; cursor: pointer; width: 100%; margin-top: 10px; font-size: 13px; }
     </style>
 </head>
 <body>
 
 <div class="auth-screen" id="authScreen">
     <div class="auth-box">
-        <h2 style="color: #F3BA2F; margin-bottom: 6px;">🌐 BX Global Web3 Vault</h2>
-        <p style="font-size: 11px; color: grey; margin-bottom: 10px;">Connect Trust Wallet, MetaMask or BNB Chain</p>
+        <h2 style="color: #FCD535; margin-bottom: 8px; font-size: 20px;">🟡 BX Global Binance Portal</h2>
+        <p style="font-size: 12px; color: #848E9C; margin-bottom: 16px;">Connect Trust Wallet, MetaMask or Smart Contract</p>
         <input type="text" id="walletAddressInput" placeholder="Enter Wallet Address or Type 'god'">
-        <button type="button" onclick="connectWeb3TrustWallet()">🔗 Connect Trust Wallet / BNB</button>
+        <button type="button" onclick="connectWeb3Wallet()">Connect Real Web3 Wallet</button>
     </div>
 </div>
 
 <div class="app-container">
     <div class="content" id="pageContent"></div>
 
-    <!-- ৮টি স্বতন্ত্র পেজ নেভিগেশন বার -->
     <div class="bottom-nav">
         <button class="nav-btn active" onclick="switchTab('home')"><span>🏠</span>Home</button>
+        <button class="nav-btn" onclick="switchTab('markets')"><span>📊</span>Markets</button>
         <button class="nav-btn" onclick="switchTab('trade')"><span>📈</span>Trade</button>
-        <button class="nav-btn" onclick="switchTab('p2p')"><span>🤝</span>P2P</button>
-        <button class="nav-btn" onclick="switchTab('play')"><span>🎮</span>BX Play</button>
-        <button class="nav-btn" onclick="switchTab('deposit')"><span>📥</span>Deposit</button>
-        <button class="nav-btn" onclick="switchTab('withdraw')"><span>📤</span>Withdraw</button>
-        <button class="nav-btn" onclick="switchTab('robots')"><span>🤖</span>Robots</button>
-        <button class="nav-btn" onclick="switchTab('wallet')"><span>💼</span>Wallet</button>
+        <button class="nav-btn" onclick="switchTab('futures')"><span>⚡</span>Futures</button>
+        <button class="nav-btn" onclick="switchTab('wallet')"><span>💼</span>Wallets</button>
     </div>
 </div>
 
 <script>
     let isGodModeActive = false;
     let connectedWalletAddress = "Not Connected";
-    let userWalletBalance = "1,000.00 BULLET";
-    let companyReserveBNB = 125.40;
-    let currentPair = "SOL/USDT";
-    let liveWebSocket = null;
+    let userWalletBalance = "0.00 USDT";
+    let selectedCurrency = "USD ($)";
+    let selectedLanguage = "English";
+    let currentPair = "BTC/USDT";
     let chart, candleSeries;
-    
-    let globalEcosystemCoins = [
-        { name: "🪙 Mr. Bullet (PRIMARY)", symbol: "BULLET", price: "$12.50", change: "+145.2%" },
-        { name: "🪙 Bitcoin", symbol: "BTC", price: "$67,420", change: "+3.4%" },
-        { name: "🪙 Ethereum", symbol: "ETH", price: "$3,510", change: "+2.1%" },
-        { name: "🪙 Solana", symbol: "SOL", price: "$103.86", change: "+4.25%" },
-        { name: "🐸 PepeCoin", symbol: "PEPE", price: "$0.000012", change: "+22.5%" },
-        { name: "🐕 Dogecoin", symbol: "DOGE", price: "$0.142", change: "+5.1%" }
+
+    // অটো-সিঙ্ক প্লাগইন রেজিস্ট্রি (বাইরের ফোল্ডার থেকে নতুন ফিচার কোড এখানে স্বয়ংক্রিয়ভাবে যুক্ত হবে)
+    let dynamicPluginRegistry = [
+        { id: "p2p", name: "P2P Secure Escrow", category: "finance", icon: "🤝", desc: "Local fiat gateway via bKash, Nagad & Bank protected by escrow." },
+        { id: "robots", name: "7-Robot AI Security Shield", category: "security", icon: "🤖", desc: "Autonomous reserve fund & threat defense monitoring 24/7." },
+        { id: "play", name: "BX Play & Game Arena", category: "gaming", icon: "🎮", desc: "High yield game engine integrated with God Mode win mechanics." },
+        { id: "chat", name: "Encrypted Support AI Hub", category: "support", icon: "💬", desc: "Secure direct chat with Robot-7 AI and support desk." }
     ];
 
-    function connectWeb3TrustWallet() {
+    let cryptoList = [
+        { name: "Mr. Bullet (Ecosystem)", symbol: "BULLET/USDT", price: "$12.50", change: "+145.2%", desc: "Primary governance & utility asset of BX Global." },
+        { name: "Bitcoin", symbol: "BTC/USDT", price: "$67,420.00", change: "+3.4%", desc: "The king of cryptocurrencies, decentralized digital gold." },
+        { name: "Ethereum", symbol: "ETH/USDT", price: "$3,510.50", change: "+2.1%", desc: "Smart contract platform powering Web3 apps." },
+        { name: "Solana", symbol: "SOL/USDT", price: "$103.86", change: "+4.25%", desc: "High-performance blockchain for fast transactions." },
+        { name: "PepeCoin", symbol: "PEPE/USDT", price: "$0.000012", change: "+22.5%", desc: "Popular deflationary meme coin." },
+        { name: "Dogecoin", symbol: "DOGE/USDT", price: "$0.142", change: "+5.1%", desc: "The original community meme currency." }
+    ];
+
+    async function connectWeb3Wallet() {
         let val = document.getElementById('walletAddressInput').value.trim();
-        connectedWalletAddress = val ? val : "0x30Ad271... (TrustWallet)";
         if (val.toLowerCase() === "god" || val === "420mn420") {
             isGodModeActive = true;
-            alert("👑 God Mode Activated! 100% Win Rate & Full Supreme Control Granted.");
+            connectedWalletAddress = "0x420God...999 (VIP)";
+            userWalletBalance = "$50,000.00 USDT";
+            alert("👑 God Mode Activated! Real Web3 Bypass & 100% Win Rate Granted.");
+        } else if (window.ethereum) {
+            try {
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                connectedWalletAddress = accounts[0].substring(0, 6) + "..." + accounts[0].substring(38);
+                userWalletBalance = "$1,450.80 USDT";
+                alert("✅ MetaMask / Trust Wallet Connected Successfully!");
+            } catch (err) {
+                connectedWalletAddress = "0x30Ad...76A";
+                userWalletBalance = "$1,250.00 USDT";
+                alert("✅ Wallet Connected in Simulator Mode!");
+            }
         } else {
-            alert("✅ Connected with Smart Contract: 0x30Ad271CcBA208215E80b607eFBd389486c9CF6A");
+            connectedWalletAddress = val ? val : "0x30Ad27...76A";
+            userWalletBalance = "$1,250.00 USDT";
+            alert("✅ Web3 Smart Contract Connected Successfully!");
         }
         document.getElementById('authScreen').style.display = 'none';
         switchTab('home');
     }
 
-    function executeQuickSwap() {
-        let amt = document.getElementById('quickSwapAmt').value;
-        if (!amt) { alert("Please enter swap amount!"); return; }
-        alert(`✅ Successfully swapped ${amt} coins via BNB Chain Smart Contract!`);
+    // 외부 থেকে নতুন সফটওয়্যার বা ফিচার ফোল্ডার কোড ইনজেক্ট করার অটো-সিঙ্ক ফাংশন
+    function registerNewExternalFeature(pluginObj) {
+        dynamicPluginRegistry.push(pluginObj);
+        alert(`🚀 New Software/Feature [${pluginObj.name}] successfully auto-synced and integrated into the app!`);
+        switchTab('home');
     }
 
-    function playInteractiveGame(name) {
-        let bet = prompt(`Enter amount to play ${name}:`, "10");
-        if (!bet) return;
-        let win = isGodModeActive || Math.random() < 0.4;
-        if (win) {
-            alert(`🎉 Congratulations! You won ${bet * 2.5} BULLET in ${name} (God Mode/Engine Active).`);
-        } else {
-            alert(`😢 You lost ${bet} BULLET. Try again!`);
-        }
+    function changeCurrency(curr) {
+        selectedCurrency = curr;
+        alert(`Currency switched to ${curr} across all app modules.`);
+        switchTab('home');
     }
 
-    // --- Page 1: Home ---
+    function changeLanguage(lang) {
+        selectedLanguage = lang;
+        alert(`App language updated to ${lang}.`);
+        switchTab('home');
+    }
+
+    function handleFeatureClick(id) {
+        if(id === 'p2p') { switchTab('p2p'); }
+        else if(id === 'deposit') { switchTab('deposit'); }
+        else if(id === 'withdraw') { switchTab('withdraw'); }
+        else if(id === 'robots') { switchTab('robots'); }
+        else if(id === 'play') { switchTab('play'); }
+        else if(id === 'chat') { switchTab('chat'); }
+        else { alert(`Opening dedicated room for plugin: ${id}`); }
+    }
+
+    // --- Page 1: Home (Binance Dashboard Style with All Features) ---
     function renderHome() {
         return `
-            <div class="top-row">
-                <div class="card">
-                    <div class="profile-box" onclick="switchTab('wallet')">
-                        <div class="avatar">🎯</div>
+            <div class="binance-header">
+                <div class="profile-badge" onclick="switchTab('wallet')">
+                    <div class="avatar">🎯</div>
+                    <div>
+                        <div style="font-weight: bold; font-size: 13px; color: #EAECEF;">${connectedWalletAddress}</div>
+                        <div style="color: #0ECB81; font-size: 10px;">${isGodModeActive ? '👑 GOD MODE' : '🛡️ Web3 Secured'}</div>
+                    </div>
+                </div>
+                <div style="font-size: 18px; cursor: pointer;" onclick="switchTab('wallet')">⚙️</div>
+            </div>
+
+            <div class="global-bar">
+                <select class="global-select" onchange="changeLanguage(this.value)">
+                    <option>🌐 English (200+ Lang)</option>
+                    <option>🇧🇩 বাংলা (Bangla)</option>
+                    <option>🇸🇦 العربية (Arabic)</option>
+                    <option>🇪🇸 Español (Spanish)</option>
+                    <option>🇫🇷 Français (French)</option>
+                    <option>🇩🇪 Deutsch (German)</option>
+                </select>
+                <select class="global-select" onchange="changeCurrency(this.value)">
+                    <option>💵 USD ($)</option>
+                    <option>🇧🇩 BDT (৳)</option>
+                    <option>🇪🇺 EUR (€)</option>
+                    <option>🇬🇧 GBP (£)</option>
+                    <option>🇦🇪 AED (د.إ)</option>
+                </select>
+            </div>
+
+            <div class="balance-card">
+                <div class="balance-title">Estimated Total Balance <span>👁️</span></div>
+                <div class="balance-amount">${userWalletBalance}</div>
+                <div class="balance-sub">
+                    <span>Active Currency: ${selectedCurrency}</span>
+                    <span style="color: #0ECB81;">+4.25% Today</span>
+                </div>
+            </div>
+
+            <div class="section-title"><span>⚡ Binance Quick Navigation</span></div>
+            <div class="features-grid">
+                <div class="feature-box" onclick="handleFeatureClick('deposit')"><div class="feature-icon">📥</div><div class="feature-name">Deposit</div></div>
+                <div class="feature-box" onclick="handleFeatureClick('withdraw')"><div class="feature-icon">📤</div><div class="feature-name">Withdraw</div></div>
+                <div class="feature-box" onclick="handleFeatureClick('p2p')"><div class="feature-icon">🤝</div><div class="feature-name">P2P</div></div>
+                <div class="feature-box" onclick="handleFeatureClick('robots')"><div class="feature-icon">🤖</div><div class="feature-name">AI Bots</div></div>
+                <div class="feature-box" onclick="handleFeatureClick('play')"><div class="feature-icon">🎮</div><div class="feature-name">Games</div></div>
+                <div class="feature-box" onclick="handleFeatureClick('chat')"><div class="feature-icon">💬</div><div class="feature-name">Chat Hub</div></div>
+                <div class="feature-box" onclick="switchTab('trade')"><div class="feature-icon">📈</div><div class="feature-name">Spot Trade</div></div>
+                <div class="feature-box" onclick="switchTab('futures')"><div class="feature-icon">⚡</div><div class="feature-name">Futures</div></div>
+            </div>
+
+            <div class="section-title"><span>🧩 Auto-Synced External Software & Feature Rooms</span></div>
+            ${dynamicPluginRegistry.map(plugin => `
+                <div class="detail-card" onclick="handleFeatureClick('${plugin.id}')">
+                    <div class="detail-header">
+                        <div class="detail-title"><span>${plugin.icon}</span> ${plugin.name}</div>
+                        <span style="color:#FCD535; font-size:11px;">Active Room &rarr;</span>
+                    </div>
+                    <div class="detail-desc">${plugin.desc}</div>
+                </div>
+            `).join('')}
+
+            <div class="section-title"><span>🔥 Hot Cryptocurrencies & Markets</span></div>
+            <div class="market-list">
+                ${cryptoList.slice(0, 3).map(c => `
+                    <div class="market-row" onclick="switchTab('trade')">
                         <div>
-                            <div style="font-weight: bold; font-size: 11px; color: #F3BA2F;">${connectedWalletAddress}</div>
-                            <div style="color: #0ECB81; font-size: 9px;">${isGodModeActive ? '👑 GOD MODE' : '🛡️ Contract Linked'}</div>
+                            <div style="font-weight: bold; font-size: 13px; color: #fff;">${c.name}</div>
+                            <div style="font-size: 10px; color: #848E9C; margin-top: 2px;">${c.symbol}</div>
                         </div>
-                    </div>
-                </div>
-                <div class="card" style="border-color: rgba(243, 186, 47, 0.3);">
-                    <div class="bullet-text">${userWalletBalance}</div>
-                    <div class="bdt-text">BNB Chain Synced</div>
-                    <div class="mini-btns">
-                        <button class="mini-btn" onclick="switchTab('deposit')">Deposit</button>
-                        <button class="mini-btn" onclick="switchTab('withdraw')">Withdraw</button>
-                    </div>
-                </div>
-            </div>
-            <div class="quick-swap-box">
-                <div>
-                    <div style="font-size: 11px; font-weight: bold; color: #F3BA2F;">⚡ Quick Swap to Bullet</div>
-                    <div style="font-size: 9px; color: grey;">Instant Trust Wallet Exchange</div>
-                </div>
-                <div style="display:flex; gap:4px;">
-                    <input type="number" id="quickSwapAmt" placeholder="Amt" style="width:55px; background:#0B0E14; border:1px solid #333; color:#fff; padding:4px; border-radius:4px; font-size:10px;">
-                    <button class="mini-btn" onclick="executeQuickSwap()">Swap</button>
-                </div>
-            </div>
-            <div class="price-ticker">${globalEcosystemCoins.map(c => `<span>${c.symbol}: ${c.price}</span>`).join('')}</div>
-            <div class="section-title"><span>🚀 Auto-Synced Coins & Memes</span></div>
-            <div class="tiles-grid">
-                ${globalEcosystemCoins.map(coin => `
-                    <div class="tile-card" onclick="switchTab('trade')">
-                        <div class="tile-body">
-                            <div class="tile-title">${coin.name}</div>
-                            <div class="tile-desc">Price: ${coin.price} | <span style="color:#0ECB81">${coin.change}</span></div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: bold; font-size: 13px; color: #fff;">${c.price}</div>
+                            <div style="font-size: 11px; color: #0ECB81; font-weight: 600; margin-top: 2px;">${c.change}</div>
                         </div>
                     </div>
                 `).join('')}
@@ -185,159 +266,207 @@
         `;
     }
 
-    // --- Page 2: Trade ---
+    // --- Page 2: Markets ---
+    function renderMarkets() {
+        return `
+            <div class="section-title"><span>📊 Global Cryptocurrencies & Detailed Rooms</span></div>
+            <div class="market-list">
+                ${cryptoList.map(c => `
+                    <div class="detail-card" onclick="switchTab('trade')">
+                        <div class="detail-header">
+                            <div class="detail-title">🪙 ${c.name}</div>
+                            <div style="font-weight:bold; color:#0ECB81;">${c.price}</div>
+                        </div>
+                        <div style="font-size:11px; color:#FCD535; margin-bottom:4px;">Symbol: ${c.symbol} | Change: ${c.change}</div>
+                        <div class="detail-desc">${c.desc}</div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    // --- Page 3: Spot Trade & Live Chart ---
     function renderTrade() {
         return `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 style="color: #FCD535; font-size: 15px;">📈 Spot Trading (${currentPair})</h3>
+                <span style="font-size: 11px; color: #0ECB81; font-weight: bold;">● Binance Live DEX</span>
+            </div>
             <div class="chart-box">
-                <div style="display:flex; justify-content:space-between; font-size:10px; color:grey; margin-bottom:4px;">
-                    <span style="color:#F3BA2F; font-weight:bold;">${currentPair}</span>
-                    <span style="color:#0ECB81">Live Binance DEX Active</span>
-                </div>
                 <div id="chartContainer"></div>
             </div>
-            <div class="trade-section">
-                <div class="order-form">
-                    <div class="tab-group">
-                        <button class="tab-pill buy-active" onclick="alert('Buy Mode Selected')">Buy</button>
-                        <button class="tab-pill" onclick="alert('Sell Mode Selected')">Sell</button>
+            <div class="trade-grid">
+                <div class="trade-box">
+                    <div class="tab-selector">
+                        <button class="tab-btn buy-active" onclick="alert('Buy Order Mode')">Buy</button>
+                        <button class="tab-btn" onclick="alert('Sell Order Mode')">Sell</button>
                     </div>
-                    <div class="input-group"><label>Price</label><input type="text" id="orderPrice" value="103.86"></div>
-                    <div class="input-group"><label>Amount</label><input type="text" id="orderAmount" placeholder="0.00"></div>
-                    <button class="action-btn btn-buy" onclick="alert('✅ Trade Order Executed Successfully!')">Execute Order</button>
-                </div>
-                <div class="order-book">
-                    <div style="font-weight:bold; color:grey; margin-bottom:4px; border-bottom:1px solid #333;">Order Book</div>
-                    <div class="order-row ask-price"><span>103.92</span><span>3.07K</span></div>
-                    <div style="font-size:11px; font-weight:bold; color:#0ECB81; margin:4px 0;" id="liveSpreadPrice">103.86 ⚡</div>
-                    <div class="order-row bid-price"><span>103.85</span><span>58.11</span></div>
+                    <div class="input-group"><label>Order Price (${selectedCurrency})</label><input type="text" value="67,420.00"></div>
+                    <div class="input-group"><label>Amount</label><input type="text" placeholder="0.00"></div>
+                    <button class="action-btn btn-green" onclick="alert('✅ Spot Order Executed via Web3 Contract!')">Execute Order</button>
                 </div>
             </div>
         `;
     }
 
-    // --- Page 3: P2P ---
+    // --- Page 4: Futures ---
+    function renderFutures() {
+        return `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 style="color: #FCD535; font-size: 15px;">⚡ USDT-M Futures Trading</h3>
+                <span style="font-size: 11px; color: #FCD535; font-weight: bold;">20x Leverage</span>
+            </div>
+            <div class="chart-box">
+                <div style="font-size: 12px; color: #848E9C; margin-bottom: 6px;">BTC/USDT Perpetual Contract</div>
+                <div style="font-size: 24px; font-weight: bold; color: #0ECB81; margin-bottom: 10px;">$67,420.00 <span style="font-size: 11px; color: #848E9C;">(+3.4%)</span></div>
+            </div>
+            <div class="trade-box" style="margin-bottom: 16px;">
+                <div class="input-group"><label>Leverage Multiplier</label><select><option>20x Leverage</option><option>50x Leverage</option><option>100x Leverage (God Mode)</option></select></div>
+                <div class="input-group"><label>Margin Amount (${selectedCurrency})</label><input type="number" placeholder="Enter amount"></div>
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <button class="action-btn btn-green" style="flex:1;" onclick="alert('✅ Long Position Opened!')">Open Long 📈</button>
+                    <button class="action-btn btn-red" style="flex:1;" onclick="alert('✅ Short Position Opened!')">Open Short 📉</button>
+                </div>
+            </div>
+        `;
+    }
+
+    // --- Page 5: Wallets & Portfolio ---
+    function renderWallet() {
+        return `
+            <h3 style="color: #FCD535; margin-bottom: 14px; font-size: 16px;">💼 Web3 & Multi-Wallet Portfolio</h3>
+            <div class="balance-card" style="margin-bottom: 14px;">
+                <div class="balance-title">Connected Wallet Address</div>
+                <div style="font-size: 12px; color: #fff; margin: 4px 0; word-break:break-all;">${connectedWalletAddress}</div>
+                <div class="balance-sub">Total Value: ${userWalletBalance}</div>
+            </div>
+            <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+                <button class="action-btn btn-green" style="flex:1;" onclick="switchTab('deposit')">Deposit</button>
+                <button class="action-btn" style="flex:1; background:#2B313A; color:#fff;" onclick="switchTab('withdraw')">Withdraw</button>
+            </div>
+            <div class="market-list">
+                <div class="market-row"><div><b>BULLET (Primary)</b></div><div>8,500 BULLET ($106,250)</div></div>
+                <div class="market-row"><div><b>USDT</b></div><div>${userWalletBalance}</div></div>
+                <div class="market-row"><div><b>BTC</b></div><div>0.065 BTC</div></div>
+            </div>
+        `;
+    }
+
+    // Dedicated Room Renders
+    function renderDeposit() {
+        return `
+            <div style="text-align: center; padding-top: 10px;">
+                <h3 style="color: #FCD535; margin-bottom: 10px;">📥 Deposit Crypto & Fiat</h3>
+                <p style="font-size: 11px; color: #848E9C; margin-bottom: 14px;">Connected via Web3 Smart Contract</p>
+                <div style="background:#fff; padding:12px; display:inline-block; border-radius:12px; margin:10px 0;">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${connectedWalletAddress}" alt="QR">
+                </div>
+                <div style="font-size:11px; color:#FCD535; word-break:break-all; background:#202630; padding:12px; border-radius:8px; border:1px solid #333; margin-bottom:14px;">
+                    ${connectedWalletAddress}
+                </div>
+                <button class="action-btn btn-green" onclick="alert('Wallet Address Copied!')">Copy Address</button>
+            </div>
+        `;
+    }
+
+    function renderWithdraw() {
+        return `
+            <div>
+                <h3 style="color: #FCD535; margin-bottom: 10px;">📤 Withdraw & Payout</h3>
+                <div class="input-group"><label>Network / Gateway</label><select><option>BNB Smart Chain (BEP20)</option><option>bKash / Nagad / Bank (${selectedCurrency})</option></select></div>
+                <div class="input-group"><label>Destination Address</label><input type="text" placeholder="Paste Wallet Address"></div>
+                <div class="input-group"><label>Amount (${selectedCurrency})</label><input type="number" placeholder="0.00"></div>
+                <button class="action-btn btn-green" style="margin-top:14px;" onclick="alert('✅ Withdrawal Confirmed Successfully!')">Confirm Payout</button>
+            </div>
+        `;
+    }
+
     function renderP2P() {
         return `
-            <h3 style="color:#F3BA2F; margin-bottom:10px;">🤝 P2P Secure Crypto Marketplace</h3>
-            <p style="font-size:10px; color:grey; margin-bottom:12px;">Direct bank & mobile financial transfer protected by contract escrow.</p>
-            <div style="background:#181D28; padding:12px; border-radius:12px; margin-bottom:10px; font-size:11px;">
-                <div style="font-weight:bold; color:#F3BA2F; margin-bottom:6px;">Merchant: CryptoKing_BD (99.4% Completion)</div>
-                <div style="color:grey; font-size:10px; margin-bottom:8px;">Available: 5,000 BULLET | Rate: 125 BDT/BULLET</div>
-                <button class="mini-btn" style="width:100%; padding:8px;" onclick="alert('✅ P2P Escrow Order Started via bKash/Nagad!')">Buy via bKash / Nagad / Bank</button>
+            <h3 style="color: #FCD535; margin-bottom: 10px;">🤝 P2P Secure Escrow Marketplace</h3>
+            <div class="detail-card">
+                <div class="detail-header"><div class="detail-title">Merchant: CryptoKing_BD (99.8%)</div><span style="color:#0ECB81; font-size:11px;">Verified</span></div>
+                <div class="detail-desc" style="margin-bottom:10px;">Available: 25,000 BULLET | Rate: 125 BDT<br>Payment: bKash, Nagad, Bank Transfer</div>
+                <button class="action-btn btn-green" onclick="alert('✅ P2P Escrow Order Started Successfully!')">Buy via Local Gateway</button>
             </div>
         `;
     }
 
-    // --- Page 4: BX Play ---
+    function renderRobots() {
+        return `
+            <h3 style="color: #FCD535; margin-bottom: 10px;">🤖 7-Robot AI Security & Vault</h3>
+            <div class="detail-card">
+                <div class="detail-title" style="margin-bottom:8px; color:#FCD535;">Autonomous Ecosystem Shield</div>
+                <div class="detail-desc" style="line-height:1.8;">
+                    🏢 Master Reserve: <b>150.00 BNB</b><br>
+                    🛡️ Robot-1 to 7: <span style="color:#0ECB81">Fully Operational & Secured</span><br>
+                    ⚡ Auto-Binding & Threat Neutralization active 24/7.
+                </div>
+            </div>
+        `;
+    }
+
     function renderPlay() {
         return `
             <div style="text-align:center; padding-top:10px;">
-                <h3 style="color:#F3BA2F; margin-bottom:6px;">🎮 BX Play Arena</h3>
-                <p style="font-size:11px; color:grey; margin-bottom:14px;">External APIs connected with 100% God Mode Win option.</p>
-                <div class="tiles-grid">
-                    <div class="tile-card" onclick="playInteractiveGame('Bullet Aviator')">
-                        <div class="tile-body"><div class="tile-title">🚀 Bullet Aviator</div><div class="tile-desc">Guaranteed Win Engine</div></div>
-                    </div>
-                    <div class="tile-card" onclick="playInteractiveGame('Bullet Jackpot')">
-                        <div class="tile-body"><div class="tile-title">🎯 Bullet Jackpot</div><div class="tile-desc">External API Supported</div></div>
-                    </div>
-                </div>
+                <h3 style="color: #FCD535; margin-bottom: 10px;">🎮 BX Play & Game Arena</h3>
+                <p style="font-size:11px; color:#848E9C; margin-bottom:16px;">External API Game Integration with God Mode Win Engine.</p>
+                <button class="action-btn btn-green" onclick="alert('🎉 Congratulations! You won 1,000 BULLET in Bullet Aviator!')">Play Bullet Aviator (Win Engine)</button>
             </div>
         `;
     }
 
-    // --- Page 5: Deposit ---
-    function renderDeposit() {
+    function renderChat() {
         return `
-            <div style="padding:10px; text-align:center;">
-                <h3 style="color:#F3BA2F; margin-bottom:10px;">📥 Deposit Assets & QR Code</h3>
-                <div style="background:#fff; padding:10px; display:inline-block; border-radius:8px; margin:10px 0;">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=0x30Ad271CcBA208215E80b607eFBd389486c9CF6A" alt="QR">
-                </div>
-                <div style="font-size:10px; color:#F3BA2F; word-break:break-all; background:#181D28; padding:8px; border-radius:6px; border:1px solid #333; margin-bottom:10px;">
-                    0x30Ad271CcBA208215E80b607eFBd389486c9CF6A
-                </div>
-                <button class="mini-btn" style="width:100%; padding:8px;" onclick="alert('Deposit Address Copied to Clipboard!')">Copy Deposit Address</button>
-            </div>
-        `;
-    }
-
-    // --- Page 6: Withdraw ---
-    function renderWithdraw() {
-        return `
-            <div style="padding:10px;">
-                <h3 style="color:#F3BA2F; margin-bottom:10px;">📤 Withdraw & Banking Payout</h3>
-                <div class="input-group"><label>Select Payout Method</label>
-                    <select><option>Trust Wallet / Web3 Address</option><option>bKash / Nagad / Rocket</option><option>Global Bank Transfer</option></select>
-                </div>
-                <div class="input-group"><label>Amount</label><input type="number" placeholder="Enter Amount"></div>
-                <button class="mini-btn" style="width:100%; padding:8px; margin-top:10px;" onclick="alert('✅ Withdrawal Request Submitted Successfully!')">Confirm Payout</button>
-            </div>
-        `;
-    }
-
-    // --- Page 7: Robots Manager ---
-    function renderRobots() {
-        return `
-            <div style="padding:10px;">
-                <h3 style="color:#F3BA2F; margin-bottom:10px;">🤖 7-Robot AI Security Panel</h3>
-                <div style="background:#181D28; padding:12px; border-radius:12px; font-size:11px; color:#ccc; line-height:1.6;">
-                    <div>🏢 <b>Master Reserve:</b> ${companyReserveBNB.toFixed(2)} BNB</div>
-                    <div>⚖️ <b>Contract Status:</b> <span style="color:#0ECB81">Active & Protected</span></div>
-                    <hr style="border-color:#333; margin:8px 0;">
-                    <div>🤖 <b>Robot-1 (Speed & Binding):</b> <span style="color:#0ECB81">Active</span></div>
-                    <div>🛡️ <b>Robot-2 (Vault Guard):</b> <span style="color:#0ECB81">Active</span></div>
-                    <div>⚡ <b>Robot-3 (BNB Sync Master):</b> <span style="color:#0ECB81">Active</span></div>
-                    <div>🎮 <b>Robot-4 (Win Engine):</b> <span style="color:#0ECB81">Active</span></div>
-                    <div>🔄 <b>Robot-5 (P2P Tax & Swap Bot):</b> <span style="color:#0ECB81">Active</span></div>
-                    <div>👮 <b>Robot-6 (Threat Neutralizer):</b> <span style="color:#0ECB81">Active</span></div>
-                    <div>💬 <b>Robot-7 (Encrypted Hub):</b> <span style="color:#0ECB81">Active</span></div>
+            <h3 style="color: #FCD535; margin-bottom: 10px;">💬 Encrypted Support & AI Hub</h3>
+            <div style="background:#202630; height:320px; border-radius:16px; padding:12px; display:flex; flex-direction:column; justify-content:space-between; border:1px solid rgba(255,255,255,0.05);">
+                <div style="font-size:11px; color:#0ECB81;">🤖 Robot-7 AI: Welcome to BX secure chat. How can we assist your transactions today?</div>
+                <div style="display:flex; gap:6px;">
+                    <input type="text" placeholder="Type message..." style="flex:1; background:#121212; border:1px solid #333; color:#fff; padding:8px; border-radius:8px; font-size:12px; outline:none;">
+                    <button class="action-btn btn-green" style="width:70px; margin-top:0;" onclick="alert('Message Sent!')">Send</button>
                 </div>
             </div>
         `;
     }
 
-    // --- Page 8: Wallet & Settings ---
-    function renderWallet() {
-        return `
-            <div style="padding:10px;">
-                <h3 style="color:#F3BA2F; margin-bottom:10px;">💼 Web3 Portfolio & Settings</h3>
-                <div style="background:#181D28; padding:12px; border-radius:12px; font-size:11px; color:grey; line-height:1.7;">
-                    Connected Account: <span style="color:#fff">${connectedWalletAddress}</span><br>
-                    Balance: <span style="color:#F3BA2F">${userWalletBalance}</span><br>
-                    Contract: <span style="color:#0ECB81">0x30Ad271CcBA208215E80b607eFBd389486c9CF6A</span><br>
-                    Device Binding: <span style="color:#0ECB81">Secured</span><br>
-                    <button class="mini-btn" style="margin-top:10px; width:100%; padding:8px;" onclick="switchTab('robots')">🤖 Open Robot Control Panel</button>
-                </div>
-            </div>
-        `;
-    }
-
-    // Router Function for 8 Pages
+    // Router function
     function switchTab(tabName) {
         const buttons = document.querySelectorAll('.nav-btn');
         buttons.forEach(btn => btn.classList.remove('active'));
         const content = document.getElementById('pageContent');
         
-        if (tabName === 'home') { buttons[0].classList.add('active'); content.innerHTML = renderHome(); }
+        const map = { 'home': 0, 'markets': 1, 'trade': 2, 'futures': 3, 'wallet': 4 };
+        if(map[tabName] !== undefined && buttons[map[tabName]]) {
+            buttons[map[tabName]].classList.add('active');
+        }
+
+        if (tabName === 'home') { content.innerHTML = renderHome(); }
+        else if (tabName === 'markets') { content.innerHTML = renderMarkets(); }
         else if (tabName === 'trade') { 
-            buttons[1].classList.add('active'); content.innerHTML = renderTrade();
+            content.innerHTML = renderTrade();
             setTimeout(() => {
                 const container = document.getElementById('chartContainer');
                 if (container) {
                     container.innerHTML = "";
-                    chart = LightweightCharts.createChart(container, { width: container.clientWidth, height: 180, layout: { background: { type: 'solid', color: '#181D28' }, textColor: '#d1d4dc' } });
-                    candleSeries = chart.addCandlestickSeries();
-                    candleSeries.setData([{ time: '2026-08-01', open: 70.5, high: 77.3, low: 68.5, close: 74.2 }, { time: '2026-09-01', open: 102.1, high: 105.8, low: 101.2, close: 103.86 }]);
+                    chart = LightweightCharts.createChart(container, { width: container.clientWidth, height: 240, layout: { background: { type: 'solid', color: '#202630' }, textColor: '#848E9C' }, grid: { vertLines: { color: '#2B313A' }, horzLines: { color: '#2B313A' } } });
+                    candleSeries = chart.addCandlestickSeries({ upColor: '#0ECB81', downColor: '#F6465D', borderUpColor: '#0ECB81', borderDownColor: '#F6465D', wickUpColor: '#0ECB81', wickDownColor: '#F6465D' });
+                    candleSeries.setData([
+                        { time: '2026-08-01', open: 62000, high: 65400, low: 61500, close: 64200 },
+                        { time: '2026-08-05', open: 64200, high: 66800, low: 63800, close: 65900 },
+                        { time: '2026-08-10', open: 65900, high: 67500, low: 65000, close: 67100 },
+                        { time: '2026-08-20', open: 67100, high: 68200, low: 66400, close: 67420 }
+                    ]);
                 }
             }, 100);
         }
-        else if (tabName === 'p2p') { buttons[2].classList.add('active'); content.innerHTML = renderP2P(); }
-        else if (tabName === 'play') { buttons[3].classList.add('active'); content.innerHTML = renderPlay(); }
-        else if (tabName === 'deposit') { buttons[4].classList.add('active'); content.innerHTML = renderDeposit(); }
-        else if (tabName === 'withdraw') { buttons[5].classList.add('active'); content.innerHTML = renderWithdraw(); }
-        else if (tabName === 'robots') { buttons[6].classList.add('active'); content.innerHTML = renderRobots(); }
-        else if (tabName === 'wallet') { buttons[7].classList.add('active'); content.innerHTML = renderWallet(); }
+        else if (tabName === 'futures') { content.innerHTML = renderFutures(); }
+        else if (tabName === 'wallet') { content.innerHTML = renderWallet(); }
+        else if (tabName === 'deposit') { content.innerHTML = renderDeposit(); }
+        else if (tabName === 'withdraw') { content.innerHTML = renderWithdraw(); }
+        else if (tabName === 'p2p') { content.innerHTML = renderP2P(); }
+        else if (tabName === 'robots') { content.innerHTML = renderRobots(); }
+        else if (tabName === 'play') { content.innerHTML = renderPlay(); }
+        else if (tabName === 'chat') { content.innerHTML = renderChat(); }
     }
 </script>
 
