@@ -11,28 +11,28 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: hidden;
 }
 .app-container {
     width: 100%;
     max-width: 480px;
     height: 100vh;
-    background: linear-gradient(135deg, #181a20, #0b0e11);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    background: linear-gradient(145deg, #181a20, #0b0e11);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.9), inset 0 1px 1px rgba(255,255,255,0.1);
     display: flex;
     flex-direction: column;
     padding: 15px;
     border: 1px solid #23272e;
 }
 .8d-depth {
-    transform: perspective(1000px);
-    transition: all 0.3s ease;
+    transform: perspective(1200px) rotateX(0.5deg);
 }
 .app-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #23272e;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #2b313a;
 }
 .user-profile {
     display: flex;
@@ -40,63 +40,105 @@ body {
     gap: 8px;
 }
 .avatar-badge {
-    background: #f0b90b;
+    background: linear-gradient(135deg, #f0b90b, #f8d33a);
     color: #000;
     font-weight: bold;
-    padding: 5px 10px;
+    padding: 6px 10px;
     border-radius: 50%;
+    font-size: 14px;
+    box-shadow: 0 0 10px rgba(240,185,11,0.4);
+}
+.user-id {
+    font-size: 13px;
+    color: #848e9c;
+    font-weight: 600;
 }
 .search-bar input {
     background: #2b313a;
-    border: none;
-    padding: 6px 12px;
+    border: 1px solid #363c4e;
+    padding: 6px 14px;
     border-radius: 20px;
     color: #fff;
+    width: 130px;
+    font-size: 12px;
+    outline: none;
+    transition: 0.3s;
+}
+.search-bar input:focus {
+    border-color: #f0b90b;
     width: 150px;
+}
+.selectors {
+    display: flex;
+    gap: 4px;
 }
 .selectors select {
     background: #2b313a;
-    color: #fff;
-    border: none;
-    padding: 5px;
-    border-radius: 5px;
+    color: #eaecef;
+    border: 1px solid #363c4e;
+    padding: 4px 6px;
+    border-radius: 6px;
+    font-size: 11px;
+    outline: none;
+    cursor: pointer;
 }
 .asset-ad-box {
     display: flex;
-    gap: 10px;
-    margin: 20px 0;
+    gap: 12px;
+    margin: 18px 0;
 }
 .total-asset-card, .google-ad-box {
     flex: 1;
-    background: #1e2329;
+    background: linear-gradient(135deg, #1e2329, #14171c);
     padding: 15px;
-    border-radius: 12px;
+    border-radius: 14px;
     border: 1px solid #2b313a;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+.total-asset-card h3, .google-ad-box span {
+    font-size: 12px;
+    color: #848e9c;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 .balance-val {
-    font-size: 22px;
+    font-size: 20px;
     color: #0ecb81;
     font-weight: bold;
-    margin-top: 5px;
+    margin-top: 6px;
+    text-shadow: 0 0 10px rgba(14,203,129,0.2);
+}
+.google-ad-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px dashed #363c4e;
+    background: #15181e;
 }
 .tiles-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    margin-top: 10px;
+    gap: 14px;
+    margin-top: 5px;
 }
 .tile-item {
-    background: #1e2329;
-    padding: 20px;
-    border-radius: 12px;
+    background: linear-gradient(145deg, #1e2329, #181c23);
+    padding: 22px 15px;
+    border-radius: 14px;
     text-align: center;
     cursor: pointer;
     border: 1px solid #2b313a;
-    transition: 0.2s;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+    transition: all 0.25s ease;
 }
 .tile-item:hover {
     border-color: #f0b90b;
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(240,185,11,0.15);
+    color: #f0b90b;
 }
 .game-main {
     display: flex;
@@ -105,13 +147,22 @@ body {
     flex: 1;
     text-align: center;
 }
-.play-btn {
+.play-btn, .back-btn {
     background: #f0b90b;
     color: #000;
     border: none;
-    padding: 12px 25px;
+    padding: 10px 20px;
     font-weight: bold;
     border-radius: 8px;
     cursor: pointer;
-    margin-top: 15px;
+    transition: 0.2s;
+}
+.play-btn:hover {
+    background: #d9a505;
+}
+.back-btn {
+    background: #2b313a;
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 12px;
 }
