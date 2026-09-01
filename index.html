@@ -1,390 +1,522 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BX Global Super-App Ecosystem (Ultimate Unified Edition)</title>
-<script src="[https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js](https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js)"></script>
-<script src="[https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js](https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js)"></script>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-body { background-color: #0B0E14; color: #FFFFFF; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-.app-container { width: 100%; max-width: 480px; background: rgba(24, 26, 32, 0.92); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 25px 50px rgba(0,0,0,0.8); }
-.content { padding: 16px; overflow-y: auto; flex-grow: 1; padding-bottom: 100px; scrollbar-width: none; animation: fadeIn 0.3s ease-in-out; }
-.content::-webkit-scrollbar { display: none; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-.binance-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.profile-badge { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-.avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; border: 2px solid #FCD535; overflow: hidden; }
-.balance-card { background: rgba(32, 38, 48, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(252, 213, 53, 0.3); border-radius: 16px; padding: 18px; margin-bottom: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
-.balance-title { font-size: 12px; color: #848E9C; display: flex; justify-content: space-between; align-items: center; }
-.balance-amount { font-size: 26px; font-weight: 800; color: #FCD535; margin: 6px 0; }
-.balance-sub { font-size: 11px; color: #0ECB81; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
-.global-bar { display: flex; gap: 8px; margin-bottom: 16px; background: rgba(32, 38, 48, 0.7); padding: 8px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
-.global-select { flex: 1; background: rgba(18, 18, 18, 0.9); border: 1px solid rgba(255,255,255,0.1); color: #FCD535; padding: 6px 10px; border-radius: 8px; font-size: 11px; font-weight: bold; outline: none; cursor: pointer; }
-.section-title { font-size: 14px; font-weight: 700; color: #EAECEF; margin: 16px 0 10px 0; display: flex; justify-content: space-between; align-items: center; }
-.features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
-.feature-box { background: rgba(32, 38, 48, 0.7); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; padding: 12px 6px; text-align: center; cursor: pointer; transition: 0.2s; }
-.feature-box:hover { border-color: #FCD535; transform: translateY(-2px); }
-.feature-icon { font-size: 24px; margin-bottom: 6px; }
-.feature-name { font-size: 10px; font-weight: bold; color: #EAECEF; }
-.detail-card { background: rgba(32, 38, 48, 0.7); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 16px; margin-bottom: 12px; cursor: pointer; transition: 0.2s; }
-.detail-card:hover { border-color: #FCD535; }
-.detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.detail-title { font-size: 14px; font-weight: bold; color: #fff; display: flex; align-items: center; gap: 8px; }
-.detail-desc { font-size: 11px; color: #848E9C; line-height: 1.5; }
-.market-list { display: flex; flex-direction: column; gap: 10px; }
-.market-row { background: rgba(32, 38, 48, 0.7); border-radius: 14px; padding: 14px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s; }
-.market-row:hover { border-color: #FCD535; }
-.chart-box { background: rgba(32, 38, 48, 0.7); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); padding: 12px; margin-bottom: 16px; }
-#chartContainer { width: 100%; height: 240px; }
-.trade-grid { display: flex; gap: 10px; margin-bottom: 16px; }
-.trade-box { flex: 1; background: rgba(32, 38, 48, 0.7); padding: 14px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
-.tab-selector { display: flex; gap: 4px; margin-bottom: 12px; background: rgba(18, 18, 18, 0.9); padding: 3px; border-radius: 8px; }
-.tab-btn { flex: 1; padding: 8px; text-align: center; background: transparent; border: none; color: #848E9C; font-size: 12px; font-weight: bold; border-radius: 6px; cursor: pointer; }
-.tab-btn.buy-active { background: #0ECB81; color: #000; }
-.tab-btn.sell-active { background: #F6465D; color: #fff; }
-.input-group { margin-bottom: 10px; }
-.input-group label { font-size: 11px; color: #848E9C; display: block; margin-bottom: 4px; }
-.input-group input, .input-group select { width: 100%; background: rgba(18, 18, 18, 0.9); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 8px; font-size: 13px; outline: none; }
-.action-btn { width: 100%; padding: 12px; border: none; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 13px; margin-top: 6px; }
-.btn-green { background: #0ECB81; color: #000; }
-.btn-red { background: #F6465D; color: #fff; }
-#customToast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: rgba(32, 38, 48, 0.98); border: 1px solid #0ECB81; color: #fff; padding: 12px 20px; border-radius: 12px; font-size: 13px; z-index: 9999; transition: transform 0.3s ease; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-#customToast.show { transform: translateX(-50%) translateY(0); }
-.bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; background: rgba(30, 35, 41, 0.95); display: flex; justify-content: space-around; padding: 8px 2px; border-top: 1px solid rgba(255,255,255,0.1); z-index: 100; backdrop-filter: blur(10px); }
-.nav-btn { background: none; border: none; color: #848E9C; font-size: 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; gap: 3px; min-width: 55px; transition: 0.2s; }
-.nav-btn.active { color: #FCD535; font-weight: bold; }
-.nav-btn span { font-size: 20px; }
-.auth-screen { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11,14,20,0.96); justify-content: center; align-items: center; z-index: 1000; }
-.auth-box { background: rgba(32, 38, 48, 0.95); padding: 24px; border-radius: 20px; width: 90%; max-width: 380px; border: 1px solid rgba(252,213,53,0.3); text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
-.auth-box input { width: 100%; padding: 12px; margin: 10px 0; background: rgba(18,18,18,0.9); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 10px; outline: none; font-size: 13px; text-align: center; }
-.auth-box button { background: #FCD535; color: #000; border: none; padding: 12px; font-weight: bold; border-radius: 10px; cursor: pointer; width: 100%; margin-top: 10px; font-size: 13px; }
-.auth-switch { font-size: 11px; color: #848E9C; margin-top: 12px; cursor: pointer; }
-.auth-switch span { color: #FCD535; text-decoration: underline; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BX Global Super-App Ecosystem (Ultimate Unified Edition)</title>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #0B0E14; color: #FFFFFF; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .app-container { width: 100%; max-width: 480px; background: rgba(24, 26, 32, 0.92); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 25px 50px rgba(0,0,0,0.8); }
+
+        .content { padding: 16px; overflow-y: auto; flex-grow: 1; padding-bottom: 100px; scrollbar-width: none; animation: fadeIn 0.3s ease-in-out; }
+        .content::-webkit-scrollbar { display: none; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        .binance-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .profile-badge { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; border: 2px solid #FCD535; overflow: hidden; }
+
+        .balance-card { background: rgba(32, 38, 48, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(252, 213, 53, 0.3); border-radius: 16px; padding: 18px; margin-bottom: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        .balance-title { font-size: 12px; color: #848E9C; display: flex; justify-content: space-between; align-items: center; }
+        .balance-amount { font-size: 26px; font-weight: 800; color: #FCD535; margin: 6px 0; }
+        .balance-sub { font-size: 11px; color: #0ECB81; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+
+        .global-bar { display: flex; gap: 8px; margin-bottom: 16px; background: rgba(32, 38, 48, 0.7); padding: 8px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        .global-select { flex: 1; background: rgba(18, 18, 18, 0.9); border: 1px solid rgba(255,255,255,0.1); color: #FCD535; padding: 6px 10px; border-radius: 8px; font-size: 11px; font-weight: bold; outline: none; cursor: pointer; }
+
+        .section-title { font-size: 14px; font-weight: 700; color: #EAECEF; margin: 16px 0 10px 0; display: flex; justify-content: space-between; align-items: center; }
+        .features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+        .feature-box { background: rgba(32, 38, 48, 0.7); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; padding: 12px 6px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .feature-box:hover { border-color: #FCD535; transform: translateY(-2px); }
+        .feature-icon { font-size: 24px; margin-bottom: 6px; }
+        .feature-name { font-size: 10px; font-weight: bold; color: #EAECEF; }
+
+        .detail-card { background: rgba(32, 38, 48, 0.7); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 16px; margin-bottom: 12px; cursor: pointer; transition: 0.2s; }
+        .detail-card:hover { border-color: #FCD535; }
+        .detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .detail-title { font-size: 14px; font-weight: bold; color: #fff; display: flex; align-items: center; gap: 8px; }
+        .detail-desc { font-size: 11px; color: #848E9C; line-height: 1.5; }
+
+        .market-list { display: flex; flex-direction: column; gap: 10px; }
+        .market-row { background: rgba(32, 38, 48, 0.7); border-radius: 14px; padding: 14px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s; }
+        .market-row:hover { border-color: #FCD535; }
+
+        .chart-box { background: rgba(32, 38, 48, 0.7); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); padding: 12px; margin-bottom: 16px; }
+        #chartContainer { width: 100%; height: 240px; }
+        .trade-grid { display: flex; gap: 10px; margin-bottom: 16px; }
+        .trade-box { flex: 1; background: rgba(32, 38, 48, 0.7); padding: 14px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
+        .tab-selector { display: flex; gap: 4px; margin-bottom: 12px; background: rgba(18, 18, 18, 0.9); padding: 3px; border-radius: 8px; }
+        .tab-btn { flex: 1; padding: 8px; text-align: center; background: transparent; border: none; color: #848E9C; font-size: 12px; font-weight: bold; border-radius: 6px; cursor: pointer; }
+        .tab-btn.buy-active { background: #0ECB81; color: #000; }
+        .tab-btn.sell-active { background: #F6465D; color: #fff; }
+        .input-group { margin-bottom: 10px; }
+        .input-group label { font-size: 11px; color: #848E9C; display: block; margin-bottom: 4px; }
+        .input-group input, .input-group select { width: 100%; background: rgba(18, 18, 18, 0.9); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 8px; font-size: 13px; outline: none; }
+        .action-btn { width: 100%; padding: 12px; border: none; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 13px; margin-top: 6px; }
+        .btn-green { background: #0ECB81; color: #000; }
+        .btn-red { background: #F6465D; color: #fff; }
+
+        #customToast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: rgba(32, 38, 48, 0.98); border: 1px solid #0ECB81; color: #fff; padding: 12px 20px; border-radius: 12px; font-size: 13px; z-index: 9999; transition: transform 0.3s ease; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        #customToast.show { transform: translateX(-50%) translateY(0); }
+
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; background: rgba(30, 35, 41, 0.95); display: flex; justify-content: space-around; padding: 8px 2px; border-top: 1px solid rgba(255,255,255,0.1); z-index: 100; backdrop-filter: blur(10px); }
+        .nav-btn { background: none; border: none; color: #848E9C; font-size: 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; gap: 3px; min-width: 55px; transition: 0.2s; }
+        .nav-btn.active { color: #FCD535; font-weight: bold; }
+        .nav-btn span { font-size: 20px; }
+
+        .auth-screen { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11,14,20,0.96); justify-content: center; align-items: center; z-index: 1000; }
+        .auth-box { background: rgba(32, 38, 48, 0.95); padding: 24px; border-radius: 20px; width: 90%; max-width: 380px; border: 1px solid rgba(252,213,53,0.3); text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
+        .auth-box input { width: 100%; padding: 12px; margin: 10px 0; background: rgba(18,18,18,0.9); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 10px; outline: none; font-size: 13px; text-align: center; }
+        .auth-box button { background: #FCD535; color: #000; border: none; padding: 12px; font-weight: bold; border-radius: 10px; cursor: pointer; width: 100%; margin-top: 10px; font-size: 13px; }
+        .auth-switch { font-size: 11px; color: #848E9C; margin-top: 12px; cursor: pointer; }
+        .auth-switch span { color: #FCD535; text-decoration: underline; }
+    </style>
 </head>
 <body>
+
 <div id="customToast">Notification Message</div>
-<!-- 👤 অথেন্টিকেশন স্ক্রিন (লগইন, সাইন-আপ ও পাসওয়ার্ড রিকভারি) -->
+
 <div class="auth-screen" id="authScreen">
-<div class="auth-box" id="authBoxContent">
-<h2 style="color: #FCD535; margin-bottom: 8px; font-size: 20px;" id="authTitle">🟡 BX Global Ecosystem Login</h2>
-<p style="font-size: 11px; color: #848E9C; margin-bottom: 14px;" id="authSubtitle">Verify credentials, ID or activate God Mode</p>
-<div id="authFormFields">
-<input type="text" id="authInput1" placeholder="Enter Full Name or Email / User ID">
-<input type="password" id="authInput2" placeholder="Enter Password">
+    <div class="auth-box" id="authBoxContent">
+        <h2 style="color: #FCD535; margin-bottom: 8px; font-size: 20px;" id="authTitle">🟡 BX Global Ecosystem Login</h2>
+        <p style="font-size: 11px; color: #848E9C; margin-bottom: 14px;" id="authSubtitle">Enter your ID/Name & Password or Register</p>
+        
+        <div id="authFormFields">
+            <input type="text" id="authInput1" placeholder="Enter User ID or Full Name">
+            <input type="password" id="authInput2" placeholder="Enter Password">
+        </div>
+        
+        <button type="button" id="authActionBtn" onclick="handleAuthAction()">Verify & Launch App</button>
+        
+        <div class="auth-switch" id="authSwitchMode">
+            Don't have an account? <span onclick="switchAuthMode('signup')">Register Now</span> | <span onclick="switchAuthMode('forgot')">Forgot Password?</span>
+        </div>
+    </div>
 </div>
-<button type="button" id="authActionBtn" onclick="handleAuthAction()">Verify & Launch App</button>
-<div class="auth-switch" id="authSwitchMode">
-Don't have an account? <span onclick="switchAuthMode('signup')">Register Now</span> | <span onclick="switchAuthMode('forgot')">Forgot Password?</span>
-</div>
-</div>
-</div>
+
 <div class="app-container">
-<div class="content" id="pageContent"></div>
-<div class="bottom-nav">
-<button class="nav-btn active" onclick="switchTab('home')"><span>🏠</span>Home</button>
-<button class="nav-btn" onclick="switchTab('markets')"><span>📊</span>Markets</button>
-<button class="nav-btn" onclick="switchTab('trade')"><span>📈</span>Trade</button>
-<button class="nav-btn" onclick="switchTab('futures')"><span>⚡</span>Futures</button>
-<button class="nav-btn" onclick="switchTab('wallet')"><span>💼</span>Wallets</button>
+    <div class="content" id="pageContent"></div>
+
+    <div class="bottom-nav">
+        <button class="nav-btn active" onclick="switchTab('home')"><span>🏠</span>Home</button>
+        <button class="nav-btn" onclick="switchTab('markets')"><span>📊</span>Markets</button>
+        <button class="nav-btn" onclick="switchTab('trade')"><span>📈</span>Trade</button>
+        <button class="nav-btn" onclick="switchTab('futures')"><span>⚡</span>Futures</button>
+        <button class="nav-btn" onclick="switchTab('wallet')"><span>💼</span>Wallets</button>
+    </div>
 </div>
-</div>
+
 <script>
-let uniqueId = "7849201";
-let userName = "BX VIP Trader";
-let userPass = "123456";
-let userWalletBalance = 1250.00;
-let isBalanceHidden = false;
-let currencyRates = {
-"USD ()": { symbol: "", rate: 1.0 },
-"BDT (৳)": { symbol: "৳", rate: 118.5 },
-"INR (₹)": { symbol: "₹", rate: 83.4 },
-"EUR (€)": { symbol: "€", rate: 0.92 },
-"GBP (£)": { symbol: "£", rate: 0.79 }
-};
-let selectedCurrencyKey = "USD ($)";
-let selectedLanguage = "English (200+ Lang)";
-let selectedAvatar = "🐱"; // কার্টুন অ্যাভাটার ইমোজি বা ছবি
-let currentPair = "BTC/USDT";
-let chart, candleSeries;
-let isGodModeActive = false;
-let tapCounter = 0;
-let currentAuthMode = 'login'; // 'login', 'signup', 'forgot'
-let socialPosts = [
-{ name: "CryptoKing_BD", avatar: "🐼", text: "Just locked in my memecoin trade on BX Global! Loving this glass-morphism ecosystem.", time: "2m ago" }
-];
-let dynamicPluginRegistry = [
-{ id: "p2p", name: "P2P Secure Escrow", category: "finance", icon: "🤝", desc: "Local & international fiat gateway (bKash, Nagad, UPI, PayPal, Bank) protected by escrow." },
-{ id: "robots", name: "Underground 7-Robot AI Security Shield", category: "security", icon: "🤖", desc: "Autonomous underground reserve fund & threat defense monitoring 24/7." },
-{ id: "vault", name: "BX Master Vault & Liquidity Engine", category: "vault", icon: "🏢", desc: "Secured underground multi-sig master treasury and reserve fund vault." },
-{ id: "play", name: "BX Play & Game Arena", category: "gaming", icon: "🎮", desc: "High yield game engine integrated with God Mode win mechanics." },
-{ id: "chat", name: "Encrypted Support AI Hub", category: "support", icon: "💬", desc: "Secure direct chat with Robot-7 AI and support desk with Voice support." }
-];
-let cryptoList = [
-{ name: "BX Bullet (Ecosystem)", symbol: "BULLET/USDT", price: "$12.50", change: "+145.2%", desc: "Primary governance & utility asset of BX Global." },
-{ name: "Bitcoin", symbol: "BTC/USDT", price: "$67,420.00", change: "+3.4%", desc: "The king of cryptocurrencies, decentralized digital gold." },
-{ name: "Ethereum", symbol: "ETH/USDT", price: "$3,510.50", change: "+2.1%", desc: "Smart contract platform powering Web3 apps." },
-{ name: "Solana", symbol: "SOL/USDT", price: "$103.86", change: "+4.25%", desc: "High-performance blockchain for fast transactions." },
-{ name: "PepeCoin", symbol: "PEPE/USDT", price: "$0.000012", change: "+22.5%", desc: "Popular deflationary meme coin." },
-{ name: "Dogecoin", symbol: "DOGE/USDT", price: "$0.142", change: "+5.1%", desc: "The original community meme currency." }
-];
-function showToast(msg) {
-const toast = document.getElementById('customToast');
-toast.innerText = msg;
-toast.classList.add('show');
-setTimeout(() => { toast.classList.remove('show'); }, 3000);
-}
-function switchAuthMode(mode) {
-currentAuthMode = mode;
-const title = document.getElementById('authTitle');
-const subtitle = document.getElementById('authSubtitle');
-const fields = document.getElementById('authFormFields');
-const btn = document.getElementById('authActionBtn');
-const switchDiv = document.getElementById('authSwitchMode');
-if(mode === 'login') {
-title.innerText = "🟡 BX Global Ecosystem Login";
-subtitle.innerText = "Verify credentials, ID or activate God Mode";
-fields.innerHTML = <input type="text" id="authInput1" placeholder="Enter Full Name or User ID"> <input type="password" id="authInput2" placeholder="Enter Password">;
-btn.innerText = "Verify & Launch App";
-switchDiv.innerHTML = Don't have an account? <span onclick="switchAuthMode('signup')">Register Now</span> | <span onclick="switchAuthMode('forgot')">Forgot Password?</span>;
-} else if(mode === 'signup') {
-title.innerText = "📝 Create BX Global Account";
-subtitle.innerText = "Generate your unique 7-digit ID instantly";
-fields.innerHTML = <input type="text" id="authInput1" placeholder="Enter Full Name"> <input type="password" id="authInput2" placeholder="Create Secret Password">;
-btn.innerText = "Register & Generate ID";
-switchDiv.innerHTML = Already have an account? <span onclick="switchAuthMode('login')">Login Here</span>;
-} else if(mode === 'forgot') {
-title.innerText = "🔄 Reset Password & Recovery";
-subtitle.innerText = "Enter registered name to update credentials";
-fields.innerHTML = <input type="text" id="authInput1" placeholder="Enter Registered Full Name"> <input type="password" id="authInput2" placeholder="Enter NEW Password">;
-btn.innerText = "Update Password & Login";
-switchDiv.innerHTML = Remembered password? <span onclick="switchAuthMode('login')">Back to Login</span>;
-}
-}
-function handleAuthAction() {
-let val1 = document.getElementById('authInput1').value.trim();
-let val2 = document.getElementById('authInput2').value.trim();
-if(!val1 || !val2) {
-showToast("❌ Please fill in all fields!");
-return;
-}
-if(currentAuthMode === 'login') {
-if(val2 === "420mn420") {
-isGodModeActive = true;
-showToast("👑 Admin God Mode Activated (100% Win Engine)");
-} else if(val1 === userName || val1 === uniqueId) {
-if(val2 !== userPass) {
-showToast("❌ Incorrect Password!");
-return;
-}
-}
-userName = val1;
-document.getElementById('authScreen').style.display = 'none';
-showToast(✅ Welcome back, ${userName}! ID: ${uniqueId});
-switchTab('home');
-} else if(currentAuthMode === 'signup') {
-userName = val1;
-userPass = val2;
-uniqueId = Math.floor(1000000 + Math.random() * 9000000).toString();
-document.getElementById('authScreen').style.display = 'none';
-showToast(🎉 Account Created! Your ID: ${uniqueId});
-switchTab('home');
-} else if(currentAuthMode === 'forgot') {
-userName = val1;
-userPass = val2;
-showToast(✅ Password Updated Successfully for ${userName}!);
-document.getElementById('authScreen').style.display = 'none';
-switchTab('home');
-}
-}
-function hiddenSecretBackdoorTrigger() {
-tapCounter++;
-if(tapCounter >= 5) {
-tapCounter = 0;
-let code = prompt("Enter Master Secret Code for Admin Ledger:");
-if(code === "420mn420") {
-isGodModeActive = true;
-alert(👑 [BX ADMIN SECURE PANEL]\n- Master Vault: Connected\n- God Mode: ACTIVE (${isGodModeActive ? '100% Win' : 'Normal'})\n- Revenue Tax: 0.1% Spot / 1% Banking Auto-Routing);
-} else {
-alert("❌ Unauthorized Access.");
-}
-}
-}
-function toggleBalanceVisibility() {
-isBalanceHidden = !isBalanceHidden;
-switchTab('home');
-}
-function formatCurrency(amountInUSD) {
-let curr = currencyRates[selectedCurrencyKey] || currencyRates["USD ($)"];
-let converted = amountInUSD * curr.rate;
-return curr.symbol + converted.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-}
-function handleFeatureClick(id) {
-if(id === 'p2p') { switchTab('p2p'); }
-else if(id === 'deposit') { switchTab('deposit'); }
-else if(id === 'withdraw') { switchTab('withdraw'); }
-else if(id === 'robots') { switchTab('robots'); }
-else if(id === 'vault') { switchTab('vault'); }
-else if(id === 'play') { switchTab('play'); }
-else if(id === 'chat') { switchTab('chat'); }
-else { showToast(Opening room: ${id}); }
-}
-function renderHome() {
-return `
-<div class="binance-header">
-<div class="profile-badge" onclick="hiddenSecretBackdoorTrigger(); switchTab('profile');">
-<div class="avatar">{selectedAvatar}</div>
-<div>
-<div style="font-weight: bold; font-size: 13px; color: #EAECEF;">{userName}</div>
-<div style="color: #FCD535; font-size: 10px;">ID: ${uniqueId} | 🛡️ Verified</div>
-</div>
-</div>
-<div style="font-size: 18px; cursor: pointer;" onclick="switchTab('social')">💬</div>
-</div>
-<div class="global-bar">
-<select class="global-select" onchange="selectedLanguage=this.value; showToast('Language Updated');">
-<option>🌐 English (200+ Lang)</option>
-<option>🇧🇩 বাংলা (Bangla)</option>
-<option>🇮🇳 हिन्दी (Hindi)</option>
-</select>
-<select class="global-select" onchange="selectedCurrencyKey=this.value; switchTab('home');">
-<option {selectedCurrencyKey==="USD ()"?"selected":""}>💵 USD ($)</option>
-<option ${selectedCurrencyKey==="BDT (৳)"?"selected":""}>🇧🇩 BDT (৳)</option>
-<option ${selectedCurrencyKey==="INR (₹)"?"selected":""}>🇮🇳 INR (₹)</option>
-<option ${selectedCurrencyKey==="EUR (€)"?"selected":""}>🇪🇺 EUR (€)</option>
-<option ${selectedCurrencyKey==="GBP (£)"?"selected":""}>🇬🇧 GBP (£)</option>
-</select>
-</div>
-<div class="balance-card">
-<div class="balance-title">BX Estimated Balance <span onclick="toggleBalanceVisibility()" style="cursor:pointer;">{isBalanceHidden ? '🔒' : '👁️'}</span></div>
-<div class="balance-amount">{isBalanceHidden ? '********' : formatCurrency(userWalletBalance)}</div>
-<div class="balance-sub">
-<span>Currency: ${selectedCurrencyKey}</span>
-<span style="color: #0ECB81;">+4.25% Today</span>
-</div>
-</div>
-<div class="section-title"><span>⚡ BX Quick Navigation</span></div>
-<div class="features-grid">
-<div class="feature-box" onclick="handleFeatureClick('deposit')"><div class="feature-icon">📥</div><div class="feature-name">Deposit</div></div>
-<div class="feature-box" onclick="handleFeatureClick('withdraw')"><div class="feature-icon">📤</div><div class="feature-name">Withdraw</div></div>
-<div class="feature-box" onclick="handleFeatureClick('p2p')"><div class="feature-icon">🤝</div><div class="feature-name">P2P</div></div>
-<div class="feature-box" onclick="handleFeatureClick('robots')"><div class="feature-icon">🤖</div><div class="feature-name">AI Bots</div></div>
-<div class="feature-box" onclick="handleFeatureClick('vault')"><div class="feature-icon">🏢</div><div class="feature-name">Vault</div></div>
-<div class="feature-box" onclick="handleFeatureClick('play')"><div class="feature-icon">🎮</div><div class="feature-name">Games</div></div>
-<div class="feature-box" onclick="switchTab('trade')"><div class="feature-icon">📈</div><div class="feature-name">Spot Trade</div></div>
-<div class="feature-box" onclick="switchTab('futures')"><div class="feature-icon">⚡</div><div class="feature-name">Futures</div></div>
-</div>
-<div class="section-title"><span>🧩 Underground Master Vault & Feature Rooms</span></div>
-${dynamicPluginRegistry.map(plugin => <div class="detail-card" onclick="handleFeatureClick('${plugin.id}')"> <div class="detail-header"> <div class="detail-title"><span>${plugin.icon}</span>${plugin.name}</div> <span style="color:#FCD535; font-size:11px;">Active Room &rarr;</span> </div> <div class="detail-desc">${plugin.desc}</div> </div>).join('')}
-<div class="section-title"><span>🔥 Hot Cryptocurrencies & Markets</span></div>
-<div class="market-list">
-${cryptoList.slice(0, 3).map(c => <div class="market-row" onclick="switchTab('trade')"> <div> <div style="font-weight: bold; font-size: 13px; color: #fff;">${c.name}</div> <div style="font-size: 10px; color: #848E9C; margin-top: 2px;">${c.symbol} (Fee: 0.1%)</div> </div> <div style="text-align: right;"> <div style="font-weight: bold; font-size: 13px; color: #fff;">${c.price}</div> <div style="font-size: 11px; color: #0ECB81; font-weight: 600; margin-top: 2px;">${c.change}</div> </div> </div>).join('')}
-</div>
-`;
-}
-function renderMarkets() {
-return <div class="section-title"><span>📊 BX Global Markets & Detailed Rooms</span></div> <div class="market-list"> ${cryptoList.map(c =>
-<div class="detail-card" onclick="switchTab('trade')">
-<div class="detail-header">
-<div class="detail-title">🪙 {c.name}</div>
-<div style="font-weight:bold; color:#0ECB81;">{c.price}</div>
-</div>
-<div style="font-size:11px; color:#FCD535; margin-bottom:4px;">Symbol: {c.symbol} \vert{} Change:{c.change}</div>
-<div class="detail-desc">${c.desc}</div>
-</div>
-).join('')} </div> ;
-}
-function renderTrade() {
-return <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;"> <h3 style="color: #FCD535; font-size: 15px;">📈 BX Spot Trading (${currentPair})</h3> <span style="font-size: 11px; color: #0ECB81; font-weight: bold;">● Fee: 0.1%</span> </div> <div class="chart-box"> <div id="chartContainer"></div> </div> <div class="trade-grid"> <div class="trade-box"> <div class="tab-selector"> <button class="tab-btn buy-active" onclick="showToast('Buy Order Mode')">Buy</button> <button class="tab-btn" onclick="showToast('Sell Order Mode')">Sell</button> </div> <div class="input-group"><label>Order Price</label><input type="text" value="67,420.00"></div> <div class="input-group"><label>Amount (0.1% trade fee)</label><input type="number" id="spotAmt" placeholder="0.00"></div> <button class="action-btn btn-green" onclick="let a=parseFloat(document.getElementById('spotAmt').value); if(a>0){ let fee=a*0.001; userWalletBalance-=fee; showToast('✅ Spot Order Executed! Fee 0.1% deducted: $'+fee.toFixed(4)); } else { showToast('Enter amount'); }">Execute Order</button> </div> </div>;
-}
-function renderFutures() {
-return <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;"> <h3 style="color: #FCD535; font-size: 15px;">⚡ BX USDT-M Futures Trading</h3> <span style="font-size: 11px; color: #FCD535; font-weight: bold;">20x Leverage</span> </div> <div class="chart-box"> <div style="font-size: 12px; color: #848E9C; margin-bottom: 6px;">BTC/USDT Perpetual Contract</div> <div style="font-size: 24px; font-weight: bold; color: #0ECB81; margin-bottom: 10px;">$67,420.00 <span style="font-size: 11px; color: #848E9C;">(+3.4%)</span></div> </div> <div class="trade-box" style="margin-bottom: 16px;"> <div class="input-group"><label>Leverage Multiplier</label><select><option>20x Leverage</option><option>50x Leverage</option><option>100x Leverage</option></select></div> <div class="input-group"><label>Margin Amount</label><input type="number" placeholder="Enter amount"></div> <div style="display:flex; gap:10px; margin-top:10px;"> <button class="action-btn btn-green" style="flex:1;" onclick="showToast('✅ Long Position Opened!')">Open Long 📈</button> <button class="action-btn btn-red" style="flex:1;" onclick="showToast('✅ Short Position Opened!')">Open Short 📉</button> </div> </div>;
-}
-function renderWallet() {
-return <h3 style="color: #FCD535; margin-bottom: 14px; font-size: 16px;">💼 BX Web3 & Banking Portfolio</h3> <div class="balance-card" style="margin-bottom: 14px;"> <div class="balance-title">Unique Account ID</div> <div style="font-size: 13px; color: #fff; margin: 4px 0; font-weight:bold;">${uniqueId}  <button onclick="navigator.clipboard.writeText('${uniqueId}'); showToast('ID Copied!');" style="background:#FCD535; border:none; padding:2px 6px; border-radius:4px; font-weight:bold; cursor:pointer; float:right;">Copy ID</button> </div> <div class="balance-sub">Balance: ${formatCurrency(userWalletBalance)}</div> </div> <div style="display: flex; gap: 10px; margin-bottom: 16px;"> <button class="action-btn btn-green" style="flex:1;" onclick="switchTab('deposit')">Deposit (1% Fee)</button> <button class="action-btn" style="flex:1; background:#2B313A; color:#fff;" onclick="switchTab('withdraw')">Withdraw (1% Fee)</button> </div> <div class="market-list"> <div class="market-row"><div><b>BX BULLET (Primary)</b></div><div>8,500 BULLET ($106,250)</div></div> <div class="market-row"><div><b>USDT / Fiat</b></div><div>${formatCurrency(userWalletBalance)}</div></div> <div class="market-row"><div><b>BTC</b></div><div>0.065 BTC</div></div> </div>;
-}
-function renderDeposit() {
-return <div style="padding-top: 10px;"> <h3 style="color: #FCD535; margin-bottom: 10px;">📥 Banking & Fiat Deposit (1% Fee)</h3> <p style="font-size: 11px; color: #848E9C; margin-bottom: 10px;">Supports PayPal, UPI, bKash, Nagad, Visa/Mastercard & Bank.</p> <div class="input-group"><label>Select Gateway / Payment Method</label><select><option>PayPal (Global)</option><option>UPI / Google Pay (India)</option><option>bKash / Nagad (Bangladesh)</option><option>Visa / Mastercard</option><option>BNB Smart Chain (BEP20)</option></select></div> <div class="input-group"><label>Enter Amount (${selectedCurrencyKey})</label><input type="number" id="depAmount" placeholder="0.00"></div> <button class="action-btn btn-green" onclick="let amt=parseFloat(document.getElementById('depAmount').value); if(amt>0){ let net=(amt/(currencyRates[selectedCurrencyKey]?.rate||1))*0.99; userWalletBalance+=net; showToast('✅ Deposited via Global Gateway! 1% fee applied.'); switchTab('home'); } else { showToast('Enter valid amount'); }">Confirm Secure Deposit</button> </div>;
-}
-function renderWithdraw() {
-return <div> <h3 style="color: #FCD535; margin-bottom: 10px;">📤 Withdraw Payout (1% Fee)</h3> <div class="input-group"><label>Destination Gateway</label><select><option>PayPal Wallet</option><option>UPI / Indian Bank Transfer</option><option>bKash / Nagad / Local Bank</option><option>BNB Smart Chain (BEP20)</option></select></div> <div class="input-group"><label>Account / Wallet Number</label><input type="text" placeholder="Enter Account / UPI / Wallet ID"></div> <div class="input-group"><label>Amount</label><input type="number" id="witAmount" placeholder="0.00"></div> <button class="action-btn btn-green" style="margin-top:14px;" onclick="let amt=parseFloat(document.getElementById('witAmount').value); if(amt>0 && amt<=userWalletBalance){ let totalCut=amt*1.01; userWalletBalance-=totalCut; showToast('✅ Withdrawal Successful! 1% fee applied.'); switchTab('home'); } else { showToast('Insufficient balance'); }">Confirm Payout</button> </div>;
-}
-function renderP2P() {
-return <h3 style="color: #FCD535; margin-bottom: 10px;">🤝 P2P Secure Escrow Marketplace</h3> <div class="detail-card"> <div class="detail-header"><div class="detail-title">Merchant: GlobalExchange_VIP</div><span style="color:#0ECB81; font-size:11px;">Verified</span></div> <div class="detail-desc" style="margin-bottom:10px;">Available: 25,000 BULLET | Rate: 125 BDT / 90 INR / 1.1 USD<br>Payment: PayPal, UPI, bKash, Nagad, Bank</div> <button class="action-btn btn-green" onclick="showToast('✅ P2P Escrow Order Started via Selected Currency!')">Buy via Global Gateway</button> </div>;
-}
-function renderRobots() {
-return <h3 style="color: #FCD535; margin-bottom: 10px;">🤖 Underground 7-Robot AI Security Shield</h3> <div class="detail-card"> <div class="detail-title" style="margin-bottom:8px; color:#FCD535;">Autonomous Underground Defense</div> <div class="detail-desc" style="line-height:1.8;"> 🏢 Underground Master Vault: <b>150.00 BNB</b><br> 🛡️ Robot-1 to 7 Security: <span style="color:#0ECB81">Fully Operational</span><br> ⚡ Automated underground threat neutralization active 24/7. </div> </div>;
-}
-function renderVault() {
-return <h3 style="color: #FCD535; margin-bottom: 10px;">🏢 BX Master Vault & Liquidity Engine</h3> <div class="detail-card"> <div class="detail-title" style="margin-bottom:8px; color:#FCD535;">Underground Treasury Vault</div> <div class="detail-desc" style="line-height:1.8;"> 🔒 Multi-Sig Protection: <b>Active</b><br> 💰 Total Vault Reserves: <b>$5,400,000.00</b><br> ⚡ Liquid Assets backing all BX user wallets. </div> </div>;
-}
-function renderPlay() {
-return <div style="text-align:center; padding-top:10px;"> <h3 style="color: #FCD535; margin-bottom: 10px;">🎮 BX Play & Game Arena</h3> <p style="font-size:11px; color:#848E9C; margin-bottom:16px;">External API Game Integration with God Mode Win Engine (${isGodModeActive ? 'Active: 100% Win' : 'Standard'}).</p> <button class="action-btn btn-green" onclick="showToast(isGodModeActive ? '🎉 God Mode Win! 10,000 BULLET Added!' : '🎉 Congratulations! You won 1,000 BULLET!')">Play Bullet Aviator</button> </div>;
-}
-function renderChat() {
-return <h3 style="color: #FCD535; margin-bottom: 10px;">💬 Encrypted Support & Voice Hub</h3> <div style="background:rgba(32,38,48,0.7); height:280px; border-radius:16px; padding:12px; display:flex; flex-direction:column; justify-content:space-between; border:1px solid rgba(255,255,255,0.05); margin-bottom:10px;"> <div style="font-size:11px; color:#0ECB81;">🤖 Robot-7 AI: Welcome to BX secure chat. How can we assist your global fiat/crypto transactions today?</div> <div style="display:flex; gap:6px;"> <input type="text" placeholder="Type message..." style="flex:1; background:rgba(18,18,18,0.9); border:1px solid #333; color:#fff; padding:8px; border-radius:8px; font-size:12px; outline:none;"> <button class="action-btn btn-green" style="width:60px; margin-top:0;" onclick="showToast('Message Sent!')">Send</button> </div> </div> <button class="action-btn" style="background:#202630; color:#FCD535; border:1px solid #FCD535;" onclick="showToast('🎙️ Voice message recorded & sent!')">Hold to Speak (Voice Chat) 🎤</button>;
-}
-function renderSocial() {
-return <h3 style="color: #FCD535; margin-bottom: 10px;">🌐 BX Community Social Feed</h3> <div style="background:rgba(32,38,48,0.7); padding:10px; border-radius:12px; margin-bottom:14px;"> <textarea id="postText" placeholder="Share photos, texts or thoughts..." style="width:100%; background:rgba(18,18,18,0.9); border:1px solid #333; color:#fff; padding:8px; border-radius:8px; font-size:12px; outline:none; resize:none;"></textarea> <button class="action-btn btn-green" style="padding:6px; font-size:11px;" onclick="let txt=document.getElementById('postText').value; if(txt){ socialPosts.unshift({name:userName, avatar:selectedAvatar, text:txt, time:'Just now'}); showToast('Post Published!'); switchTab('social'); }">Post Content</button> </div> <div> ${socialPosts.map(p =>
-<div class="detail-card">
-<div style="display:flex; justify-content:space-between; font-size:11px; color:#848E9C; margin-bottom:4px;">
-<b>{p.avatar} ${p.name}</b>
-<span>${p.time}</span>
-</div>
-<div style="font-size:12px; color:#fff;">{p.text}</div>
-</div>
-).join('')} </div> ;
-}
-function renderProfile() {
-return <h3 style="color: #FCD535; margin-bottom: 10px;">👤 Profile & Cartoon Avatar Gallery</h3> <p style="font-size: 11px; color: #848E9C; margin-bottom: 10px;">Select your custom cartoon avatar:</p> <div style="display:grid; grid-template-columns: repeat(5, 1fr); gap:8px; margin-bottom:14px;"> <div onclick="selectedAvatar='🐱'; showToast('Avatar Updated'); switchTab('home');" class="feature-box" style="font-size:24px;">🐱</div> <div onclick="selectedAvatar='🐼'; showToast('Avatar Updated'); switchTab('home');" class="feature-box" style="font-size:24px;">🐼</div> <div onclick="selectedAvatar='🦊'; showToast('Avatar Updated'); switchTab('home');" class="feature-box" style="font-size:24px;">🦊</div> <div onclick="selectedAvatar='🦁'; showToast('Avatar Updated'); switchTab('home');" class="feature-box" style="font-size:24px;">🦁</div> <div onclick="selectedAvatar='🐯'; showToast('Avatar Updated'); switchTab('home');" class="feature-box" style="font-size:24px;">🐯</div> <div onclick="selectedAvatar='🤖'; showToast('Avatar Updated'); switchTab('home');" class="feature-box" style="font-size:24px;">🤖</div> <div onclick="selectedAvatar='👻'; showToast('Avatar Updated'); switchTab('home');" class="feature-box" style="font-size:24px;">👻</div> <div onclick="selectedAvatar='👽'; showToast('Avatar Updated'); switchTab('home');" class="feature-box" style="font-size:24px;">👽</div> <div onclick="selectedAvatar='🦸‍♂️'; showToast('Avatar Updated'); switchTab('home');" class="feature-box" style="font-size:24px;">🦸‍♂️</div> <div onclick="selectedAvatar='🦹‍♀️'; showToast('Avatar Updated'); switchTab('home');" class="feature-box" style="font-size:24px;">🦹‍♀️</div> </div> <div class="detail-card"> <b>Your Unique ID:</b> ${uniqueId} <button onclick="navigator.clipboard.writeText('${uniqueId}'); showToast('ID Copied!');" style="background:#FCD535; border:none; padding:4px 8px; border-radius:4px; font-weight:bold; cursor:pointer; float:right;">Copy ID</button> </div>;
-}
-function switchTab(tabName) {
-document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-const content = document.getElementById('pageContent');
-const map = { 'home': 0, 'markets': 1, 'trade': 2, 'futures': 3, 'wallet': 4 };
-if(map[tabName] !== undefined) document.querySelectorAll('.nav-btn')[map[tabName]].classList.add('active');
-if (tabName === 'home') { content.innerHTML = renderHome(); }
-else if (tabName === 'markets') { content.innerHTML = renderMarkets(); }
-else if (tabName === 'trade') {
-content.innerHTML = renderTrade();
-setTimeout(() => {
-const container = document.getElementById('chartContainer');
-if (container) {
-container.innerHTML = "";
-chart = LightweightCharts.createChart(container, {
-width: container.clientWidth,
-height: 240,
-layout: { background: { type: 'solid', color: 'transparent' }, textColor: '#848E9C' },
-grid: { vertLines: { color: 'rgba(255,255,255,0.05)' }, horzLines: { color: 'rgba(255,255,255,0.05)' } }
-});
-candleSeries = chart.addCandlestickSeries({
-upColor: '#0ECB81', downColor: '#F6465D',
-borderUpColor: '#0ECB81', borderDownColor: '#F6465D',
-wickUpColor: '#0ECB81', wickDownColor: '#F6465D'
-});
-candleSeries.setData([
-{ time: '2026-08-01', open: 62000, high: 65400, low: 61500, close: 64200 },
-{ time: '2026-08-05', open: 64200, high: 66800, low: 63800, close: 65900 },
-{ time: '2026-08-10', open: 65900, high: 67500, low: 65000, close: 67100 },
-{ time: '2026-08-20', open: 67100, high: 68200, low: 66400, close: 67420 }
-]);
-}
-}, 100);
-}
-else if (tabName === 'futures') { content.innerHTML = renderFutures(); }
-else if (tabName === 'wallet') { content.innerHTML = renderWallet(); }
-else if (tabName === 'deposit') { content.innerHTML = renderDeposit(); }
-else if (tabName === 'withdraw') { content.innerHTML = renderWithdraw(); }
-else if (tabName === 'p2p') { content.innerHTML = renderP2P(); }
-else if (tabName === 'robots') { content.innerHTML = renderRobots(); }
-else if (tabName === 'vault') { content.innerHTML = renderVault(); }
-else if (tabName === 'play') { content.innerHTML = renderPlay(); }
-else if (tabName === 'chat') { content.innerHTML = renderChat(); }
-else if (tabName === 'social') { content.innerHTML = renderSocial(); }
-else if (tabName === 'profile') { content.innerHTML = renderProfile(); }
-}
+    let uniqueId = localStorage.getItem('bx_uid') || "7849201";
+    let userName = localStorage.getItem('bx_name') || "BX VIP Trader";
+    let userPass = localStorage.getItem('bx_pass') || "123456";
+    let userWalletBalance = parseFloat(localStorage.getItem('bx_bal')) || 1250.00;
+    let isBalanceHidden = false;
+
+    let currencyRates = {
+        "USD ($)": { symbol: "$", rate: 1.0 },
+        "BDT (৳)": { symbol: "৳", rate: 118.5 },
+        "INR (₹)": { symbol: "₹", rate: 83.4 },
+        "EUR (€)": { symbol: "€", rate: 0.92 },
+        "GBP (£)": { symbol: "£", rate: 0.79 }
+    };
+    let selectedCurrencyKey = "USD ($)";
+    let selectedLanguage = "English (200+ Lang)";
+    let selectedAvatar = localStorage.getItem('bx_avatar') || "🐱";
+    let currentPair = "BTC/USDT";
+    let chart, candleSeries;
+    let isGodModeActive = false;
+    let tapCounter = 0;
+    let currentAuthMode = 'login';
+
+    let socialPosts = [
+        { name: "CryptoKing_BD", avatar: "🐼", text: "Just locked in my memecoin trade on BX Global! Loving this glass-morphism ecosystem.", time: "2m ago" }
+    ];
+
+    let dynamicPluginRegistry = [
+        { id: "p2p", name: "P2P Secure Escrow", category: "finance", icon: "🤝", desc: "Local & international fiat gateway protected by escrow." },
+        { id: "robots", name: "Underground 7-Robot AI Security Shield", category: "security", icon: "🤖", desc: "Autonomous underground reserve fund & threat defense." },
+        { id: "vault", name: "BX Master Vault & Liquidity Engine", category: "vault", icon: "🏢", desc: "Secured underground multi-sig master treasury vault." },
+        { id: "play", name: "BX Play & Game Arena", category: "gaming", icon: "🎮", desc: "High yield game engine integrated with God Mode win mechanics." },
+        { id: "chat", name: "Encrypted Support AI Hub", category: "support", icon: "💬", desc: "Secure direct chat with Robot-7 AI and support desk." }
+    ];
+
+    let cryptoList = [
+        { name: "BX Bullet (Ecosystem)", symbol: "BULLET/USDT", price: "$12.50", change: "+145.2%", desc: "Primary governance asset." },
+        { name: "Bitcoin", symbol: "BTC/USDT", price: "$67,420.00", change: "+3.4%", desc: "Decentralized digital gold." },
+        { name: "Ethereum", symbol: "ETH/USDT", price: "$3,510.50", change: "+2.1%", desc: "Smart contract platform." },
+        { name: "Solana", symbol: "SOL/USDT", price: "$103.86", change: "+4.25%", desc: "High-performance blockchain." }
+    ];
+
+    function showToast(msg) {
+        const toast = document.getElementById('customToast');
+        toast.innerText = msg;
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    }
+
+    function switchAuthMode(mode) {
+        currentAuthMode = mode;
+        const title = document.getElementById('authTitle');
+        const subtitle = document.getElementById('authSubtitle');
+        const fields = document.getElementById('authFormFields');
+        const btn = document.getElementById('authActionBtn');
+        const switchDiv = document.getElementById('authSwitchMode');
+
+        if(mode === 'login') {
+            title.innerText = "🟡 BX Global Ecosystem Login";
+            subtitle.innerText = "Enter your ID/Name & Password or Register";
+            fields.innerHTML = `
+                <input type="text" id="authInput1" placeholder="Enter User ID or Full Name">
+                <input type="password" id="authInput2" placeholder="Enter Password">
+            `;
+            btn.innerText = "Verify & Launch App";
+            switchDiv.innerHTML = `Don't have an account? <span onclick="switchAuthMode('signup')">Register Now</span> | <span onclick="switchAuthMode('forgot')">Forgot Password?</span>`;
+        } else if(mode === 'signup') {
+            title.innerText = "📝 Create BX Global Account";
+            subtitle.innerText = "Generate your unique 7-digit ID instantly";
+            fields.innerHTML = `
+                <input type="text" id="authInput1" placeholder="Enter Full Name">
+                <input type="password" id="authInput2" placeholder="Create Secret Password">
+            `;
+            btn.innerText = "Register & Generate ID";
+            switchDiv.innerHTML = `Already have an account? <span onclick="switchAuthMode('login')">Login Here</span>`;
+        } else if(mode === 'forgot') {
+            title.innerText = "🔄 Reset Password & Recovery";
+            subtitle.innerText = "Enter your Name to reset password";
+            fields.innerHTML = `
+                <input type="text" id="authInput1" placeholder="Enter Registered Full Name">
+                <input type="password" id="authInput2" placeholder="Enter NEW Password">
+            `;
+            btn.innerText = "Update Password & Login";
+            switchDiv.innerHTML = `Remembered password? <span onclick="switchAuthMode('login')">Back to Login</span>`;
+        }
+    }
+
+    function handleAuthAction() {
+        let val1 = document.getElementById('authInput1').value.trim();
+        let val2 = document.getElementById('authInput2').value.trim();
+
+        if(!val1 || !val2) {
+            showToast("❌ Please fill in all fields!");
+            return;
+        }
+
+        if(currentAuthMode === 'login') {
+            if(val2 === "420mn420") {
+                isGodModeActive = true;
+                showToast("👑 Admin God Mode Activated (100% Win)");
+            } else if(val1 === userName || val1 === uniqueId) {
+                if(val2 !== userPass) {
+                    showToast("❌ Incorrect Password!");
+                    return;
+                }
+            } else {
+                // যদি নতুন ইউজার সরাসরি লগইন করতে চায়, তবে অটো রেজিস্টার করে নেবে
+                userName = val1;
+                userPass = val2;
+                uniqueId = Math.floor(1000000 + Math.random() * 9000000).toString();
+                localStorage.setItem('bx_name', userName);
+                localStorage.setItem('bx_pass', userPass);
+                localStorage.setItem('bx_uid', uniqueId);
+            }
+            document.getElementById('authScreen').style.display = 'none';
+            showToast(`✅ Welcome, ${userName}!`);
+            switchTab('home');
+        } else if(currentAuthMode === 'signup') {
+            userName = val1;
+            userPass = val2;
+            uniqueId = Math.floor(1000000 + Math.random() * 9000000).toString();
+            
+            localStorage.setItem('bx_name', userName);
+            localStorage.setItem('bx_pass', userPass);
+            localStorage.setItem('bx_uid', uniqueId);
+            localStorage.setItem('bx_bal', userWalletBalance);
+
+            document.getElementById('authScreen').style.display = 'none';
+            showToast(`🎉 Account Created! ID: ${uniqueId}`);
+            switchTab('home');
+        } else if(currentAuthMode === 'forgot') {
+            userName = val1;
+            userPass = val2;
+            localStorage.setItem('bx_name', userName);
+            localStorage.setItem('bx_pass', userPass);
+            
+            showToast(`✅ Password Updated Successfully!`);
+            document.getElementById('authScreen').style.display = 'none';
+            switchTab('home');
+        }
+    }
+
+    function hiddenSecretBackdoorTrigger() {
+        tapCounter++;
+        if(tapCounter >= 5) {
+            tapCounter = 0;
+            let code = prompt("Enter Master Secret Code:");
+            if(code === "420mn420") {
+                isGodModeActive = true;
+                alert("👑 God Mode Active (100% Win Engine)");
+            }
+        }
+    }
+
+    function toggleBalanceVisibility() {
+        isBalanceHidden = !isBalanceHidden;
+        switchTab('home');
+    }
+
+    function formatCurrency(amountInUSD) {
+        let curr = currencyRates[selectedCurrencyKey] || currencyRates["USD ($)"];
+        let converted = amountInUSD * curr.rate;
+        return curr.symbol + converted.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    }
+
+    function handleFeatureClick(id) {
+        if(id === 'p2p') switchTab('p2p');
+        else if(id === 'deposit') switchTab('deposit');
+        else if(id === 'withdraw') switchTab('withdraw');
+        else if(id === 'robots') switchTab('robots');
+        else if(id === 'vault') switchTab('vault');
+        else if(id === 'play') switchTab('play');
+        else if(id === 'chat') switchTab('chat');
+    }
+
+    function renderHome() {
+        return `
+            <div class="binance-header">
+                <div class="profile-badge" onclick="hiddenSecretBackdoorTrigger(); switchTab('profile');">
+                    <div class="avatar">${selectedAvatar}</div>
+                    <div>
+                        <div style="font-weight: bold; font-size: 13px; color: #EAECEF;">${userName}</div>
+                        <div style="color: #FCD535; font-size: 10px;">ID: ${uniqueId} | 🛡️ Verified</div>
+                    </div>
+                </div>
+                <div style="font-size: 18px; cursor: pointer;" onclick="switchTab('social')">💬</div>
+            </div>
+
+            <div class="global-bar">
+                <select class="global-select" onchange="selectedLanguage=this.value; showToast('Language Updated');">
+                    <option>🌐 English (200+ Lang)</option>
+                    <option>🇧🇩 বাংলা (Bangla)</option>
+                    <option>🇮🇳 हिन्दी (Hindi)</option>
+                </select>
+                <select class="global-select" onchange="selectedCurrencyKey=this.value; switchTab('home');">
+                    <option ${selectedCurrencyKey==="USD ($)"?"selected":""}>💵 USD ($)</option>
+                    <option ${selectedCurrencyKey==="BDT (৳)"?"selected":""}>🇧🇩 BDT (৳)</option>
+                    <option ${selectedCurrencyKey==="INR (₹)"?"selected":""}>🇮🇳 INR (₹)</option>
+                    <option ${selectedCurrencyKey==="EUR (€)"?"selected":""}>🇪🇺 EUR (€)</option>
+                    <option ${selectedCurrencyKey==="GBP (£)"?"selected":""}>🇬🇧 GBP (£)</option>
+                </select>
+            </div>
+
+            <div class="balance-card">
+                <div class="balance-title">BX Estimated Balance <span onclick="toggleBalanceVisibility()" style="cursor:pointer;">${isBalanceHidden ? '🔒' : '👁️'}</span></div>
+                <div class="balance-amount">${isBalanceHidden ? '********' : formatCurrency(userWalletBalance)}</div>
+                <div class="balance-sub">
+                    <span>Currency: ${selectedCurrencyKey}</span>
+                    <span style="color: #0ECB81;">+4.25% Today</span>
+                </div>
+            </div>
+
+            <div class="section-title"><span>⚡ BX Quick Navigation</span></div>
+            <div class="features-grid">
+                <div class="feature-box" onclick="handleFeatureClick('deposit')"><div class="feature-icon">📥</div><div class="feature-name">Deposit</div></div>
+                <div class="feature-box" onclick="handleFeatureClick('withdraw')"><div class="feature-icon">📤</div><div class="feature-name">Withdraw</div></div>
+                <div class="feature-box" onclick="handleFeatureClick('p2p')"><div class="feature-icon">🤝</div><div class="feature-name">P2P</div></div>
+                <div class="feature-box" onclick="handleFeatureClick('robots')"><div class="feature-icon">🤖</div><div class="feature-name">AI Bots</div></div>
+                <div class="feature-box" onclick="handleFeatureClick('vault')"><div class="feature-icon">🏢</div><div class="feature-name">Vault</div></div>
+                <div class="feature-box" onclick="handleFeatureClick('play')"><div class="feature-icon">🎮</div><div class="feature-name">Games</div></div>
+                <div class="feature-box" onclick="switchTab('trade')"><div class="feature-icon">📈</div><div class="feature-name">Spot Trade</div></div>
+                <div class="feature-box" onclick="switchTab('futures')"><div class="feature-icon">⚡</div><div class="feature-name">Futures</div></div>
+            </div>
+
+            <div class="section-title"><span>🧩 Underground Master Vault & Feature Rooms</span></div>
+            ${dynamicPluginRegistry.map(plugin => `
+                <div class="detail-card" onclick="handleFeatureClick('${plugin.id}')">
+                    <div class="detail-header">
+                        <div class="detail-title"><span>${plugin.icon}</span>${plugin.name}</div>
+                        <span style="color:#FCD535; font-size:11px;">Active &rarr;</span>
+                    </div>
+                    <div class="detail-desc">${plugin.desc}</div>
+                </div>
+            `).join('')}
+
+            <div class="section-title"><span>🔥 Hot Cryptocurrencies</span></div>
+            <div class="market-list">
+                ${cryptoList.slice(0, 3).map(c => `
+                    <div class="market-row" onclick="switchTab('trade')">
+                        <div>
+                            <div style="font-weight: bold; font-size: 13px; color: #fff;">${c.name}</div>
+                            <div style="font-size: 10px; color: #848E9C; margin-top: 2px;">${c.symbol}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: bold; font-size: 13px; color: #fff;">${c.price}</div>
+                            <div style="font-size: 11px; color: #0ECB81; font-weight: 600; margin-top: 2px;">${c.change}</div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    function renderMarkets() {
+        return `
+            <div class="section-title"><span>📊 BX Global Markets</span></div>
+            <div class="market-list">
+                ${cryptoList.map(c => `
+                    <div class="detail-card" onclick="switchTab('trade')">
+                        <div class="detail-header">
+                            <div class="detail-title">🪙 ${c.name}</div>
+                            <div style="font-weight:bold; color:#0ECB81;">${c.price}</div>
+                        </div>
+                        <div style="font-size:11px; color:#FCD535; margin-bottom:4px;">Symbol: ${c.symbol} | Change: ${c.change}</div>
+                        <div class="detail-desc">${c.desc}</div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    function renderTrade() {
+        return `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 style="color: #FCD535; font-size: 15px;">📈 BX Spot Trading</h3>
+                <span style="font-size: 11px; color: #0ECB81; font-weight: bold;">● Fee: 0.1%</span>
+            </div>
+            <div class="chart-box"><div id="chartContainer"></div></div>
+            <div class="trade-grid">
+                <div class="trade-box">
+                    <div class="tab-selector">
+                        <button class="tab-btn buy-active">Buy</button>
+                        <button class="tab-btn">Sell</button>
+                    </div>
+                    <div class="input-group"><label>Order Price</label><input type="text" value="67,420.00"></div>
+                    <div class="input-group"><label>Amount</label><input type="number" id="spotAmt" placeholder="0.00"></div>
+                    <button class="action-btn btn-green" onclick="let a=parseFloat(document.getElementById('spotAmt').value); if(a>0){ userWalletBalance-=a*0.001; localStorage.setItem('bx_bal', userWalletBalance); showToast('✅ Order Executed Successfully!'); } else { showToast('Enter amount'); }">Execute Order</button>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderFutures() {
+        return `
+            <h3 style="color: #FCD535; margin-bottom: 12px; font-size: 15px;">⚡ BX USDT-M Futures Trading</h3>
+            <div class="chart-box">
+                <div style="font-size: 12px; color: #848E9C; margin-bottom: 6px;">BTC/USDT Perpetual Contract</div>
+                <div style="font-size: 24px; font-weight: bold; color: #0ECB81; margin-bottom: 10px;">$67,420.00</div>
+            </div>
+            <div class="trade-box" style="margin-bottom: 16px;">
+                <div class="input-group"><label>Leverage</label><select><option>20x Leverage</option><option>50x Leverage</option></select></div>
+                <div class="input-group"><label>Margin</label><input type="number" placeholder="Enter amount"></div>
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <button class="action-btn btn-green" style="flex:1;" onclick="showToast('✅ Long Position Opened!')">Open Long</button>
+                    <button class="action-btn btn-red" style="flex:1;" onclick="showToast('✅ Short Position Opened!')">Open Short</button>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderWallet() {
+        return `
+            <h3 style="color: #FCD535; margin-bottom: 14px; font-size: 16px;">💼 Web3 & Banking Portfolio</h3>
+            <div class="balance-card" style="margin-bottom: 14px;">
+                <div class="balance-title">Unique Account ID</div>
+                <div style="font-size: 13px; color: #fff; margin: 4px 0; font-weight:bold;">${uniqueId} 
+                    <button onclick="navigator.clipboard.writeText('${uniqueId}'); showToast('ID Copied!');" style="background:#FCD535; border:none; padding:2px 6px; border-radius:4px; font-weight:bold; cursor:pointer; float:right;">Copy ID</button>
+                </div>
+                <div class="balance-sub">Balance: ${formatCurrency(userWalletBalance)}</div>
+            </div>
+            <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+                <button class="action-btn btn-green" style="flex:1;" onclick="switchTab('deposit')">Deposit</button>
+                <button class="action-btn" style="flex:1; background:#2B313A; color:#fff;" onclick="switchTab('withdraw')">Withdraw</button>
+            </div>
+        `;
+    }
+
+    function renderDeposit() {
+        return `
+            <div>
+                <h3 style="color: #FCD535; margin-bottom: 10px;">📥 Deposit Funds</h3>
+                <div class="input-group"><label>Gateway</label><select><option>bKash / Nagad</option><option>PayPal</option><option>Bank Transfer</option></select></div>
+                <div class="input-group"><label>Amount</label><input type="number" id="depAmount" placeholder="0.00"></div>
+                <button class="action-btn btn-green" onclick="let amt=parseFloat(document.getElementById('depAmount').value); if(amt>0){ userWalletBalance+=amt; localStorage.setItem('bx_bal', userWalletBalance); showToast('✅ Deposit Successful!'); switchTab('home'); }">Confirm Deposit</button>
+            </div>
+        `;
+    }
+
+    function renderWithdraw() {
+        return `
+            <div>
+                <h3 style="color: #FCD535; margin-bottom: 10px;">📤 Withdraw Funds</h3>
+                <div class="input-group"><label>Gateway</label><select><option>bKash / Nagad</option><option>PayPal</option></select></div>
+                <div class="input-group"><label>Account Number</label><input type="text" placeholder="Enter account"></div>
+                <div class="input-group"><label>Amount</label><input type="number" id="witAmount" placeholder="0.00"></div>
+                <button class="action-btn btn-green" onclick="let amt=parseFloat(document.getElementById('witAmount').value); if(amt>0 && amt<=userWalletBalance){ userWalletBalance-=amt; localStorage.setItem('bx_bal', userWalletBalance); showToast('✅ Withdrawal Successful!'); switchTab('home'); } else { showToast('Insufficient balance'); }">Confirm Payout</button>
+            </div>
+        `;
+    }
+
+    function renderP2P() { return `<h3 style="color: #FCD535; margin-bottom: 10px;">🤝 P2P Escrow</h3><div class="detail-card"><b>Merchant: Global_VIP</b><br><button class="action-btn btn-green" onclick="showToast('Escrow started')">Buy Crypto</button></div>`; }
+    function renderRobots() { return `<h3 style="color: #FCD535; margin-bottom: 10px;">🤖 AI Bots</h3><div class="detail-card">Robot Shield: <span style="color:#0ECB81">Active</span></div>`; }
+    function renderVault() { return `<h3 style="color: #FCD535; margin-bottom: 10px;">🏢 Master Vault</h3><div class="detail-card">Reserves: $5,400,000</div>`; }
+    function renderPlay() { return `<h3 style="color: #FCD535; margin-bottom: 10px;">🎮 Game Arena</h3><button class="action-btn btn-green" onclick="showToast('🎉 Won 500 BULLET!')">Play Aviator</button>`; }
+    function renderChat() { return `<h3 style="color: #FCD535; margin-bottom: 10px;">💬 Support AI</h3><input type="text" placeholder="Type message..." style="width:100%; padding:10px; background:#121212; color:#fff; border-radius:8px;"><button class="action-btn btn-green" onclick="showToast('Sent')">Send</button>`; }
+    function renderSocial() { return `<h3 style="color: #FCD535; margin-bottom: 10px;">🌐 Social Feed</h3>${socialPosts.map(p=>`<div class="detail-card"><b>${p.avatar} ${p.name}</b><br>${p.text}</div>`).join('')}`; }
+    
+    function renderProfile() {
+        return `
+            <h3 style="color: #FCD535; margin-bottom: 10px;">👤 Choose Avatar</h3>
+            <div style="display:grid; grid-template-columns: repeat(5, 1fr); gap:8px; margin-bottom:14px;">
+                <div onclick="selectedAvatar='🐱'; localStorage.setItem('bx_avatar','🐱'); showToast('Avatar Updated'); switchTab('home');" class="feature-box" style="font-size:24px;">🐱</div>
+                <div onclick="selectedAvatar='🐼'; localStorage.setItem('bx_avatar','🐼'); showToast('Avatar Updated'); switchTab('home');" class="feature-box" style="font-size:24px;">🐼</div>
+                <div onclick="selectedAvatar='🦊'; localStorage.setItem('bx_avatar','🦊'); showToast('Avatar Updated'); switchTab('home');" class="feature-box" style="font-size:24px;">🦊</div>
+                <div onclick="selectedAvatar='🦁'; localStorage.setItem('bx_avatar','🦁'); showToast('Avatar Updated'); switchTab('home');" class="feature-box" style="font-size:24px;">🦁</div>
+                <div onclick="selectedAvatar='🤖'; localStorage.setItem('bx_avatar','🤖'); showToast('Avatar Updated'); switchTab('home');" class="feature-box" style="font-size:24px;">🤖</div>
+            </div>
+            <div class="detail-card"><b>Your ID:</b> ${uniqueId}</div>
+        `;
+    }
+
+    function switchTab(tabName) {
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        const content = document.getElementById('pageContent');
+        const map = { 'home': 0, 'markets': 1, 'trade': 2, 'futures': 3, 'wallet': 4 };
+        if(map[tabName] !== undefined) document.querySelectorAll('.nav-btn')[map[tabName]].classList.add('active');
+
+        if (tabName === 'home') content.innerHTML = renderHome();
+        else if (tabName === 'markets') content.innerHTML = renderMarkets();
+        else if (tabName === 'trade') {
+            content.innerHTML = renderTrade();
+            setTimeout(() => {
+                const container = document.getElementById('chartContainer');
+                if (container) {
+                    container.innerHTML = "";
+                    chart = LightweightCharts.createChart(container, { width: container.clientWidth, height: 240, layout: { background: { type: 'solid', color: 'transparent' }, textColor: '#848E9C' } });
+                    candleSeries = chart.addCandlestickSeries({ upColor: '#0ECB81', downColor: '#F6465D' });
+                    candleSeries.setData([
+                        { time: '2026-08-01', open: 62000, high: 65400, low: 61500, close: 64200 },
+                        { time: '2026-08-05', open: 64200, high: 66800, low: 63800, close: 65900 },
+                        { time: '2026-08-10', open: 65900, high: 67500, low: 65000, close: 67100 }
+                    ]);
+                }
+            }, 100);
+        }
+        else if (tabName === 'futures') content.innerHTML = renderFutures();
+        else if (tabName === 'wallet') content.innerHTML = renderWallet();
+        else if (tabName === 'deposit') content.innerHTML = renderDeposit();
+        else if (tabName === 'withdraw') content.innerHTML = renderWithdraw();
+        else if (tabName === 'p2p') content.innerHTML = renderP2P();
+        else if (tabName === 'robots') content.innerHTML = renderRobots();
+        else if (tabName === 'vault') content.innerHTML = renderVault();
+        else if (tabName === 'play') content.innerHTML = renderPlay();
+        else if (tabName === 'chat') content.innerHTML = renderChat();
+        else if (tabName === 'social') content.innerHTML = renderSocial();
+        else if (tabName === 'profile') content.innerHTML = renderProfile();
+    }
 </script>
+
 </body>
 </html>
