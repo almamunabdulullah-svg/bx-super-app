@@ -91,10 +91,12 @@
     }
 
     function loginApp() {
-        let name = document.getElementById('userNameInput'].value.trim();
-        if(name) userName = name;
+        let nameInput = document.getElementById('userNameInput');
+        if (nameInput && nameInput.value.trim() !== "") {
+            userName = nameInput.value.trim();
+        }
         document.getElementById('authScreen').style.display = 'none';
-        showToast(`✅ Welcome Master, ${userName}! All 25+ Features Activated.`);
+        showToast(`✅ Welcome Master, ${userName}! All Features Activated.`);
         switchTab('home');
     }
 
@@ -303,8 +305,6 @@
         else if (tabName === 'futures') content.innerHTML = renderFutures();
         else if (tabName === 'wallet') content.innerHTML = renderWallet();
     }
-
-    switchTab('home');
 </script>
 
 </body>
