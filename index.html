@@ -1,311 +1,72 @@
-import React, { useState } from 'react';
-import { Wallet, TrendingUp, Gamepad2, Home, ShieldCheck, Lock, ArrowUpRight, ArrowDownLeft, Video, PlaySquare, PlusCircle } from 'lucide-react';
-
-export default function App() {
-  const [activeTab, setActiveTab] = useState('home');
-  const [balance, setBalance] = useState(0.00);
-  const [currency, setCurrency] = useState('BDT');
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [isAdminUnlocked, setIsAdminUnlocked] = useState(false);
-  const [adminCode, setAdminCode] = useState('');
-
-  // ---------------------------------------------------------
-  // [VISIBLE USER-FACING FEATURES] (সাধারণ মানুষ যা দেখতে ও ব্যবহার করতে পারবে)
-  // ---------------------------------------------------------
-  const [shortVideos, setShortVideos] = useState([
-    { id: 1, title: 'Crypto Trading Tips in 60s', creator: 'CryptoKing', views: '45K', earnings: '$12.50' },
-    { id: 2, title: 'How to Win Crash Game Strategy', creator: 'ProPlayer', views: '82K', earnings: '$28.40' },
-  ]);
-
-  const [marketsList, setMarketsList] = useState([
-    { name: 'Bitcoin', symbol: 'BTC', price: '$67,450.00', change: '+3.4%' },
-    { name: 'Ethereum', symbol: 'ETH', price: '$3,520.00', change: '+1.8%' },
-    { name: 'Meme Token X', symbol: 'MEME', price: '$0.0045', change: '+15.2%' },
-    { name: 'Tether USD', symbol: 'USDT', price: '$1.00', change: '0.0%' },
-  ]);
-
-  const [customGames, setCustomGames] = useState([
-    { id: 1, name: 'Aviator Crash', type: 'Instant Win' },
-    { id: 2, name: 'Teen Patti Pro', type: '3D Casino' }
-  ]);
-  const [newGameInput, setNewGameInput] = useState('');
-
-  // ---------------------------------------------------------
-  // [INVISIBLE BACKEND & STRICT CORE SECURITY] (অদৃশ্য ব্যাকএন্ড ও কঠোর সিকিউরিটি লজিক)
-  // ---------------------------------------------------------
-  // 1. Secret Admin Vault (##*##) & Police Robot AI Engine Logic
-  const handleAdminAccess = (e) => {
-    e.preventDefault();
-    if (adminCode === '##*##') {
-      setIsAdminUnlocked(true);
-      alert('🔒 [Backend Active] Master Admin Vault, Police Robot & 80/20 AI Engine Unlocked.');
-    } else {
-      alert('Access Denied: Invalid Security Passcode.');
-    }
-  };
-
-  // 2. Admin Deployment & Modular Content Scraper with Malware Check
-  const handleAddGame = (e) => {
-    e.preventDefault();
-    if (newGameInput.trim()) {
-      // Background AI Police Robot Scan simulation before deployment
-      setCustomGames([...customGames, { id: Date.now(), name: newGameInput, type: 'Admin Deployed' }]);
-      setNewGameInput('');
-      alert('🛡️ [Police Robot Verified] New game/software securely deployed to live app.');
-    }
-  };
-
-  // 3. Web3 & Trust Wallet Multi-Chain Binding with 0.1% Master Tax Hook
-  const connectTrustWallet = () => {
-    setWalletConnected(true);
-    alert('🔗 [Smart Contract Bound] Trust Wallet & Global 240+ Country QR Gateway Connected (0.1% Master Tax Active).');
-  };
-
-  return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col max-w-md mx-auto relative pb-20 shadow-2xl border-x border-slate-800 font-sans">
-      
-      {/* Top Header (Visible) */}
-      <header className="flex justify-between items-center p-4 bg-slate-900/90 backdrop-blur border-b border-slate-800 sticky top-0 z-20">
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center font-extrabold text-slate-950 shadow-md">BX</div>
-          <div>
-            <span className="font-bold text-base tracking-wide block leading-tight">BX SuperApp</span>
-            <span className="text-[10px] text-emerald-400 font-medium">Smart Contract Active</span>
-          </div>
-        </div>
-        <button 
-          onClick={connectTrustWallet}
-          className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center space-x-1 transition ${
-            walletConnected ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-emerald-600 hover:bg-emerald-500 text-white'
-          }`}
-        >
-          <ShieldCheck className="w-3.5 h-3.5" />
-          <span>{walletConnected ? 'Linked' : 'Connect'}</span>
-        </button>
-      </header>
-
-      {/* Main Container */}
-      <main className="flex-1 p-4 overflow-y-auto space-y-4">
-        
-        {/* HOME TAB */}
-        {activeTab === 'home' && (
-          <div className="space-y-4">
-            
-            {/* Google AdSense High-CPC Box (Visible) */}
-            <div className="bg-gradient-to-r from-blue-900/40 to-indigo-950/40 p-3.5 rounded-2xl border border-blue-500/20 flex justify-between items-center shadow-md cursor-pointer hover:border-blue-500/40 transition" onClick={() => alert('Viewing Google AdSense High-CPC Sponsored Content & Earning Rewards...')}>
-              <div className="space-y-0.5">
-                <span className="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full font-semibold">Google AdSense Reward</span>
-                <p className="text-xs text-slate-300 font-medium">Watch Ads & Earn Daily Crypto/Cash</p>
-              </div>
-              <span className="text-xs font-bold text-blue-400 bg-slate-900/80 px-2.5 py-1 rounded-xl border border-blue-500/30">High CPC</span>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BX Super App - Real-World Edition</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Live Status Header -->
+        <header class="app-header">
+            <div class="user-info">
+                <i class="fa-solid fa-circle-check glowing-green"></i>
+                <span>BX Secure Node Active</span>
             </div>
+            <div class="wallet-id">ID: 889921</div>
+        </header>
 
-            {/* Central Vault Balance & Global Banking Gateway (Visible) */}
-            <div className="bg-gradient-to-br from-emerald-950/60 via-slate-900 to-slate-900 p-5 rounded-2xl border border-emerald-500/30 shadow-xl">
-              <div className="flex justify-between items-center text-slate-400 text-xs mb-2">
-                <span>Central Vault & Earnings Balance</span>
-                <select 
-                  value={currency} 
-                  onChange={(e) => setCurrency(e.target.value)}
-                  className="bg-slate-800 text-slate-200 text-xs px-2 py-1 rounded-lg border border-slate-700 outline-none"
-                >
-                  <option value="BDT">BDT (৳)</option>
-                  <option value="USD">USD ($)</option>
-                  <option value="USDT">USDT</option>
-                  <option value="BTC">BTC</option>
+        <!-- Real-Time Balance Card with Live Currency Switch -->
+        <section class="balance-card">
+            <div class="card-top">
+                <p>Live Portfolio Value</p>
+                <select id="currencySelector" onchange="switchCurrency()">
+                    <option value="USD">USD ($)</option>
+                    <option value="BDT">BDT (৳)</option>
                 </select>
-              </div>
-              <div className="text-3xl font-black text-white mb-4 tracking-tight">
-                {currency === 'BDT' ? `৳ ${balance.toFixed(2)}` : currency === 'USD' ? `$ ${balance.toFixed(2)}` : `${balance.toFixed(2)} ${currency}`}
-              </div>
-              
-              <div className="grid grid-cols-2 gap-3">
-                <button onClick={() => alert('Opening Trust Wallet & 240+ Country QR Deposit Gateway...')} className="bg-emerald-600 hover:bg-emerald-500 py-2.5 rounded-xl font-semibold text-xs flex items-center justify-center space-x-1.5 transition shadow-lg shadow-emerald-900/30">
-                  <ArrowDownLeft className="w-4 h-4" />
-                  <span>Deposit</span>
-                </button>
-                <button onClick={() => alert('Opening Secure Withdrawal Gateway (0.1% Tax Applied)...')} className="bg-slate-800 hover:bg-slate-700 py-2.5 rounded-xl font-semibold text-xs flex items-center justify-center space-x-1.5 border border-slate-700 transition">
-                  <ArrowUpRight className="w-4 h-4" />
-                  <span>Withdraw</span>
-                </button>
-              </div>
             </div>
-
-            {/* Quick Navigation Features (Visible) */}
-            <div className="grid grid-cols-2 gap-3">
-              <div onClick={() => setActiveTab('shorts')} className="bg-slate-900 p-4 rounded-2xl border border-slate-800 cursor-pointer hover:border-pink-500/50 transition shadow">
-                <Video className="w-6 h-6 text-pink-400 mb-2" />
-                <h4 className="font-bold text-sm">Short Videos</h4>
-                <p className="text-xs text-slate-400">Watch & Earn Money</p>
-              </div>
-              <div onClick={() => setActiveTab('markets')} className="bg-slate-900 p-4 rounded-2xl border border-slate-800 cursor-pointer hover:border-emerald-500/50 transition shadow">
-                <TrendingUp className="w-6 h-6 text-emerald-400 mb-2" />
-                <h4 className="font-bold text-sm">Live Markets</h4>
-                <p className="text-xs text-slate-400">Auto-Listed Assets</p>
-              </div>
+            <h1 id="balanceDisplay">$1,250.45</h1>
+            <div class="tax-status">
+                <i class="fa-solid fa-shield-halved"></i> 0.1% Master Vault Auto-Tax Routing Active
             </div>
-
-            {/* Secret Admin Vault & Invisible Core Shield Trigger (Visible UI, Hidden Backend) */}
-            <div className="bg-slate-900 p-4 rounded-2xl border border-slate-800 shadow">
-              <div className="flex items-center space-x-2 mb-2">
-                <Lock className="w-4 h-4 text-amber-400" />
-                <h4 className="font-bold text-xs uppercase tracking-wider text-slate-300">Secret Admin Vault</h4>
-              </div>
-              <form onSubmit={handleAdminAccess} className="flex space-x-2">
-                <input 
-                  type="password" 
-                  placeholder="Passcode (##*##)" 
-                  value={adminCode}
-                  onChange={(e) => setAdminCode(e.target.value)}
-                  className="flex-1 bg-slate-950 text-xs px-3 py-2 rounded-xl border border-slate-700 outline-none focus:border-amber-500 text-slate-200"
-                />
-                <button type="submit" className="bg-amber-600 hover:bg-amber-500 px-4 py-2 rounded-xl text-xs font-bold transition text-white">
-                  Unlock
-                </button>
-              </form>
-
-              {isAdminUnlocked && (
-                <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl space-y-3 text-xs">
-                  <div className="text-amber-300 font-bold">⚡ Police Robot & House Edge (80/20) Active</div>
-                  <form onSubmit={handleAddGame} className="flex space-x-2 pt-1">
-                    <input 
-                      type="text" 
-                      placeholder="Deploy Game Link / Feature..." 
-                      value={newGameInput}
-                      onChange={(e) => setNewGameInput(e.target.value)}
-                      className="flex-1 bg-slate-950 px-2.5 py-1.5 rounded-lg border border-slate-700 outline-none text-slate-200"
-                    />
-                    <button type="submit" className="bg-purple-600 hover:bg-purple-500 px-3 py-1.5 rounded-lg font-bold flex items-center space-x-1 text-white">
-                      <PlusCircle className="w-3.5 h-3.5" />
-                      <span>Add</span>
-                    </button>
-                  </form>
-                </div>
-              )}
+            <div class="action-buttons">
+                <button class="btn-action" onclick="executeRealTransaction('Deposit')"><i class="fa-solid fa-arrow-down"></i> Deposit</button>
+                <button class="btn-action" onclick="executeRealTransaction('Withdraw')"><i class="fa-solid fa-arrow-up"></i> Withdraw</button>
+                <button class="btn-action" onclick="openP2P()"><i class="fa-solid fa-arrows-rotate"></i> P2P / Swap</button>
             </div>
+        </section>
 
-          </div>
-        )}
-
-        {/* SHORT VIDEOS TAB (Visible) */}
-        {activeTab === 'shorts' && (
-          <div className="space-y-3">
-            <div className="flex justify-between items-center">
-              <h3 className="text-sm font-bold tracking-wide uppercase text-slate-400">Short Videos & Reels Earning Hub</h3>
-              <button onClick={() => alert('Opening Video Upload Studio for Ad Revenue!')} className="bg-pink-600 hover:bg-pink-500 text-white px-2.5 py-1 rounded-xl text-[11px] font-bold flex items-center space-x-1">
-                <PlusCircle className="w-3.5 h-3.5" />
-                <span>Upload</span>
-              </button>
+        <!-- Real-World Feature Grid -->
+        <section class="features-grid">
+            <div class="feature-tile" onclick="openTrading()">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Spot/Futures</span>
             </div>
-            <div className="space-y-2.5">
-              {shortVideos.map((video) => (
-                <div key={video.id} onClick={() => alert(`Playing "${video.title}" - Ad Revenue added!`)} className="bg-slate-900 p-3.5 rounded-xl border border-slate-800 flex justify-between items-center cursor-pointer hover:border-pink-500/40 transition shadow-sm">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-xl bg-pink-500/20 flex items-center justify-center text-pink-400 font-bold">
-                      <PlaySquare className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-xs text-slate-200">{video.title}</h4>
-                      <span className="text-[10px] text-slate-400">By {video.creator} • {video.views} views</span>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-lg border border-emerald-500/20">{video.earnings}</span>
-                  </div>
-                </div>
-              ))}
+            <div class="feature-tile" onclick="openGames()">
+                <i class="fa-solid fa-gamepad"></i>
+                <span>Casino Arena</span>
             </div>
-          </div>
-        )}
-
-        {/* MARKETS TAB (Visible) */}
-        {activeTab === 'markets' && (
-          <div className="space-y-3">
-            <h3 className="text-sm font-bold tracking-wide uppercase text-slate-400">Live Crypto & Auto-Listed Assets</h3>
-            <div className="space-y-2">
-              {marketsList.map((coin, idx) => (
-                <div key={idx} className="bg-slate-900 p-3.5 rounded-xl border border-slate-800 flex justify-between items-center shadow-sm">
-                  <div>
-                    <h4 className="font-bold text-sm">{coin.name}</h4>
-                    <span className="text-xs text-slate-400">{coin.symbol}</span>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-bold text-sm">{coin.price}</div>
-                    <span className="text-xs text-emerald-400 font-semibold">{coin.change}</span>
-                  </div>
-                </div>
-              ))}
+            <div class="feature-tile" onclick="openMemeLaunch()">
+                <i class="fa-solid fa-rocket"></i>
+                <span>Meme Launch</span>
             </div>
-          </div>
-        )}
-
-        {/* GAMES TAB (Visible) */}
-        {activeTab === 'games' && (
-          <div className="space-y-3">
-            <h3 className="text-sm font-bold tracking-wide uppercase text-slate-400">Interactive Game Arena</h3>
-            <div className="grid grid-cols-2 gap-3">
-              {customGames.map((game) => (
-                <div key={game.id} onClick={() => alert(`Launching ${game.name} under Police Robot AI & 80/20 House Edge monitoring...`)} className="bg-gradient-to-br from-slate-900 to-purple-950/40 p-4 rounded-xl border border-purple-500/20 text-center flex flex-col items-center justify-center h-28 cursor-pointer hover:border-purple-500/50 transition shadow-md">
-                  <Gamepad2 className="w-8 h-8 text-purple-400 mb-2" />
-                  <span className="font-bold text-xs">{game.name}</span>
-                  <span className="text-[10px] text-purple-300 mt-1">{game.type}</span>
-                </div>
-              ))}
+            <div class="feature-tile" onclick="openAdHub()">
+                <i class="fa-solid fa-rectangle-ad"></i>
+                <span>Google Ads</span>
             </div>
-          </div>
-        )}
-
-        {/* WALLET TAB (Visible) */}
-        {activeTab === 'wallet' && (
-          <div className="space-y-3">
-            <h3 className="text-sm font-bold tracking-wide uppercase text-slate-400">Global Banking & Web3 Gateway</h3>
-            <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-3 text-xs shadow">
-              <div className="flex justify-between items-center">
-                <span className="text-slate-400">Trust Wallet Status</span>
-                <span className={walletConnected ? 'text-emerald-400 font-bold' : 'text-amber-400'}>
-                  {walletConnected ? 'Connected (Web3)' : 'Disconnected'}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-slate-400">Smart Contract Address</span>
-                <span className="font-mono text-[10px] text-slate-300">0x30Ad271CcBA208215E80b607eFBd389486c9CF6A</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-slate-400">Master Tax Engine (0.1%)</span>
-                <span className="text-emerald-400 font-bold">Active</span>
-              </div>
+            <div class="feature-tile" onclick="openSocialFi()">
+                <i class="fa-solid fa-users-viewfinder"></i>
+                <span>Social-Fi</span>
             </div>
-          </div>
-        )}
-
-      </main>
-
-      {/* Bottom Navigation Bar */}
-      <nav className="absolute bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur border-t border-slate-800 flex justify-around p-2.5 z-25">
-        {[
-          { id: 'home', label: 'Home', icon: Home },
-          { id: 'shorts', label: 'Shorts', icon: Video },
-          { id: 'markets', label: 'Markets', icon: TrendingUp },
-          { id: 'games', label: 'Games', icon: Gamepad2 },
-          { id: 'wallet', label: 'Wallet', icon: Wallet },
-        ].map((tab) => {
-          const Icon = tab.icon;
-          const isActive = activeTab === tab.id;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex flex-col items-center space-y-0.5 transition ${
-                isActive ? 'text-emerald-400 scale-105' : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <Icon className="w-5 h-5" />
-              <span className="text-[9px] font-semibold">{tab.label}</span>
-            </button>
-          );
-        })}
-      </nav>
-
+            <div class="feature-tile" onclick="triggerSecretVault()">
+                <i class="fa-solid fa-fingerprint"></i>
+                <span>Master Vault</span>
+            </div>
+        </section>
     </div>
-  );
-}
+
+    <script src="script.js"></script>
+</body>
+</html>
