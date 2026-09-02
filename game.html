@@ -3,22 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BX Game & Casino Zone</title>
+    <title>BX Live Casino & Aviator Arena</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="app-container 8d-depth">
-        <header class="app-header">
-            <button onclick="location.href='index.html'" class="back-btn">⬅ Back</button>
-            <h2>BX Casino & Win Zone</h2>
+<body class="game-body">
+    <div class="game-container">
+        <header class="game-header">
+            <button onclick="history.back()" class="back-btn">&larr; Back</button>
+            <h2>Live Game Arena (Real API Connected)</h2>
         </header>
-        <main class="game-main">
-            <div class="game-board">
-                <h3>Strategic AI Gaming Arena</h3>
-                <p style="color: #848e9c; font-size: 13px; margin: 10px 0;">Company Profit Protection & Winning Probability Active.</p>
-                <button class="play-btn" onclick="triggerGamePlay()">Play & Win</button>
+        
+        <div class="game-lobby">
+            <!-- Aviator Crash Game Component -->
+            <div class="game-card">
+                <h3>Aviator Crash (Live Multiplier)</h3>
+                <div class="multiplier-box">
+                    <span id="multiplier">1.00x</span>
+                </div>
+                <div class="bet-controls">
+                    <input type="number" id="betAmount" placeholder="Enter Bet (e.g. $10 / ৳1200)" value="10">
+                    <button class="play-btn" id="betBtn" onclick="placeRealBet()">Place Real Bet</button>
+                </div>
             </div>
-        </main>
+            
+            <div class="game-card">
+                <h3>Teen Patti Pro & Dragon vs Tiger</h3>
+                <p>Live Dealers & Instant Settlement Active</p>
+                <button class="play-btn" onclick="alert('Connecting to Live Casino Server API...')">Join Live Table</button>
+            </div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
