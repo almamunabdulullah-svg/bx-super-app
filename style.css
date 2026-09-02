@@ -1,9 +1,8 @@
 * {
-   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', system-ui, sans-serif;
 }
 
 body {
@@ -97,7 +96,7 @@ body {
     padding: 10px;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     transition: 0.2s;
 }
@@ -139,7 +138,60 @@ body {
     color: #e2e8f0;
 }
 
-/* Real Game Styling */
+/* Modal styling */
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.modal-content {
+    background: #1f2937;
+    padding: 25px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border: 1px solid #374151;
+}
+.modal-content select, .modal-content input {
+    background: #111827;
+    border: 1px solid #4b5563;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+}
+.gateway-box {
+    background: #111827;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    border-left: 4px solid #3b82f6;
+}
+.play-btn {
+    background: #059669;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.close-btn {
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Game styling */
 .game-body { background-color: #0b0f19; color: #f8fafc; }
 .game-container { padding: 20px; width: 100%; max-width: 480px; }
 .game-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
@@ -149,4 +201,3 @@ body {
 .multiplier-box { background: #111827; padding: 15px; text-align: center; border-radius: 10px; margin: 10px 0; font-size: 28px; font-weight: bold; color: #10b981; }
 .bet-controls { display: flex; gap: 10px; margin-top: 10px; }
 .bet-controls input { flex: 1; background: #111827; border: 1px solid #4b5563; color: white; padding: 10px; border-radius: 8px; }
-.play-btn { background: #059669; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
