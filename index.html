@@ -3,50 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BX Super App - Real-World Edition</title>
+    <title>BX Super App - Global Decentralized Hub</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="app-container">
-        <!-- Top Live Status Header -->
+        <!-- Top Security & Node Status -->
         <header class="app-header">
             <div class="user-info">
-                <i class="fa-solid fa-circle-check glowing-green"></i>
-                <span>BX Secure Node Active</span>
+                <i class="fa-solid fa-shield-halved glowing-green"></i>
+                <span>BX Chain Node: Connected</span>
             </div>
-            <div class="wallet-id">ID: 889921</div>
+            <div class="wallet-id">Vault ID: 889921</div>
         </header>
 
-        <!-- Real-Time Balance Card with Live Currency Switch -->
+        <!-- Balance Card & Currency Switcher -->
         <section class="balance-card">
             <div class="card-top">
-                <p>Live Portfolio Value</p>
+                <p>Master Portfolio Value</p>
                 <select id="currencySelector" onchange="switchCurrency()">
                     <option value="USD">USD ($)</option>
                     <option value="BDT">BDT (৳)</option>
+                    <option value="USDT">USDT</option>
                 </select>
             </div>
-            <h1 id="balanceDisplay">$1,250.45</h1>
+            <h1 id="balanceDisplay">$2,450.00</h1>
             <div class="tax-status">
-                <i class="fa-solid fa-shield-halved"></i> 0.1% Master Vault Auto-Tax Routing Active
+                <i class="fa-solid fa-lock"></i> 0.1% Master Vault Auto-Tax Routing Active
             </div>
             <div class="action-buttons">
-                <button class="btn-action" onclick="executeRealTransaction('Deposit')"><i class="fa-solid fa-arrow-down"></i> Deposit</button>
-                <button class="btn-action" onclick="executeRealTransaction('Withdraw')"><i class="fa-solid fa-arrow-up"></i> Withdraw</button>
-                <button class="btn-action" onclick="openP2P()"><i class="fa-solid fa-arrows-rotate"></i> P2P / Swap</button>
+                <button class="btn-action" onclick="openDepositModal()"><i class="fa-solid fa-arrow-down"></i> Local/Global Deposit</button>
+                <button class="btn-action" onclick="openWithdrawModal()"><i class="fa-solid fa-arrow-up"></i> Withdraw</button>
+                <button class="btn-action" onclick="openScanner()"><i class="fa-solid fa-qrcode"></i> QR Scan</button>
             </div>
         </section>
 
-        <!-- Real-World Feature Grid -->
+        <!-- Super App Core Features Grid -->
         <section class="features-grid">
             <div class="feature-tile" onclick="openTrading()">
-                <i class="fa-solid fa-chart-line"></i>
-                <span>Spot/Futures</span>
+                <i class="fa-solid fa-chart-candlestick"></i>
+                <span>Spot / Futures</span>
             </div>
             <div class="feature-tile" onclick="openGames()">
-                <i class="fa-solid fa-gamepad"></i>
-                <span>Casino Arena</span>
+                <i class="fa-solid fa-dice"></i>
+                <span>Casino & Aviator</span>
             </div>
             <div class="feature-tile" onclick="openMemeLaunch()">
                 <i class="fa-solid fa-rocket"></i>
@@ -54,17 +55,38 @@
             </div>
             <div class="feature-tile" onclick="openAdHub()">
                 <i class="fa-solid fa-rectangle-ad"></i>
-                <span>Google Ads</span>
+                <span>Google Ads Hub</span>
             </div>
             <div class="feature-tile" onclick="openSocialFi()">
-                <i class="fa-solid fa-users-viewfinder"></i>
+                <i class="fa-solid fa-comments"></i>
                 <span>Social-Fi</span>
             </div>
             <div class="feature-tile" onclick="triggerSecretVault()">
-                <i class="fa-solid fa-fingerprint"></i>
+                <i class="fa-solid fa-user-secret"></i>
                 <span>Master Vault</span>
             </div>
         </section>
+
+        <!-- Deposit & Verification Modal (Hidden by default) -->
+        <div id="depositModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <h3>Global & Local Deposit Gateway</h3>
+                <p>Select Country / Local Channel (200+ Supported):</p>
+                <select id="countrySelect" onchange="updateDepositDetails()">
+                    <option value="BD">Bangladesh (Bkash / Nagad / Local Bank)</option>
+                    <option value="US">United States (US Wire / Zelle)</option>
+                    <option value="EU">Europe (SEPA / Crypto Node)</option>
+                    <option value="GLOBAL">Global Crypto QR (USDT / BNB / BTC)</option>
+                </select>
+                <div class="gateway-box" id="gatewayInfo">
+                    <p><b>Target Number / Address:</b> <span id="targetAccount">+8801700000000 (Bkash Merchant)</span></p>
+                    <p style="font-size: 11px; color: #94a3b8;">Send funds to this exact number, then paste your Transaction ID (TrxID) below for AI Robot Chain Verification.</p>
+                </div>
+                <input type="text" id="trxInput" placeholder="Enter Transaction ID (TrxID) / Hash">
+                <button class="play-btn" onclick="verifyAndPushTransaction()">Verify & Claim USD</button>
+                <button class="close-btn" onclick="closeDepositModal()">Cancel</button>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
