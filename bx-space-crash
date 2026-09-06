@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BX Space Crash - 3D Gaming Platform</title>
+    <style>
+        body {
+            margin: 0;
+            background: #0b0f19;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .game-container {
+            width: 90%;
+            max-width: 600px;
+            background: #131b2e;
+            border: 2px solid #00ffcc;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+            text-align: center;
+        }
+        h1 {
+            color: #00ffcc;
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+        }
+        #multiplier {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ff007f;
+            margin: 20px 0;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        input, button {
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+        }
+        input {
+            background: #1c2640;
+            color: #fff;
+            border: 1px solid #2a3b60;
+            width: 120px;
+            text-align: center;
+        }
+        button {
+            background: #00ffcc;
+            color: #0b0f19;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #00b388;
+        }
+        #cashout-btn {
+            background: #ff007f;
+            color: #fff;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <h1>BX SPACE CRASH</h1>
+        <p>Master Aggregated Casino Engine</p>
+        <div id="multiplier">1.00x</div>
+        
+        <div class="controls">
+            <input type="number" id="bet-amount" value="10" min="1">
+            <button id="bet-btn" onclick="placeBet()">PLACE BET</button>
+            <button id="cashout-btn" onclick="cashOut()">CASH OUT</button>
+        </div>
+    </div>
+
+    <script>
+        let gameInterval;
+        let currentMultiplier = 1.00;
+        let isPlaying = false;
+        let crashed = false;
+
+        function placeBet() {
+            let bet = document.getElementById('bet-amount').value;
+            if(bet <= 0) return alert("Enter valid bet amount!");
+
+            document.getElementById('bet-btn').style.display = 'none';
+            document.getElementById('cashout-btn').style.display = 'inline-block';
+            
+            currentMultiplier = 1.00;
+            isPlaying = true;
+            crashed = false;
+
+            let crashPoint = (Math.random() * 3 + 1.1).toFixed(2); // Simulated crash
+
+            gameInterval = setInterval(() => {
+                if(currentMultiplier >= crashPoint) {
+                    clearInterval(gameInterval);
+                    crashed = true;
+                    isPlaying = false;
+                    document.getElementById('multiplier').innerText = "CRASHED (" + crashPoint + "x)";
+                    document.getElementById('bet-btn').style.display = 'inline-block';
+                    document.getElementById('cashout-btn').style.display = 'none';
+                } else {
+                    currentMultiplier += 0.01;
+                    document.getElementById('multiplier').innerText = currentMultiplier.toFixed(2) + "x";
+                }
+            }, 50);
+        }
+
+        function cashOut() {
+            if(!isPlaying || crashed) return;
+            clearInterval(gameInterval);
+            isPlaying = false;
+            let winAmount = (document.getElementById('bet-amount').value * currentMultiplier).toFixed(2);
+            alert("Successfully Cashed Out! Won: " + winAmount);
+            document.getElementById('bet-btn').style.display = 'inline-block';
+            document.getElementById('cashout-btn').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
