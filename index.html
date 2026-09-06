@@ -3,92 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BX Super App - Global Decentralized Hub</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>BX Gaming Platform - Multi-Game Casino Hub</title>
+    <style>
+        body {
+            margin: 0;
+            background: #080c14;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #00ffcc;
+            font-size: 32px;
+            margin-bottom: 5px;
+            text-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+        }
+        p {
+            color: #8899ac;
+            font-size: 14px;
+        }
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+        }
+        .game-card {
+            background: #111a2e;
+            border: 2px solid #1e2942;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .game-card:hover {
+            border-color: #00ffcc;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 255, 204, 0.2);
+        }
+        .game-card h3 {
+            color: #ff007f;
+            margin-bottom: 10px;
+        }
+        .game-card a {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #00ffcc;
+            color: #080c14;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+        .game-card a:hover {
+            background: #00b388;
+        }
+    </style>
 </head>
 <body>
-    <div class="app-container">
-        <!-- Top Security & Node Status -->
-        <header class="app-header">
-            <div class="user-info">
-                <i class="fa-solid fa-shield-halved glowing-green"></i>
-                <span>BX Chain Node: Connected</span>
-            </div>
-            <div class="wallet-id">Vault ID: 889921</div>
-        </header>
 
-        <!-- Balance Card & Currency Switcher -->
-        <section class="balance-card">
-            <div class="card-top">
-                <p>Master Portfolio Value</p>
-                <select id="currencySelector" onchange="switchCurrency()">
-                    <option value="USD">USD ($)</option>
-                    <option value="BDT">BDT (৳)</option>
-                    <option value="USDT">USDT</option>
-                </select>
-            </div>
-            <h1 id="balanceDisplay">$2,450.00</h1>
-            <div class="tax-status">
-                <i class="fa-solid fa-lock"></i> 0.1% Master Vault Auto-Tax Routing Active
-            </div>
-            <div class="action-buttons">
-                <button class="btn-action" onclick="openDepositModal()"><i class="fa-solid fa-arrow-down"></i> Local/Global Deposit</button>
-                <button class="btn-action" onclick="openWithdrawModal()"><i class="fa-solid fa-arrow-up"></i> Withdraw</button>
-                <button class="btn-action" onclick="openScanner()"><i class="fa-solid fa-qrcode"></i> QR Scan</button>
-            </div>
-        </section>
+    <header>
+        <h1>BX CASINO PLATFORM</h1>
+        <p>Unified Master Engine // Provably Fair & Automated Tax Architecture</p>
+    </header>
 
-        <!-- Super App Core Features Grid -->
-        <section class="features-grid">
-            <div class="feature-tile" onclick="openTrading()">
-                <i class="fa-solid fa-chart-candlestick"></i>
-                <span>Spot / Futures</span>
-            </div>
-            <div class="feature-tile" onclick="openGames()">
-                <i class="fa-solid fa-dice"></i>
-                <span>Casino & Aviator</span>
-            </div>
-            <div class="feature-tile" onclick="openMemeLaunch()">
-                <i class="fa-solid fa-rocket"></i>
-                <span>Meme Launch</span>
-            </div>
-            <div class="feature-tile" onclick="openAdHub()">
-                <i class="fa-solid fa-rectangle-ad"></i>
-                <span>Google Ads Hub</span>
-            </div>
-            <div class="feature-tile" onclick="openSocialFi()">
-                <i class="fa-solid fa-comments"></i>
-                <span>Social-Fi</span>
-            </div>
-            <div class="feature-tile" onclick="triggerSecretVault()">
-                <i class="fa-solid fa-user-secret"></i>
-                <span>Master Vault</span>
-            </div>
-        </section>
-
-        <!-- Deposit & Verification Modal (Hidden by default) -->
-        <div id="depositModal" class="modal" style="display:none;">
-            <div class="modal-content">
-                <h3>Global & Local Deposit Gateway</h3>
-                <p>Select Country / Local Channel (200+ Supported):</p>
-                <select id="countrySelect" onchange="updateDepositDetails()">
-                    <option value="BD">Bangladesh (Bkash / Nagad / Local Bank)</option>
-                    <option value="US">United States (US Wire / Zelle)</option>
-                    <option value="EU">Europe (SEPA / Crypto Node)</option>
-                    <option value="GLOBAL">Global Crypto QR (USDT / BNB / BTC)</option>
-                </select>
-                <div class="gateway-box" id="gatewayInfo">
-                    <p><b>Target Number / Address:</b> <span id="targetAccount">+8801700000000 (Bkash Merchant)</span></p>
-                    <p style="font-size: 11px; color: #94a3b8;">Send funds to this exact number, then paste your Transaction ID (TrxID) below for AI Robot Chain Verification.</p>
-                </div>
-                <input type="text" id="trxInput" placeholder="Enter Transaction ID (TrxID) / Hash">
-                <button class="play-btn" onclick="verifyAndPushTransaction()">Verify & Claim USD</button>
-                <button class="close-btn" onclick="closeDepositModal()">Cancel</button>
-            </div>
+    <div class="games-grid">
+        <div class="game-card">
+            <h3>BX Space Crash</h3>
+            <p>Outer space rocket trajectory with real-time multiplier mechanics.</p>
+            <a href="games/bx-space-crash/index.html">PLAY NOW</a>
+        </div>
+        <div class="game-card">
+            <h3>BX Cyberpunk Crash</h3>
+            <p>Neon grid protocol featuring high-speed hover-bike action.</p>
+            <a href="games/bx-cyber-crash/index.html">PLAY NOW</a>
+        </div>
+        <div class="game-card">
+            <h3>BX Deep Sea Crash</h3>
+            <p>Abyssal trench submarine descent with high-pressure multipliers.</p>
+            <a href="games/bx-ocean-crash/index.html">PLAY NOW</a>
+        </div>
+        <div class="game-card">
+            <h3>BX Turbo Crash</h3>
+            <p>High-altitude military jet afterburner flight simulation.</p>
+            <a href="games/bx-turbo-crash/index.html">PLAY NOW</a>
         </div>
     </div>
 
-    <script src="script.js"></script>
 </body>
 </html>
