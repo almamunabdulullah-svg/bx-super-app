@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crash X - Pro Cloud Edition</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: #060913;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 10px;
+        }
+        .crash-app {
+            width: 100%;
+            max-width: 450px;
+            background: #090e1a;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #1a2338;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+            display: flex;
+            flex-direction: column;
+        }
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #101726;
+            padding: 10px 15px;
+            border-bottom: 1px solid #1a2338;
+        }
+        .history-pills {
+            display: flex;
+            gap: 5px;
+            overflow-x: auto;
+            flex: 1;
+            margin-right: 10px;
+        }
+        .pill {
+            background: #1a253f;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            color: #00ffcc;
+            white-space: nowrap;
+        }
+        .menu-btn {
+            background: #1a253f;
+            border: none;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .game-viewport {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(180deg, #0b132b 0%, #1c2541 100%);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 2px solid #1a2338;
+        }
+        canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+        }
+        .center-screen-info {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .multiplier-val {
+            font-size: 46px;
+            font-weight: 900;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(0, 255, 204, 0.6);
+        }
+        .status-msg {
+            font-size: 14px;
+            font-weight: bold;
+            color: #00ffcc;
+            margin-top: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .control-panel {
+            background: #0f172a;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .bet-box-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #162035;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #233252;
+        }
+        .bet-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .bet-input-wrapper span { font-weight: bold; font-size: 16px; }
+        .bet-input-wrapper input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            width: 80px;
+            outline: none;
+        }
+        .quick-multiplier-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .btn-main-action {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 900;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            background: #00c853;
+            color: #060913;
+            box-shadow: 0 4px 20px rgba(0, 200, 83, 0.4);
+            transition: 0.2s;
+        }
+        .btn-main-action.cashout {
+            background: #ffab00;
+            box-shadow: 0 4px 20px rgba(255, 171, 0, 0.4);
+        }
+        .footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 14px;
+            background: #070b14;
+            font-size: 11px;
+            color: #64748b;
+            border-top: 1px solid #162035;
+        }
+        .wallet-txt { color: #00ffcc; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="crash-app">
+        <div class="top-nav">
+            <div class="history-pills" id="history-box">
+                <span class="pill">2.15x</span>
+                <span class="pill">1.49x</span>
+                <span class="pill">1.83x</span>
+            </div>
+            <button class="menu-btn" onclick="alert('Menu: Chat, History, Settings')">☰</button>
+        </div>
+
+        <div class="game-viewport">
+            <canvas id="cloudCanvas"></canvas>
+            <div class="center-screen-info">
+                <div class="multiplier-val" id="mult-display">0.00x</div>
+                <div class="status-msg" id="status-display">Next Round in 5.0s</div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <div class="bet-box-row">
+                <div class="bet-input-wrapper">
+                    <span>🪙</span>
+                    <input type="number" id="bet-amount" value="1" min="1">
+                </div>
+                <div style="font-size: 12px; color: #94a3b8;">Stake: $1 - $1000</div>
+            </div>
+
+            <div class="quick-multiplier-bar">
+                <span>Auto CashOut: 3.00x</span>
+                <span>🟢 Active</span>
+            </div>
+
+            <button class="btn-main-action" id="action-btn" onclick="handleUserBet()">Bet</button>
+        </div>
+
+        <div class="footer-bar">
+            <span>Round ID: 1002101021426511</span>
+            <span>Balance: <span class="wallet-txt" id="user-bal">$1,000</span></span>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cloudCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let balance = 1000.00;
+        let gameState = 'COUNTDOWN';
+        let multiplier = 0.00;
+        let crashTarget = 1.00;
+        let flightProgress = 0;
+        let countdownTime = 5.0;
+
+        let isBetPlaced = false;
+        let isCashedOut = false;
+        let currentStake = 1;
+        let gameInterval = null;
+
+        let stars = [];
+        for(let i=0; i<40; i++) {
+            stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2 });
+        }
+
+        function drawScene(mult, state) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#ffffff';
+            stars.forEach(s => {
+                ctx.globalAlpha = Math.random() * 0.8 + 0.2;
+                ctx.fillRect(s.x, s.y, s.size, s.size);
+            });
+            ctx.globalAlpha = 1.0;
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+            let cloudOffset = (flightProgress * 0.5) % canvas.width;
+            ctx.beginPath();
+            ctx.arc(100 - cloudOffset, 200, 40, 0, Math.PI * 2);
+            ctx.arc(140 - cloudOffset, 190, 50, 0, Math.PI * 2);
+            ctx.arc(300 - cloudOffset, 100, 60, 0, Math.PI * 2);
+            ctx.fill();
+
+            if (state === 'FLYING' || state === 'CRASHED') {
+                ctx.save();
+                let planeX = Math.min(120 + flightProgress * 0.8, canvas.width / 2 - 30);
+                let planeY = Math.max(canvas.height - 80 - flightProgress * 0.6, 70);
+                
+                ctx.translate(planeX, planeY);
+                
+                if (state === 'CRASHED') {
+                    ctx.fillStyle = '#ff3300';
+                    ctx.beginPath(); ctx.arc(0, 0, 35, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#ffcc00';
+                    ctx.beginPath(); ctx.arc(0, 0, 20, 0, Math.PI*2); ctx.fill();
+                } else {
+                    ctx.fillStyle = '#d4af37';
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, 24, 10, -0.2, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(-5, -12, 10, 24);
+                }
+                ctx.restore();
+            }
+        }
+
+        function startCrashXEngine() {
+            gameState = 'COUNTDOWN';
+            countdownTime = 5.0;
+            multiplier = 0.00;
+            flightProgress = 0;
+            isCashedOut = false;
+
+            document.getElementById('mult-display').innerText = "0.00x";
+            document.getElementById('status-display').innerText = `Next Round in ${countdownTime.toFixed(1)}s`;
+            drawScene(0.00, 'COUNTDOWN');
+
+            let cdTimer = setInterval(() => {
+                countdownTime -= 0.1;
+                if (countdownTime > 0) {
+                    document.getElementById('status-display').innerText = `Next Round in ${countdownTime.toFixed(1)}s`;
+                } else {
+                    clearInterval(cdTimer);
+                    if (isBetPlaced) {
+                        document.getElementById('action-btn').innerText = "Cash Out";
+                        document.getElementById('action-btn').className = "btn-main-action cashout";
+                    }
+                    launchFlightRound();
+                }
+            }, 100);
+        }
+
+        function launchFlightRound() {
+            gameState = 'FLYING';
+            multiplier = 1.00;
+            crashTarget = (Math.random() * 4.5 + 1.10).toFixed(2);
+
+            gameInterval = setInterval(() => {
+                if (multiplier >= crashTarget) {
+                    clearInterval(gameInterval);
+                    gameState = 'CRASHED';
+                    document.getElementById('mult-display').innerText = crashTarget + "x";
+                    document.getElementById('status-display').innerText = "Crashed";
+                    document.getElementById('status-display').style.color = "#ff3300";
+                    drawScene(multiplier, 'CRASHED');
+
+                    if (isBetPlaced && !isCashedOut) {
+                        isBetPlaced = false;
+                        resetBetButton();
+                    }
+
+                    setTimeout(startCrashXEngine, 3500);
+                } else {
+                    multiplier += 0.015;
+                    flightProgress += 1.8;
+                    document.getElementById('mult-display').innerText = multiplier.toFixed(2) + "x";
+                    document.getElementById('status-display').innerText = "Flying...";
+                    document.getElementById('status-display').style.color = "#00ffcc";
+                    drawScene(multiplier, 'FLYING');
+                }
+            }, 40);
+        }
+
+        function handleUserBet() {
+            let btn = document.getElementById('action-btn');
+            currentStake = parseFloat(document.getElementById('bet-amount').value) || 1;
+
+            if (gameState === 'COUNTDOWN' && !isBetPlaced) {
+                if (currentStake > balance) return alert("Insufficient balance!");
+                balance -= currentStake;
+                document.getElementById('user-bal').innerText = "$" + balance.toFixed(0);
+                isBetPlaced = true;
+                isCashedOut = false;
+
+                btn.innerText = "Cancel Bet";
+                btn.style.background = "#e53935";
+
+            } else if (gameState === 'FLYING' && isBetPlaced && !isCashedOut) {
+                isCashedOut = true;
+                let winnings = (currentStake * multiplier) * 0.98;
+                balance += winnings;
+                document.getElementById('user-bal').innerText = "$" + balance.toFixed(0);
+
+                btn.innerText = `Won $${winnings.toFixed(2)}`;
+                btn.style.background = "#00c853";
+                isBetPlaced = false;
+            }
+        }
+
+        function resetBetButton() {
+            let btn = document.getElementById('action-btn');
+            btn.innerText = "Bet";
+            btn.className = "btn-main-action";
+            btn.style.background = "#00c853";
+        }
+
+        startCrashXEngine();
+    </script>
+</body>
+</html>
