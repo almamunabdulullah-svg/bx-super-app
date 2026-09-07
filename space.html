@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BX Aviator Pro - Space Crash</title>
+    <title>BX Aviator Ultra - Full Screen VFX Edition</title>
     <style>
         * { box-sizing: border-box; }
         body {
             margin: 0;
-            background: #0b0e14;
+            background: #05070c;
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
@@ -18,88 +18,98 @@
             min-height: 100vh;
             overflow: hidden;
         }
-        .aviator-container {
+        .app-wrapper {
             width: 100%;
-            max-width: 750px;
-            background: #121824;
-            border: 2px solid #1f293d;
+            max-width: 950px;
+            background: #0d121f;
+            border: 2px solid #1a2338;
             border-radius: 14px;
             padding: 15px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
         }
-        .top-bar {
+        .top-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #1a2233;
-            padding: 8px 15px;
+            background: #131b2e;
+            padding: 10px 18px;
             border-radius: 8px;
             margin-bottom: 12px;
-            font-size: 14px;
         }
-        .history-multipliers {
+        .history-box {
             display: flex;
             gap: 6px;
         }
-        .hist-badge {
-            background: #25324a;
-            padding: 2px 8px;
+        .history-pill {
+            background: #1a2640;
+            padding: 3px 10px;
             border-radius: 4px;
             font-size: 12px;
             font-weight: bold;
             color: #00ffcc;
         }
-        .game-viewport {
+        .main-game-area {
+            display: flex;
+            gap: 15px;
+        }
+        @media(max-width: 768px) {
+            .main-game-area { flex-direction: column; }
+        }
+        .screen-container {
+            flex: 2.5;
             position: relative;
             width: 100%;
-            height: 300px;
-            background: radial-gradient(circle at center, #1b0a2a 0%, #080b12 100%);
+            height: 340px;
+            background: linear-gradient(135deg, #120424 0%, #060913 100%);
             border-radius: 10px;
             overflow: hidden;
-            border: 1px solid #2a3b58;
+            border: 1px solid #22304f;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         canvas {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
         }
-        .multiplier-box {
+        .multiplier-overlay {
             position: absolute;
-            font-size: 52px;
+            font-size: 56px;
             font-weight: 900;
             color: #ffffff;
-            text-shadow: 0 0 25px rgba(255, 0, 127, 0.8);
+            text-shadow: 0 0 25px rgba(255, 0, 127, 0.9);
             z-index: 10;
-            letter-spacing: 1px;
+            text-align: center;
         }
-        .betting-panel {
+        .side-bets-panel {
+            flex: 1;
+            background: #111827;
+            border-radius: 10px;
+            padding: 12px;
+            max-height: 340px;
+            overflow-y: auto;
+            border: 1px solid #1a2338;
+        }
+        .controls-row {
             display: flex;
             gap: 12px;
             margin-top: 15px;
-            background: #182030;
-            padding: 15px;
+            background: #111827;
+            padding: 14px;
             border-radius: 10px;
             align-items: center;
         }
-        .bet-controls {
+        .input-box {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 4px;
             flex: 1;
         }
-        label {
-            font-size: 11px;
-            color: #8b9bb4;
-            font-weight: bold;
-        }
+        label { font-size: 10px; color: #8a9bb8; font-weight: bold; }
         input {
-            background: #0f1522;
-            border: 1px solid #28354f;
+            background: #080c14;
+            border: 1px solid #22304f;
             color: #fff;
             padding: 10px;
             border-radius: 6px;
@@ -108,188 +118,226 @@
             text-align: center;
             outline: none;
         }
-        .btn-action {
+        .action-btn {
             flex: 1.5;
-            padding: 16px;
-            font-size: 18px;
+            padding: 14px;
+            font-size: 16px;
             font-weight: 900;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             text-transform: uppercase;
             transition: 0.2s;
         }
-        #btn-bet {
-            background: #00c853;
-            color: #0b0e14;
-            box-shadow: 0 4px 15px rgba(0, 200, 83, 0.4);
-        }
-        #btn-bet:hover { background: #00b048; }
-        #btn-cashout {
-            background: #ffab00;
-            color: #0b0e14;
-            display: none;
-            box-shadow: 0 4px 15px rgba(255, 171, 0, 0.4);
-        }
-        #btn-cashout:hover { background: #ff9100; }
-        .user-bal {
-            color: #00ffcc;
-            font-weight: bold;
+        #main-btn { background: #00c853; color: #080c14; }
+        #main-btn.cashout { background: #ffab00; color: #080c14; }
+        .player-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            padding: 6px 0;
+            border-bottom: 1px solid #1a2338;
+            color: #a0b2d0;
         }
     </style>
 </head>
 <body>
 
-    <div class="aviator-container">
-        <div class="top-bar">
-            <div>Bal: <span id="balance" class="user-bal">1000.00</span> BDT</div>
-            <div class="history-multipliers" id="history-bar">
-                <span class="hist-badge">1.42x</span>
-                <span class="hist-badge">2.15x</span>
-                <span class="hist-badge">1.10x</span>
+    <div class="app-wrapper">
+        <!-- Top Status & Multiplier History -->
+        <div class="top-header">
+            <div>Balance: <span id="user-bal" style="color:#00ffcc; font-weight:bold;">1000.00</span> BDT</div>
+            <div class="history-box" id="history-container">
+                <span class="history-pill">1.52x</span>
+                <span class="history-pill">3.10x</span>
+                <span class="history-pill">1.05x</span>
             </div>
         </div>
 
-        <div class="game-viewport">
-            <canvas id="aviatorCanvas"></canvas>
-            <div class="multiplier-box" id="multiplier-text">1.00x</div>
+        <div class="main-game-area">
+            <!-- Full Canvas Flight Screen -->
+            <div class="screen-container">
+                <canvas id="vfxCanvas"></canvas>
+                <div class="multiplier-overlay" id="mult-view">PREPARING...</div>
+            </div>
+
+            <!-- Live Betting History Sidebar -->
+            <div class="side-bets-panel" id="side-panel">
+                <div style="font-size:11px; font-weight:bold; color:#8a9bb8; margin-bottom:8px; border-bottom:1px solid #1a2338; padding-bottom:4px;">LIVE ROUND BETS</div>
+            </div>
         </div>
 
-        <div class="betting-panel">
-            <div class="bet-controls">
-                <label>BET AMOUNT (BDT)</label>
-                <input type="number" id="bet-input" value="50" min="1">
+        <!-- Controls -->
+        <div class="controls-row">
+            <div class="input-box">
+                <label>AMOUNT (BDT)</label>
+                <input type="number" id="bet-field" value="50" min="1">
             </div>
-            <button id="btn-bet" class="btn-action" onclick="placeBet()">BET</button>
-            <button id="btn-cashout" class="btn-action" onclick="cashOut()">CASH OUT</button>
+            <button id="main-btn" class="action-btn" onclick="onUserClick()">PLACE BET</button>
         </div>
     </div>
 
     <script>
-        const canvas = document.getElementById('aviatorCanvas');
+        const canvas = document.getElementById('vfxCanvas');
         const ctx = canvas.getContext('2d');
 
-        function resizeCanvas() {
+        function initCanvas() {
             canvas.width = canvas.parentElement.clientWidth;
             canvas.height = canvas.parentElement.clientHeight;
         }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
 
         let balance = 1000.00;
-        let currentBet = 0;
+        let gameState = 'IDLE'; // IDLE, FLYING, CRASHED
         let multiplier = 1.00;
-        let gameInterval = null;
-        let isPlaying = false;
-        let isCrashed = false;
-        let crashPoint = 1.00;
-        let flightProgress = 0;
+        let targetCrash = 1.00;
+        let animProgress = 0;
+        let hasActiveBet = false;
+        let hasCrashedOut = false;
+        let userBetValue = 0;
+        let roundTimer = null;
 
-        function renderCanvas(mult, state) {
+        const mockUsers = ["Alpha_7", "CyberBet", "MoonBoy", "King11", "SpeedX", "Vortex", "LuckyStar", "Turbo99"];
+
+        function drawVFXScene(mult, status) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Draw Aviator Grid Background
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
-            ctx.lineWidth = 1;
-            for(let x = 0; x < canvas.width; x += 30) {
-                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
-            }
-            for(let y = 0; y < canvas.height; y += 30) {
-                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+            // Dynamic moving background stars/grid particles
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+            for(let i = 0; i < 25; i++) {
+                let px = (i * 45 + animProgress * 2) % canvas.width;
+                let py = (i * 30) % canvas.height;
+                ctx.fillRect(px, py, 2, 2);
             }
 
-            if(state === 'flying' || state === 'crashed') {
-                // Red diagonal gradient streak line (Aviator Style)
+            if(status === 'FLYING' || status === 'CRASHED') {
+                // Vibrant Red/Pink glowing trajectory gradient area under the curve
                 let grad = ctx.createLinearGradient(0, canvas.height, canvas.width, 0);
                 grad.addColorStop(0, 'rgba(255, 0, 85, 0.0)');
-                grad.addColorStop(1, 'rgba(255, 0, 85, 0.25)');
+                grad.addColorStop(1, 'rgba(255, 0, 85, 0.35)');
                 ctx.fillStyle = grad;
+                
                 ctx.beginPath();
                 ctx.moveTo(0, canvas.height);
-                ctx.lineTo(flightProgress * 2.5, canvas.height - (flightProgress * 1.2));
-                ctx.lineTo(flightProgress * 2.5, canvas.height);
+                let curX = animProgress * 2.5;
+                let curY = canvas.height - (animProgress * 1.3);
+                ctx.quadraticCurveTo(curX / 2, canvas.height, curX, Math.max(40, curY));
+                ctx.lineTo(curX, canvas.height);
                 ctx.closePath();
                 ctx.fill();
 
-                // Flight Path Curve
+                // Glowing flight curve line
                 ctx.beginPath();
                 ctx.moveTo(0, canvas.height);
-                let currentX = flightProgress * 2.5;
-                let currentY = canvas.height - (flightProgress * 1.2);
-                ctx.quadraticCurveTo(currentX / 2, canvas.height, currentX, Math.max(40, currentY));
-                ctx.strokeStyle = state === 'crashed' ? '#ff1744' : '#ff0055';
-                ctx.lineWidth = 3;
+                ctx.quadraticCurveTo(curX / 2, canvas.height, curX, Math.max(40, curY));
+                ctx.strokeStyle = status === 'CRASHED' ? '#ff1744' : '#ff0055';
+                ctx.lineWidth = 4;
                 ctx.stroke();
 
-                // Red Plane Icon simulation at the tip of the curve
-                ctx.fillStyle = state === 'crashed' ? '#ff1744' : '#ffffff';
+                // Glowing Jet/Plane Head VFX
+                ctx.fillStyle = status === 'CRASHED' ? '#ff1744' : '#00ffcc';
                 ctx.beginPath();
-                ctx.arc(currentX, Math.max(40, currentY), 6, 0, Math.PI * 2);
+                ctx.arc(curX, Math.max(40, curY), 7, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
 
-        function placeBet() {
-            let amount = parseFloat(document.getElementById('bet-input').value);
-            if(amount <= 0 || amount > balance) {
-                alert("Insufficient balance or invalid bet!");
-                return;
-            }
-
-            currentBet = amount;
-            balance -= currentBet;
-            document.getElementById('balance').innerText = balance.toFixed(2);
-
-            document.getElementById('btn-bet').style.display = 'none';
-            document.getElementById('btn-cashout').style.display = 'block';
-
+        function startGlobalLoop() {
+            gameState = 'IDLE';
             multiplier = 1.00;
-            flightProgress = 0;
-            isPlaying = true;
-            isCrashed = false;
+            animProgress = 0;
+            hasCrashedOut = false;
+            document.getElementById('mult-view').innerText = "NEXT IN 3s";
+            document.getElementById('mult-view').style.color = "#00ffcc";
+            drawVFXScene(1.00, 'IDLE');
 
-            // Generate random crash point (between 1.15x and 6.00x)
-            crashPoint = (Math.random() * 4.85 + 1.15).toFixed(2);
+            setTimeout(() => {
+                gameState = 'FLYING';
+                targetCrash = (Math.random() * 5.0 + 1.15).toFixed(2);
+                populateLiveSidePanel();
 
-            gameInterval = setInterval(() => {
-                if(multiplier >= crashPoint) {
-                    clearInterval(gameInterval);
-                    isPlaying = false;
-                    isCrashed = true;
-                    document.getElementById('multiplier-text').innerText = "FLEW AWAY!\n" + crashPoint + "x";
-                    document.getElementById('multiplier-text').style.color = "#ff1744";
-                    document.getElementById('btn-cashout').style.display = 'none';
-                    document.getElementById('btn-bet').style.display = 'block';
-                    renderCanvas(multiplier, 'crashed');
-                } else {
-                    multiplier += 0.014;
-                    flightProgress += 2.2;
-                    document.getElementById('multiplier-text').innerText = multiplier.toFixed(2) + "x";
-                    document.getElementById('multiplier-text').style.color = "#ffffff";
-                    renderCanvas(multiplier, 'flying');
-                }
-            }, 45);
+                roundTimer = setInterval(() => {
+                    if(multiplier >= targetCrash) {
+                        clearInterval(roundTimer);
+                        gameState = 'CRASHED';
+                        document.getElementById('mult-view').innerText = "FLEW AWAY!\n" + targetCrash + "x";
+                        document.getElementById('mult-view').style.color = "#ff1744";
+
+                        if(hasActiveBet && !hasCrashedOut) {
+                            hasActiveBet = false;
+                            resetButtonUI();
+                        }
+
+                        setTimeout(startGlobalLoop, 3500);
+                    } else {
+                        multiplier += 0.015;
+                        animProgress += 2.2;
+                        document.getElementById('mult-view').innerText = multiplier.toFixed(2) + "x";
+                        document.getElementById('mult-view').style.color = "#ffffff";
+                        drawVFXScene(multiplier, 'FLYING');
+                    }
+                }, 40);
+            }, 3000);
         }
 
-        function cashOut() {
-            if(!isPlaying || isCrashed) return;
-            clearInterval(gameInterval);
-            isPlaying = false;
-
-            let winnings = currentBet * multiplier;
-            // Master API automated profit/tax deduction (e.g. 2%)
-            let finalPayout = winnings * 0.98;
-            balance += finalPayout;
-
-            document.getElementById('balance').innerText = balance.toFixed(2);
-            document.getElementById('multiplier-text').innerText = "WON: " + finalPayout.toFixed(2) + " BDT";
-            document.getElementById('multiplier-text').style.color = "#00c853";
-
-            document.getElementById('btn-cashout').style.display = 'none';
-            document.getElementById('btn-bet').style.display = 'block';
+        function populateLiveSidePanel() {
+            const panel = document.getElementById('side-panel');
+            panel.innerHTML = '<div style="font-size:11px; font-weight:bold; color:#8a9bb8; margin-bottom:8px; border-bottom:1px solid #1a2338; padding-bottom:4px;">LIVE ROUND BETS</div>';
+            for(let i=0; i<6; i++) {
+                let name = mockUsers[Math.floor(Math.random() * mockUsers.length)];
+                let amt = Math.floor(Math.random() * 500 + 50);
+                panel.innerHTML += `<div class="player-row"><span>${name}</span><span>${amt} BDT</span></div>`;
+            }
         }
 
-        renderCanvas(1.00, 'idle');
+        function onUserClick() {
+            let btn = document.getElementById('main-btn');
+
+            if(gameState === 'IDLE' || gameState === 'CRASHED') {
+                let val = parseFloat(document.getElementById('bet-field').value);
+                if(val <= 0 || val > balance) return alert("Invalid amount or low balance!");
+
+                userBetValue = val;
+                balance -= userBetValue;
+                document.getElementById('user-bal').innerText = balance.toFixed(2);
+                hasActiveBet = true;
+                hasCrashedOut = false;
+
+                btn.innerText = "WAITING...";
+                btn.disabled = true;
+
+                setTimeout(() => {
+                    if(gameState === 'FLYING' && hasActiveBet) {
+                        btn.innerText = "CASH OUT";
+                        btn.className = "action-btn cashout";
+                        btn.disabled = false;
+                    }
+                }, 3000);
+
+            } else if(gameState === 'FLYING' && hasActiveBet && !hasCrashedOut) {
+                hasCrashedOut = true;
+                let payout = (userBetValue * multiplier) * 0.98; // Master API company profit cut
+                balance += payout;
+                document.getElementById('user-bal').innerText = balance.toFixed(2);
+
+                btn.innerText = "WON " + payout.toFixed(0) + " BDT";
+                btn.className = "action-btn";
+                btn.disabled = true;
+                hasActiveBet = false;
+            }
+        }
+
+        function resetButtonUI() {
+            let btn = document.getElementById('main-btn');
+            if(!hasActiveBet) {
+                btn.innerText = "PLACE BET";
+                btn.className = "action-btn";
+                btn.disabled = false;
+            }
+        }
+
+        startGlobalLoop();
     </script>
 </body>
 </html>
