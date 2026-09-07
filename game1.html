@@ -32,7 +32,6 @@
             position: relative;
             box-shadow: 0 0 25px rgba(0,0,0,0.9);
         }
-        /* Top Bar */
         .top-bar {
             background: #060a17;
             padding: 10px 15px;
@@ -65,8 +64,6 @@
             font-size: 20px;
             cursor: pointer;
         }
-
-        /* Canvas Stage Area */
         .stage-area {
             flex: 1;
             position: relative;
@@ -85,7 +82,6 @@
             height: 100%;
             z-index: 2;
         }
-
         .multiplier-display {
             font-size: 56px;
             font-weight: 900;
@@ -111,8 +107,6 @@
             color: #94a3b8;
             z-index: 10;
         }
-
-        /* Bottom Control Panel */
         .control-panel {
             background: #0b132b;
             padding: 15px;
@@ -152,7 +146,6 @@
             padding: 6px 12px; border-radius: 6px; font-weight: bold; font-size: 13px; cursor: pointer;
         }
         .mod-btn:active { background: #273b75; }
-
         .auto-row {
             display: flex; justify-content: space-between; align-items: center;
             font-size: 13px; color: #94a3b8; padding: 0 4px;
@@ -169,7 +162,6 @@
         }
         input:checked + .slider { background-color: #22c55e; }
         input:checked + .slider:before { transform: translateX(20px); }
-
         .action-btn {
             width: 100%; padding: 14px; border-radius: 10px; border: none;
             font-size: 16px; font-weight: bold; color: #fff; cursor: pointer;
@@ -180,14 +172,11 @@
         .btn-bet { background-color: #22c55e; }
         .btn-cancel { background-color: #ef4444; }
         .btn-cashout { background-color: #22c55e; }
-
         .wallet-display {
             display: flex; justify-content: space-between; align-items: center;
             font-size: 13px; color: #94a3b8; padding: 0 4px;
         }
         .wallet-amount { color: #4ade80; font-weight: bold; }
-
-        /* Menu Modal */
         .menu-modal {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(7, 13, 27, 0.95); z-index: 100; display: none; flex-direction: column; padding: 20px;
@@ -201,8 +190,6 @@
             background: #111b36; border: 1px solid #1e2d57; padding: 20px;
             border-radius: 12px; text-align: center; cursor: pointer; color: #fff; font-weight: 600;
         }
-
-        /* Numpad Modal */
         .numpad-modal {
             position: absolute; bottom: 0; left: 0; width: 100%; background: #0f1c3f;
             border-radius: 20px 20px 0 0; padding: 20px; display: none; z-index: 100;
@@ -218,7 +205,6 @@
 <body>
 
 <div class="game-container">
-    <!-- Top Bar -->
     <div class="top-bar">
         <div class="history-list" id="historyList">
             <div class="history-pill">2.15x</div>
@@ -228,7 +214,6 @@
         <button class="menu-btn" onclick="toggleMenu(true)">☰</button>
     </div>
 
-    <!-- Main Stage Canvas -->
     <div class="stage-area" id="stageArea">
         <div class="user-tag">Mamun</div>
         <canvas id="gameCanvas"></canvas>
@@ -236,7 +221,6 @@
         <div class="status-text" id="statusText">Next Round in 3.7s</div>
     </div>
 
-    <!-- Control Panel -->
     <div class="control-panel">
         <div class="bet-row">
             <div class="bet-input-box" onclick="openNumpad()">
@@ -265,7 +249,6 @@
         </div>
     </div>
 
-    <!-- Menu Modal -->
     <div class="menu-modal" id="menuModal">
         <div class="menu-header">
             <span>Menu</span>
@@ -281,7 +264,6 @@
         </div>
     </div>
 
-    <!-- Numpad Modal -->
     <div class="numpad-modal" id="numpadModal">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <span>Enter your bet amount</span>
@@ -306,7 +288,6 @@
 </div>
 
 <script>
-    // --- Built-in Web Audio API for Game Sound Effects & Music ---
     let audioCtx = null;
     function initAudio() {
         if (!audioCtx) {
@@ -346,7 +327,6 @@
         } catch(e) { console.log(e); }
     }
 
-    // --- Canvas & Game Engine ---
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
 
@@ -357,20 +337,17 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // Cloud particles & Stars setup
     let clouds = [];
     for(let i=0; i<6; i++) {
         clouds.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: 40 + Math.random() * 60, speed: 0.5 + Math.random() * 1 });
     }
 
     let planePos = { x: 80, y: 250 };
-    let crashEffect = false;
     let crashAnimProgress = 0;
 
     function drawScene() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Draw moving background clouds (3D parallax effect)
         ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
         clouds.forEach(c => {
             ctx.beginPath();
@@ -383,28 +360,23 @@
             }
         });
 
-        // Draw Plane if flying
         if (gameState === 'FLYING') {
             ctx.save();
             ctx.translate(planePos.x, planePos.y);
             
-            // Plane body (Yellow Propeller Plane style)
             ctx.fillStyle = '#fbbf24';
             ctx.beginPath();
             ctx.ellipse(0, 0, 35, 15, Math.PI / 12, 0, Math.PI * 2);
             ctx.fill();
 
-            // Cockpit window
             ctx.fillStyle = '#60a5fa';
             ctx.beginPath();
             ctx.ellipse(5, -5, 10, 6, 0, 0, Math.PI * 2);
             ctx.fill();
 
-            // Propeller spin
             ctx.fillStyle = '#1e293b';
             ctx.fillRect(32, -12, 4, 24);
 
-            // Exhaust fire / trail
             ctx.fillStyle = '#f97316';
             ctx.beginPath();
             ctx.moveTo(-35, 0);
@@ -415,13 +387,11 @@
             ctx.restore();
         }
 
-        // Draw Crash / Parachute
         if (gameState === 'CRASHED') {
             crashAnimProgress += 0.05;
             let pY = planePos.y + (crashAnimProgress * 40);
             if (pY > canvas.height - 100) pY = canvas.height - 100;
 
-            // Draw Parachute Guy falling
             ctx.font = '32px serif';
             ctx.fillText('🪂', planePos.x, pY);
         }
@@ -430,7 +400,6 @@
     }
     requestAnimationFrame(drawScene);
 
-    // --- Game Logic ---
     let balance = 1005.79;
     let betAmount = 1;
     let gameState = 'COUNTDOWN'; 
@@ -534,7 +503,6 @@
             currentMultiplier += 0.04;
             multiplierDisplay.textContent = `${currentMultiplier.toFixed(2)}x`;
 
-            // Smooth upward flight movement
             if(planePos.y > 120) planePos.y -= 1.5;
             if(planePos.x < canvas.width / 2) planePos.x += 1;
 
