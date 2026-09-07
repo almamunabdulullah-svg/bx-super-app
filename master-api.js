@@ -1,6 +1,7 @@
 /**
- * BX GAMING MASTER AGGREGATOR & SMART CONTRACT BRIDGE
- * Works universally for both BX Super App and Third-Party API Clients.
+ * BX GAMING MASTER AGGREGATOR & SMART CONTRACT BRIDGE (UNIVERSAL EDITION)
+ * Works universally for all game types (Slots, Crash, Roulette, Cards, etc.) 
+ * across both BX Super App and Third-Party API Clients.
  */
 
 const { ethers } = require("ethers");
@@ -12,7 +13,7 @@ class BXMasterAggregatorAPI {
         this.wallet = new ethers.Wallet(operatorPrivateKey, this.provider);
         this.contractAddress = contractAddress;
         
-        // Standard Smart Contract ABI for Betting and Payouts
+        // Standard Smart Contract ABI for Universal Betting and Payouts
         this.contractABI = [
             "function placeBet(address user, uint256 amount) public",
             "function payout(address user, uint256 winnings) public",
@@ -20,52 +21,65 @@ class BXMasterAggregatorAPI {
         ];
         this.contract = new ethers.Contract(this.contractAddress, this.contractABI, this.wallet);
         
-        // Secret House Edge Configuration (80% Company / 20-30% User Win Rate)
-        this.houseEdge = 0.80; 
+        // Global House Edge Configuration (Ensures operator profit across all games)
+        this.houseEdge = 0.05; // 5% Standard Casino Margin
     }
 
-    // Centralized RNG & Crash Algorithm with House Edge Enforcement
-    calculateGameResult(isUserActive) {
+    // Universal Game Outcome & RNG Algorithm for any game category (Slots, Table Games, Crash, etc.)
+    calculateGameResult(gameCategory, isUserActive) {
         let rng = Math.random();
+        
+        // Dynamic house edge enforcement based on game type and user status
         if (isUserActive) {
-            // Strict house edge control when real bets are placed
-            if (rng < 0.78) {
-                return parseFloat((1.00 + (Math.random() * 1.40)).toFixed(2)); // Early crash (1.00x - 2.40x)
+            if (rng < (1 - this.houseEdge)) {
+                // Standard win/multiplier outcome based on probability
+                return { outcome: "WIN", multiplier: parseFloat((1.10 + (Math.random() * 2.50)).toFixed(2)) };
             } else {
-                return parseFloat((2.41 + (Math.random() * 15.00)).toFixed(2)); // Rare high multiplier
+                // House win / Loss outcome
+                return { outcome: "LOSS", multiplier: 0.00 };
             }
         } else {
-            // Visual attraction mode (high multiplier when no active bet)
-            return parseFloat((5.00 + (Math.random() * 45.00)).toFixed(2));
+            // Passive / Demo mode simulation
+            return { outcome: "SIMULATION", multiplier: parseFloat((1.50 + (Math.random() * 5.00)).toFixed(2)) };
         }
     }
 
-    // Universal API Handler for BX Super App & External Platforms
-    async processGameTransaction(clientToken, gameId, actionType, betAmount, multiplier = 1.00) {
+    // Universal API Handler for BX Super App & External Third-Party Platforms
+    async processGameTransaction(clientToken, gameId, gameCategory, actionType, betAmount, winMultiplier = 0.00) {
         try {
-            console.log(`[BX API Gateway] Processing ${gameId} | Action: ${actionType} | Amount: ${betAmount}`);
+            console.log(`[BX API Gateway] Game: ${gameId} [${gameCategory}] | Action: ${actionType} | Stake: ${betAmount}`);
 
             if (actionType === 'BET') {
+                // Deduct balance / Place bet logic universally
                 return {
                     status: "SUCCESS",
-                    message: "Bet placed successfully via BX Master Engine",
-                    remainingBalance: 1000 - betAmount
+                    message: "Bet successfully processed by BX Universal Master Engine",
+                    betAmount: betAmount,
+                    remainingBalance: 1000 - betAmount // Placeholder for central wallet balance
                 };
             } 
-            else if (actionType === 'CASH_OUT' || actionType === 'WIN') {
-                let winnings = parseFloat((betAmount * multiplier).toFixed(2));
+            else if (actionType === 'SETTLE' || actionType === 'WIN') {
+                // Calculate universal payout with house edge/tax consideration
+                let rawWinnings = betAmount * winMultiplier;
+                let netWinnings = parseFloat((rawWinnings * (1 - this.houseEdge)).toFixed(2));
+                
                 return {
                     status: "SUCCESS",
-                    multiplier: multiplier,
-                    winnings: winnings,
-                    message: "Payout processed successfully"
+                    gameId: gameId,
+                    multiplier: winMultiplier,
+                    payout: netWinnings,
+                    message: "Universal payout processed successfully"
                 };
             }
-            else if (actionType === 'CRASH') {
+            else if (actionType === 'LOSS') {
                 return {
-                    status: "CRASHED",
-                    message: "House edge enforced. Round ended."
+                    status: "SETTLED",
+                    payout: 0.00,
+                    message: "Round settled. House edge applied."
                 };
+            }
+            else {
+                throw new Error("Invalid action type specified for universal transaction.");
             }
         } catch (error) {
             console.error("[BX API Error]:", error.message);
