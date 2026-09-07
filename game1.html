@@ -3,170 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BX Aviator Crash Game</title>
-    <!-- Tailwind CSS for modern design matching the frontend -->
+    <title>Aviator - Real Interface</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0d1117; color: #ffffff; font-family: Arial, sans-serif; }
-        .multiplier-glow { text-shadow: 0 0 20px rgba(239, 68, 68, 0.8); }
+        body { background-color: #0b0e14; color: #ffffff; font-family: Arial, sans-serif; }
+        .glow { text-shadow: 0 0 20px rgba(239, 68, 68, 0.8); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-4">
+<body class="min-h-screen flex flex-col justify-between p-3 max-w-md mx-auto">
 
-    <!-- Header Section -->
-    <header class="flex justify-between items-center bg-gray-900 p-4 rounded-xl border border-gray-800">
-        <div class="text-xl font-bold tracking-wider text-red-500">BX AVIATOR</div>
-        <div class="flex items-center gap-4">
-            <div class="bg-gray-800 px-3 py-1.5 rounded-lg text-sm">
-                Balance: <span id="user-balance" class="font-semibold text-green-400">1000.00</span> BDT
-            </div>
+    <!-- Top Header -->
+    <header class="flex justify-between items-center bg-gray-900 px-4 py-2.5 rounded-xl border border-gray-800">
+        <div class="text-red-500 font-black italic text-lg tracking-wider">Aviator</div>
+        <div class="flex items-center gap-2">
+            <span class="text-yellow-500 text-sm">🪙</span>
+            <span id="user-balance" class="font-bold text-green-400 text-sm">0.00 INR</span>
         </div>
     </header>
 
-    <!-- Main Game Interface -->
-    <main class="flex-1 flex flex-col items-center justify-center my-6">
-        <div id="game-container" class="relative w-full max-w-2xl h-80 bg-gray-900 rounded-2xl border border-gray-800 flex flex-col items-center justify-center overflow-hidden shadow-2xl">
-            
-            <!-- Loading State -->
-            <div id="unity-loading" class="absolute inset-0 bg-gray-950 flex flex-col items-center justify-center z-20">
-                <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-red-500 border-solid mb-4"></div>
-                <p class="text-sm text-gray-400 tracking-widest">LOADING AVIATOR...</p>
-            </div>
+    <!-- Fun Mode Banner -->
+    <div class="bg-amber-600 text-black font-bold text-center text-xs py-1 rounded-md my-2 tracking-widest uppercase">
+        FUN MODE
+    </div>
 
-            <!-- Airplane / Multiplier Display -->
-            <div id="multiplier-display" class="z-10 text-6xl font-extrabold multiplier-glow text-white">
-                1.00x
-            </div>
-            <p id="game-status" class="z-10 text-sm text-gray-400 mt-2">Waiting for next round...</p>
+    <!-- Game Screen / Multiplier Area -->
+    <div class="relative w-full h-56 bg-gray-950 rounded-xl border border-gray-800 flex flex-col items-center justify-center overflow-hidden shadow-inner my-1">
+        <div id="multiplier" class="text-5xl font-black glow text-white tracking-wide">
+            1.00 x
+        </div>
+        <div class="absolute bottom-3 left-3 text-red-500 text-2xl">
+            ✈️
+        </div>
+    </div>
 
-            <!-- Insufficient Balance Warning (Recharge State) -->
-            <div id="recharge-alert" class="hidden absolute inset-0 bg-black/80 flex flex-col items-center justify-center z-30 p-6 text-center">
-                <p class="text-red-500 font-bold text-lg mb-2">Insufficient balance amount</p>
-                <p class="text-xs text-gray-400 mb-4">Induswin.com - Please top up your wallet to continue playing.</p>
-                <button onclick="closeRechargeAlert()" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold text-sm transition">OK</button>
+    <!-- Dual Betting Panels (Matching the screenshot exactly) -->
+    <div class="flex flex-col gap-3 my-2">
+        <!-- Bet Panel 1 -->
+        <div class="bg-gray-900 p-3 rounded-xl border border-gray-800 flex flex-col gap-2">
+            <div class="flex justify-between text-xs text-gray-400">
+                <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-300 font-semibold">Bet</span>
+                <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-400">Auto</span>
             </div>
+            <div class="flex items-center justify-between bg-gray-800 rounded-lg px-3 py-1.5 border border-gray-700">
+                <button onclick="adjustBet(1, -10)" class="text-gray-400 font-bold text-lg">-</button>
+                <span id="bet-val-1" class="font-bold text-sm">20</span>
+                <button onclick="adjustBet(1, 10)" class="text-gray-400 font-bold text-lg">+</button>
+            </div>
+            <div class="grid grid-cols-4 gap-1.5 text-center text-[11px]">
+                <div onclick="setBet(1, 20)" class="bg-gray-800 py-1 rounded text-gray-300 cursor-pointer">20</div>
+                <div onclick="setBet(1, 50)" class="bg-gray-800 py-1 rounded text-gray-300 cursor-pointer">50</div>
+                <div onclick="setBet(1, 100)" class="bg-gray-800 py-1 rounded text-gray-300 cursor-pointer">100</div>
+                <div onclick="setBet(1, 1000)" class="bg-gray-800 py-1 rounded text-gray-300 cursor-pointer">1000</div>
+            </div>
+            <button onclick="handleBet(1)" id="btn-1" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-lg text-sm tracking-wide shadow-md transition">
+                BET 20.00 INR
+            </button>
         </div>
 
-        <!-- Betting Controls -->
-        <div class="w-full max-w-2xl grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-            <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 flex flex-col gap-3">
-                <div class="flex justify-between text-xs text-gray-400">
-                    <span>Bet Amount</span>
-                    <span>Max</span>
-                </div>
-                <input type="number" id="bet-input" value="10" class="bg-gray-800 border border-gray-700 rounded-lg p-2 text-white focus:outline-none focus:border-red-500">
-                <button id="bet-btn" onclick="handleBetAction()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition shadow-lg">
-                    PLACE BET
-                </button>
+        <!-- Bet Panel 2 -->
+        <div class="bg-gray-900 p-3 rounded-xl border border-gray-800 flex flex-col gap-2">
+            <div class="flex justify-between text-xs text-gray-400">
+                <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-300 font-semibold">Bet</span>
+                <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-400">Auto</span>
             </div>
-            <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 flex flex-col justify-between">
-                <div class="text-xs text-gray-400">Live Backend Status</div>
-                <div class="flex items-center gap-2">
-                    <span class="h-3 w-3 rounded-full bg-green-500 animate-pulse"></span>
-                    <span id="backend-status" class="text-sm text-gray-300">Connected to Master API</span>
-                </div>
-                <div class="text-xs text-gray-500 mt-2">Algorithm: Secured & Verified</div>
+            <div class="flex items-center justify-between bg-gray-800 rounded-lg px-3 py-1.5 border border-gray-700">
+                <button onclick="adjustBet(2, -10)" class="text-gray-400 font-bold text-lg">-</button>
+                <span id="bet-val-2" class="font-bold text-sm">20</span>
+                <button onclick="adjustBet(2, 10)" class="text-gray-400 font-bold text-lg">+</button>
             </div>
+            <div class="grid grid-cols-4 gap-1.5 text-center text-[11px]">
+                <div onclick="setBet(2, 20)" class="bg-gray-800 py-1 rounded text-gray-300 cursor-pointer">20</div>
+                <div onclick="setBet(2, 50)" class="bg-gray-800 py-1 rounded text-gray-300 cursor-pointer">50</div>
+                <div onclick="setBet(2, 100)" class="bg-gray-800 py-1 rounded text-gray-300 cursor-pointer">100</div>
+                <div onclick="setBet(2, 1000)" class="bg-gray-800 py-1 rounded text-gray-300 cursor-pointer">1000</div>
+            </div>
+            <button onclick="handleBet(2)" id="btn-2" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-lg text-sm tracking-wide shadow-md transition">
+                BET 20.00 INR
+            </button>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer -->
-    <footer class="text-center text-xs text-gray-600 py-2">
-        &copy; BX Super App - Crash Game Engine
-    </footer>
+    <!-- Bottom Telegram Contact / Footer Button -->
+    <div class="mt-2">
+        <a href="https://telegram.org" target="_blank" class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center font-bold py-3 rounded-xl text-sm shadow-lg transition">
+            Contact Me Telegram
+        </a>
+    </div>
 
-    <!-- Script Integration -->
+    <!-- Backend Link Scripts -->
     <script src="master-api.js"></script>
     <script src="script.js"></script>
     <script>
-        // Simulated Game & Backend Synchronization Logic
-        let isPlaying = false;
-        let currentProgress = 1.00;
-        let gameInterval = null;
-        let userBalance = 1000.00;
+        let bets = { 1: 20, 2: 20 };
+        let gameRunning = { 1: false, 2: false };
 
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('unity-loading').style.display = 'none';
-            }, 1500);
-        });
+        function setBet(panel, amount) {
+            bets[panel] = amount;
+            document.getElementById(`bet-val-${panel}`).innerText = amount;
+            document.getElementById(`btn-${panel}`).innerText = `BET ${amount}.00 INR`;
+        }
 
-        function handleBetAction() {
-            let betAmount = parseFloat(document.getElementById('bet-input').value);
-            
-            // Check Balance Condition (Recharge State)
-            if (userBalance < betAmount) {
-                document.getElementById('recharge-alert').classList.remove('hidden');
-                return;
-            }
+        function adjustBet(panel, change) {
+            bets[panel] = Math.max(10, bets[panel] + change);
+            document.getElementById(`bet-val-${panel}`).innerText = bets[panel];
+            document.getElementById(`btn-${panel}`).innerText = `BET ${bets[panel]}.00 INR`;
+        }
 
-            if (!isPlaying) {
-                // Start Bet
-                userBalance -= betAmount;
-                updateBalanceUI();
-                startCrashGame();
+        function handleBet(panel) {
+            let btn = document.getElementById(`btn-${panel}`);
+            if (!gameRunning[panel]) {
+                gameRunning[panel] = true;
+                btn.innerText = "CASHOUT";
+                btn.className = "w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2.5 rounded-lg text-sm tracking-wide shadow-md transition";
+                
+                // Simulation of multiplier growth
+                let progress = 1.00;
+                let interval = setInterval(() => {
+                    progress += 0.03;
+                    document.getElementById('multiplier').innerText = progress.toFixed(2) + " x";
+                    if (Math.random() < 0.015 && progress > 1.3) {
+                        clearInterval(interval);
+                        document.getElementById('multiplier').innerText = "CRASHED";
+                        setTimeout(() => resetPanel(panel), 2000);
+                    }
+                }, 200);
             } else {
-                // Cashout
-                cashOut(betAmount);
+                resetPanel(panel);
             }
         }
 
-        function startCrashGame() {
-            isPlaying = true;
-            currentProgress = 1.00;
-            let btn = document.getElementById('bet-btn');
-            btn.innerText = "CASHOUT";
-            btn.className = "bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-xl transition shadow-lg";
-            
-            document.getElementById('game-status').innerText = "Flying...";
-
-            gameInterval = setInterval(() => {
-                // Formula mapping from the frontend React structure
-                currentProgress += 0.05;
-                let calculatedMultiplier = Number(currentProgress * 1.111 + 0.01).toFixed(2);
-                document.getElementById('multiplier-display').innerText = calculatedMultiplier + "x";
-
-                // Random crash simulation based on backend algorithm trigger
-                if (Math.random() < 0.02 && currentProgress > 1.5) {
-                    crashGame(calculatedMultiplier);
-                }
-            }, 200);
-        }
-
-        function cashOut(betAmount) {
-            clearInterval(gameInterval);
-            let multiplier = parseFloat(document.getElementById('multiplier-display').innerText);
-            let winnings = betAmount * multiplier;
-            userBalance += winnings;
-            updateBalanceUI();
-
-            document.getElementById('game-status').innerText = `Cashed out successfully! Won: ${winnings.toFixed(2)} BDT`;
-            resetGameButton();
-        }
-
-        function crashGame(multiplier) {
-            clearInterval(gameInterval);
-            document.getElementById('game-status').innerText = `CRASHED at ${multiplier}x!`;
-            document.getElementById('multiplier-display').classList.add('text-red-500');
-            setTimeout(() => {
-                document.getElementById('multiplier-display').classList.remove('text-red-500');
-                resetGameButton();
-            }, 2000);
-        }
-
-        function resetGameButton() {
-            isPlaying = false;
-            let btn = document.getElementById('bet-btn');
-            btn.innerText = "PLACE BET";
-            btn.className = "bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition shadow-lg";
-        }
-
-        function updateBalanceUI() {
-            document.getElementById('user-balance').innerText = userBalance.toFixed(2);
-        }
-
-        function closeRechargeAlert() {
-            document.getElementById('recharge-alert').classList.add('hidden');
+        function resetPanel(panel) {
+            gameRunning[panel] = false;
+            let btn = document.getElementById(`btn-${panel}`);
+            btn.innerText = `BET ${bets[panel]}.00 INR`;
+            btn.className = "w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-lg text-sm tracking-wide shadow-md transition";
         }
     </script>
 </body>
