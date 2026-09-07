@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BX Casino Platform - Multi-Game Hub</title>
+    <title>BX Master Casino Platform - Auto Registry Hub</title>
     <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            margin: 0;
             background: #080c14;
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -32,10 +32,10 @@
         }
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 20px;
             width: 100%;
-            max-width: 900px;
+            max-width: 950px;
         }
         .game-card {
             background: #111a2e;
@@ -53,10 +53,15 @@
         .game-card h3 {
             color: #ff007f;
             margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .game-card p {
+            color: #a0aec0;
+            font-size: 12px;
+            margin-bottom: 15px;
         }
         .game-card a {
             display: inline-block;
-            margin-top: 15px;
             padding: 10px 20px;
             background: #00ffcc;
             color: #080c14;
@@ -74,31 +79,38 @@
 
     <header>
         <h1>BX CASINO PLATFORM</h1>
-        <p>Unified Master Engine // Provably Fair & Automated Tax Architecture</p>
+        <p>Auto-Registry Engine // Unified Master Architecture</p>
     </header>
 
-    <div class="games-grid">
-        <div class="game-card">
-            <h3>BX Space Crash</h3>
-            <p>Outer space rocket trajectory with real-time multiplier mechanics.</p>
-            <a href="space.html">PLAY NOW</a>
-        </div>
-        <div class="game-card">
-            <h3>BX Cyberpunk Crash</h3>
-            <p>Neon grid protocol featuring high-speed hover-bike action.</p>
-            <a href="cyber.html">PLAY NOW</a>
-        </div>
-        <div class="game-card">
-            <h3>BX Deep Sea Crash</h3>
-            <p>Abyssal trench submarine descent with high-pressure multipliers.</p>
-            <a href="ocean.html">PLAY NOW</a>
-        </div>
-        <div class="game-card">
-            <h3>BX Turbo Crash</h3>
-            <p>High-altitude military jet afterburner flight simulation.</p>
-            <a href="turbo.html">PLAY NOW</a>
-        </div>
+    <div class="games-grid" id="auto-game-container">
+        <!-- Dynamically loaded games will appear here automatically -->
     </div>
 
+    <script>
+        // Central Registry of all platform games connected to Master Engine
+        const registeredGames = [
+            { id: 'space', title: 'BX Space Crash', file: 'space.html', desc: 'Classic crash flight multiplier with autonomous 24/7 rounds.' },
+            { id: 'cyber', title: 'BX Cyberpunk Crash', file: 'cyber.html', desc: 'Neon grid protocol featuring high-speed hover-bike action.' },
+            { id: 'ocean', title: 'BX Deep Sea Crash', file: 'ocean.html', desc: 'Abyssal trench submarine descent with high-pressure multipliers.' },
+            { id: 'turbo', title: 'BX Turbo Crash', file: 'turbo.html', desc: 'High-altitude military jet afterburner flight simulation.' }
+        ];
+
+        function renderLobby() {
+            const container = document.getElementById('auto-game-container');
+            container.innerHTML = '';
+
+            registeredGames.forEach(game => {
+                container.innerHTML += `
+                    <div class="game-card">
+                        <h3>${game.title}</h3>
+                        <p>${game.desc}</p>
+                        <a href="${game.file}">PLAY NOW</a>
+                    </div>
+                `;
+            });
+        }
+
+        renderLobby();
+    </script>
 </body>
 </html>
