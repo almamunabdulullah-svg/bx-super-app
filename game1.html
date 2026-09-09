@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BX Mustafa Arcade Game - Ultimate Edition</title>
+    <title>BX Mustafa Arcade Game</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
@@ -222,7 +222,6 @@
     function gameLoop() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Background styling: Post-apocalyptic cityscape with neon signs
         ctx.fillStyle = "#1b1b2f";
         ctx.fillRect(80, canvas.height - 380, 200, 280);
         ctx.fillStyle = "#ff3d00";
@@ -234,7 +233,6 @@
         ctx.fillStyle = "#00e5ff";
         ctx.fillText("HOTEL", canvas.width - 260, canvas.height - 260);
 
-        // Stage 5 Boss Specific Background Vibe
         if (currentStage === 5) {
             ctx.fillStyle = "rgba(123, 31, 162, 0.3)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -243,41 +241,36 @@
             ctx.fillText("⚡ FINAL STAGE: PURPLE DRAGON BOSS ⚡", canvas.width / 2 - 220, 80);
         }
 
-        // Ground roadway
         ctx.fillStyle = "#181818";
         ctx.fillRect(0, canvas.height - 100, canvas.width, 100);
         ctx.fillStyle = "#ff9800";
         ctx.fillRect(0, canvas.height - 105, canvas.width, 5);
 
-        // Player physics update
         player.x += player.vx;
         if (player.x < 15) player.x = 15;
         if (player.x > canvas.width - 80) player.x = canvas.width - 80;
 
-        // Render Player (Hero with jacket and gun)
-        ctx.fillStyle = "#e53935"; // Jacket
+        ctx.fillStyle = "#e53935";
         ctx.fillRect(player.x, player.y + 20, player.width, player.height - 20);
-        ctx.fillStyle = "#1976d2"; // Jeans
+        ctx.fillStyle = "#1976d2";
         ctx.fillRect(player.x + 10, player.y + 75, player.width - 20, 35);
-        ctx.fillStyle = "#ffccbc"; // Head
+        ctx.fillStyle = "#ffccbc";
         ctx.fillRect(player.x + 15, player.y, 35, 25);
-        ctx.fillStyle = "#ffeb3b"; // Gun
+        ctx.fillStyle = "#ffeb3b";
         ctx.fillRect(player.x + player.width - 5, player.y + 45, 28, 8);
 
-        // Render Enemy or Boss based on stage
         if (currentStage === 5) {
-            ctx.fillStyle = "#6a1b9a"; // Dragon Boss
+            ctx.fillStyle = "#6a1b9a";
             ctx.fillRect(enemy.x - 50, enemy.y - 60, enemy.width + 80, enemy.height + 60);
             ctx.fillStyle = "#ffeb3b";
-            ctx.fillRect(enemy.x - 10, enemy.y - 20, 20, 10); // Dragon Eye
+            ctx.fillRect(enemy.x - 10, enemy.y - 20, 20, 10);
         } else {
-            ctx.fillStyle = "#c2185b"; // Punk Villain
+            ctx.fillStyle = "#c2185b";
             ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
             ctx.fillStyle = "#212121";
             ctx.fillRect(enemy.x + 12, enemy.y + 15, 15, 8);
         }
 
-        // Bullets update & rendering
         for (let i = bullets.length - 1; i >= 0; i--) {
             let b = bullets[i];
             b.x += b.speed;
@@ -293,7 +286,6 @@
             }
         }
 
-        // Random enemy damage encounter loop
         if (Math.random() < 0.002 && lives > 0 && document.getElementById("modal").style.display !== "flex") {
             playerDies();
         }
