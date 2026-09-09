@@ -1,143 +1,195 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aviator - Real Interface</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>BX Retro Action Game - Mustafa Style</title>
     <style>
-        body { background-color: #0b0e14; color: #ffffff; font-family: Arial, sans-serif; }
-        .glow { text-shadow: 0 0 20px rgba(239, 68, 68, 0.8); }
+        body { background: #0b0b0b; color: #fff; text-align: center; font-family: 'Courier New', Courier, monospace; margin: 0; padding: 0; overflow: hidden; }
+        #game-wrapper { position: relative; width: 100%; max-width: 800px; height: 450px; margin: 10px auto; background: #1a1a1a; border: 4px solid #ff9800; border-radius: 8px; box-shadow: 0 0 20px rgba(255,152,0,0.5); }
+        #hud { display: flex; justify-content: space-between; background: rgba(0,0,0,0.8); padding: 8px 15px; font-size: 16px; font-weight: bold; border-bottom: 2px solid #444; }
+        canvas { display: block; background: #222; width: 100%; height: 350px; }
+        
+        /* কন্ট্রোল প্যানেল ও বাটন ডিজাইন */
+        #controls { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #111; }
+        .d-pad, .action-pad { display: flex; gap: 10px; }
+        .arcade-btn { width: 55px; height: 55px; background: #ff9800; border: 3px solid #fff; border-radius: 50%; color: #fff; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; user-select: none; box-shadow: 0 4px 0 #b76800; }
+        .arcade-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #b76800; }
+        .shoot-btn { background: #e91e63; box-shadow: 0 4px 0 #9c1341; }
+        .special-btn { background: #9c27b0; box-shadow: 0 4px 0 #5e156b; }
+
+        /* পপআপ মডাল */
+        #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 100; }
+        .modal-content { background: #222; padding: 30px; border: 3px solid #ff9800; border-radius: 12px; text-align: center; max-width: 350px; }
+        .modal-btn { padding: 12px 25px; font-size: 18px; background: #e91e63; border: none; color: white; cursor: pointer; font-weight: bold; border-radius: 6px; margin-top: 15px; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-3 max-w-md mx-auto">
+<body>
 
-    <!-- Top Header -->
-    <header class="flex justify-between items-center bg-gray-900 px-4 py-2.5 rounded-xl border border-gray-800">
-        <div class="text-red-500 font-black italic text-lg tracking-wider">Aviator</div>
-        <div class="flex items-center gap-2">
-            <span class="text-yellow-500 text-sm">🪙</span>
-            <span id="user-balance" class="font-bold text-green-400 text-sm">0.00 INR</span>
+    <div id="game-wrapper">
+        <div id="hud">
+            <div>বেট: <span id="bet-amount">১০০</span> ৳</div>
+            <div>লাইভ: <span id="lives">❤️❤️❤️❤️❤️</span></div>
+            <div>স্টেজ: <span id="stage">১</span> (মাল্টিপ্লায়ার: <span id="multiplier">১x</span>)</div>
         </div>
-    </header>
-
-    <!-- Fun Mode Banner -->
-    <div class="bg-amber-600 text-black font-bold text-center text-xs py-1 rounded-md my-2 tracking-widest uppercase">
-        FUN MODE
+        <canvas id="gameCanvas" width="800" height="350"></canvas>
     </div>
 
-    <!-- Game Screen / Multiplier Area -->
-    <div class="relative w-full h-56 bg-gray-950 rounded-xl border border-gray-800 flex flex-col items-center justify-center overflow-hidden shadow-inner my-1">
-        <div id="multiplier" class="text-5xl font-black glow text-white tracking-wide">
-            1.00 x
+    <!-- গেম কন্ট্রোলস (মোবাইল ও ডেস্কটপ ফ্রেন্ডলি গোল বাটন) -->
+    <div id="controls">
+        <div class="d-pad">
+            <button class="arcade-btn" onclick="movePlayer('left')">◀</button>
+            <button class="arcade-btn" onclick="movePlayer('right')">▶</button>
         </div>
-        <div class="absolute bottom-3 left-3 text-red-500 text-2xl">
-            ✈️
+        <div class="action-pad">
+            <button class="arcade-btn special-btn" onclick="specialPower()">⭐</button>
+            <button class="arcade-btn shoot-btn" onclick="shoot()">🔫</button>
         </div>
     </div>
 
-    <!-- Dual Betting Panels (Matching the screenshot exactly) -->
-    <div class="flex flex-col gap-3 my-2">
-        <!-- Bet Panel 1 -->
-        <div class="bg-gray-900 p-3 rounded-xl border border-gray-800 flex flex-col gap-2">
-            <div class="flex justify-between text-xs text-gray-400">
-                <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-300 font-semibold">Bet</span>
-                <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-400">Auto</span>
-            </div>
-            <div class="flex items-center justify-between bg-gray-800 rounded-lg px-3 py-1.5 border border-gray-700">
-                <button onclick="adjustBet(1, -10)" class="text-gray-400 font-bold text-lg">-</button>
-                <span id="bet-val-1" class="font-bold text-sm">20</span>
-                <button onclick="adjustBet(1, 10)" class="text-gray-400 font-bold text-lg">+</button>
-            </div>
-            <div class="grid grid-cols-4 gap-1.5 text-center text-[11px]">
-                <div onclick="setBet(1, 20)" class="bg-gray-800 py-1 rounded text-gray-300 cursor-pointer">20</div>
-                <div onclick="setBet(1, 50)" class="bg-gray-800 py-1 rounded text-gray-300 cursor-pointer">50</div>
-                <div onclick="setBet(1, 100)" class="bg-gray-800 py-1 rounded text-gray-300 cursor-pointer">100</div>
-                <div onclick="setBet(1, 1000)" class="bg-gray-800 py-1 rounded text-gray-300 cursor-pointer">1000</div>
-            </div>
-            <button onclick="handleBet(1)" id="btn-1" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-lg text-sm tracking-wide shadow-md transition">
-                BET 20.00 INR
-            </button>
-        </div>
-
-        <!-- Bet Panel 2 -->
-        <div class="bg-gray-900 p-3 rounded-xl border border-gray-800 flex flex-col gap-2">
-            <div class="flex justify-between text-xs text-gray-400">
-                <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-300 font-semibold">Bet</span>
-                <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-400">Auto</span>
-            </div>
-            <div class="flex items-center justify-between bg-gray-800 rounded-lg px-3 py-1.5 border border-gray-700">
-                <button onclick="adjustBet(2, -10)" class="text-gray-400 font-bold text-lg">-</button>
-                <span id="bet-val-2" class="font-bold text-sm">20</span>
-                <button onclick="adjustBet(2, 10)" class="text-gray-400 font-bold text-lg">+</button>
-            </div>
-            <div class="grid grid-cols-4 gap-1.5 text-center text-[11px]">
-                <div onclick="setBet(2, 20)" class="bg-gray-800 py-1 rounded text-gray-300 cursor-pointer">20</div>
-                <div onclick="setBet(2, 50)" class="bg-gray-800 py-1 rounded text-gray-300 cursor-pointer">50</div>
-                <div onclick="setBet(2, 100)" class="bg-gray-800 py-1 rounded text-gray-300 cursor-pointer">100</div>
-                <div onclick="setBet(2, 1000)" class="bg-gray-800 py-1 rounded text-gray-300 cursor-pointer">1000</div>
-            </div>
-            <button onclick="handleBet(2)" id="btn-2" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-lg text-sm tracking-wide shadow-md transition">
-                BET 20.00 INR
-            </button>
+    <!-- লাইভ কেনার পপআপ উইন্ডো -->
+    <div id="modal">
+        <div class="modal-content">
+            <h2 style="color: #e91e63;">আপনি মারা গেছেন!</h2>
+            <p>খেলা চালিয়ে যেতে ১০ টাকা দিয়ে ১টি লাইভ কিনুন এবং বিজয়ের দিকে এগিয়ে যান।</p>
+            <button class="modal-btn" onclick="buyLife()">১০ টাকায় লাইভ কিনুন</button>
         </div>
     </div>
 
-    <!-- Bottom Telegram Contact / Footer Button -->
-    <div class="mt-2">
-        <a href="https://telegram.org" target="_blank" class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center font-bold py-3 rounded-xl text-sm shadow-lg transition">
-            Contact Me Telegram
-        </a>
-    </div>
+<script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
 
-    <!-- Backend Link Scripts -->
-    <script src="master-api.js"></script>
-    <script src="script.js"></script>
-    <script>
-        let bets = { 1: 20, 2: 20 };
-        let gameRunning = { 1: false, 2: false };
+    let player = { x: 100, y: 250, width: 40, height: 70, speed: 15 };
+    let enemy = { x: 700, y: 250, width: 40, height: 70, hp: 3 };
+    let bullets = [];
+    
+    let balance = 1000;
+    let bet = 100;
+    let lives = 5;
+    let currentStage = 1;
+    let multiplier = 1;
 
-        function setBet(panel, amount) {
-            bets[panel] = amount;
-            document.getElementById(`bet-val-${panel}`).innerText = amount;
-            document.getElementById(`btn-${panel}`).innerText = `BET ${amount}.00 INR`;
-        }
+    function updateHUD() {
+        document.getElementById("bet-amount").innerText = bet;
+        document.getElementById("lives").innerText = "❤️".repeat(lives);
+        document.getElementById("stage").innerText = currentStage;
+        document.getElementById("multiplier").innerText = multiplier + "x";
+    }
 
-        function adjustBet(panel, change) {
-            bets[panel] = Math.max(10, bets[panel] + change);
-            document.getElementById(`bet-val-${panel}`).innerText = bets[panel];
-            document.getElementById(`btn-${panel}`).innerText = `BET ${bets[panel]}.00 INR`;
-        }
+    function movePlayer(dir) {
+        if (dir === 'left' && player.x > 20) player.x -= player.speed;
+        if (dir === 'right' && player.x < canvas.width - 60) player.x += player.speed;
+    }
 
-        function handleBet(panel) {
-            let btn = document.getElementById(`btn-${panel}`);
-            if (!gameRunning[panel]) {
-                gameRunning[panel] = true;
-                btn.innerText = "CASHOUT";
-                btn.className = "w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2.5 rounded-lg text-sm tracking-wide shadow-md transition";
-                
-                // Simulation of multiplier growth
-                let progress = 1.00;
-                let interval = setInterval(() => {
-                    progress += 0.03;
-                    document.getElementById('multiplier').innerText = progress.toFixed(2) + " x";
-                    if (Math.random() < 0.015 && progress > 1.3) {
-                        clearInterval(interval);
-                        document.getElementById('multiplier').innerText = "CRASHED";
-                        setTimeout(() => resetPanel(panel), 2000);
-                    }
-                }, 200);
+    function shoot() {
+        bullets.push({ x: player.x + player.width, y: player.y + 25, width: 12, height: 6, speed: 12 });
+    }
+
+    function specialPower() {
+        // স্পেশাল অ্যাটাক যা শত্রুর বড় ক্ষতি করবে
+        enemy.hp -= 2;
+        checkEnemyStatus();
+    }
+
+    function checkEnemyStatus() {
+        if (enemy.hp <= 0) {
+            if (currentStage < 5) {
+                alert(`অভিনন্দন! স্টেজ ${currentStage} পার করেছেন। মাল্টিপ্লায়ার এখন ${currentStage + 1}x!`);
+                currentStage++;
+                multiplier = currentStage;
+                enemy.hp = 3 + currentStage; // পরবর্তী স্টেজে শত্রু শক্তিশালী হবে
+                enemy.x = 700;
             } else {
-                resetPanel(panel);
+                let winAmount = bet * multiplier;
+                balance += winAmount;
+                alert(`🎉 অসাধারণ! আপনি ফাইনাল স্টেজ পার করে ${winAmount} টাকা জিতেছেন!`);
+                currentStage = 1;
+                multiplier = 1;
+                lives = 5;
+                enemy.hp = 3;
+            }
+            updateHUD();
+        }
+    }
+
+    function playerDies() {
+        lives--;
+        updateHUD();
+        if (lives <= 0) {
+            document.getElementById("modal").style.display = "flex";
+        }
+    }
+
+    function buyLife() {
+        if (balance >= 10) {
+            balance -= 10;
+            lives = 3; // নতুন লাইভ যোগ হলো
+            document.getElementById("modal").style.display = "none";
+            updateHUD();
+        } else {
+            alert("আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই!");
+        }
+    }
+
+    function gameLoop() {
+        // ব্যাকগ্রাউন্ড ড্র (পোস্ট-অ্যাপোক্যালিপ্টিক সিটি ও ফায়ার এফেক্ট ভাইব)
+        ctx.fillStyle = "#111";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // ফায়ার বা বার ব্যাকগ্রাউন্ড ডিটেইলস
+        ctx.fillStyle = "#ff3d00";
+        ctx.fillRect(50, 80, 100, 150); // বার বিল্ডিং
+        ctx.fillStyle = "#ffeb3b";
+        ctx.font = "14px Courier New";
+        ctx.fillText("BAR", 80, 150);
+
+        ctx.fillStyle = "#9c27b0";
+        ctx.fillRect(600, 50, 120, 180); // হোটেল বিল্ডিং
+        ctx.fillStyle = "#fff";
+        ctx.fillText("HOTEL", 635, 130);
+
+        // ফায়ার অ্যানিমেশন পার্টিকেল বা ইফেক্ট
+        ctx.fillStyle = Math.random() > 0.5 ? "#ff9800" : "#ff5722";
+        ctx.fillRect(80, 60, 20, 30);
+        ctx.fillRect(650, 30, 25, 35);
+
+        // প্লেয়ার ড্র
+        ctx.fillStyle = "#00bcd4";
+        ctx.fillRect(player.x, player.y, player.width, player.height);
+
+        // শত্রু ড্র (ভিলেন)
+        ctx.fillStyle = currentStage === 5 ? "#9c27b0" : "#e91e63"; // ৫ নম্বর স্টেজে ড্রাগন/বস লুক
+        ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+
+        // বুলেট আপডেট ও ড্র
+        for (let i = bullets.length - 1; i >= 0; i--) {
+            let b = bullets[i];
+            b.x += b.speed;
+            ctx.fillStyle = '#ffeb3b';
+            ctx.fillRect(b.x, b.y, b.width, b.height);
+
+            // শত্রুর সাথে সংঘর্ষ চেক
+            if (b.x > enemy.x && b.y > enemy.y && b.y < enemy.y + enemy.height) {
+                bullets.splice(i, 1);
+                enemy.hp--;
+                checkEnemyStatus();
+            } else if (b.x > canvas.width) {
+                bullets.splice(i, 1);
             }
         }
 
-        function resetPanel(panel) {
-            gameRunning[panel] = false;
-            let btn = document.getElementById(`btn-${panel}`);
-            btn.innerText = `BET ${bets[panel]}.00 INR`;
-            btn.className = "w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-lg text-sm tracking-wide shadow-md transition";
+        // সিমুলেটেড শত্রু আক্রমণ (মাঝে মাঝে প্লেয়ারের লাইভ কমবে)
+        if (Math.random() < 0.003) {
+            playerDies();
         }
-    </script>
+
+        requestAnimationFrame(gameLoop);
+    }
+
+    updateHUD();
+    gameLoop();
+</script>
+
 </body>
 </html>
